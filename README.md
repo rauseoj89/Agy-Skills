@@ -1,0 +1,58 @@
+# 🛡️ Agy-Skills: Hardened Blueprints for Local AI Agent Workflows
+
+![Agy-Skills Cover Image](agy_skills_cover.png)
+
+Welcome to **Agy-Skills**! This repository contains a curated collection of standardized, security-first **AI Skill Blueprints** (written in Markdown) designed to guide advanced coding agents (such as Roo Code, Cline, Claude Code) and local LLMs (such as Ollama, Gemma 2, Llama 3) in executing operational and infrastructure workflows safely.
+
+---
+
+## 🏗️ The "Hardened Vanilla" Standard
+All skills in this repository are engineered to enforce high-security postures during execution:
+1.  **Least Privilege Runtime:** All system scripts, service containers, and processes are strictly configured to run under limited-privilege, non-root system accounts.
+2.  **Zero plain-text Secrets:** No credentials, API tokens, database connection strings, or private keys are ever hardcoded or printed to the screen/logs. Output is dynamically masked using `********` patterns.
+3.  **Atomic Write Operations:** File operations (like generating spreadsheets, Word documents, or writing configurations) utilize temp-then-rename atomic write workflows to prevent file corruption.
+4.  **Path Traversal Protection:** All file reading/writing tools must sanitize paths, verify offsets, and reject traversal attempts trying to step outside authorized workspaces.
+
+---
+
+## 📂 Active Skill Library
+
+The repository is structured logically by domain categories:
+
+```bash
+agy-skills/
+├── README.md
+├── agy_skills_cover.png                  # Project cover banner
+├── data/
+│   └── analyzing_data.md                 # Cleanup metrics logs & compile Excel summaries
+├── devops/
+│   └── managing_containers.md            # Multi-stage, non-root Docker builds & diagnostics
+├── network/
+│   └── general_network_audit.md          # Hardening management protocols & vetting unused ports
+├── operations/
+│   ├── executing_sop_and_runbooks.md     # Step-by-step interactive runbook execution
+│   └── managing_system_operations.md     # Sorting folder assets & executing tar backups
+└── security/
+    └── managing_secrets_and_vaults.md    # In-memory secrets injection & vault bridge operations
+```
+
+### 🧠 Summarized Skill Index
+
+*   **[SOP & Runbooks Orchestrator](operations/executing_sop_and_runbooks.md):** Guides the agent through a safe, sequential **Validate $\rightarrow$ Execute $\rightarrow$ Verify** lifecycle when executing complex technical SOPs, database migrations, or server maintenance scripts.
+*   **[Docker Container Specialist](devops/managing_containers.md):** Formulates highly optimized, secure multi-stage Dockerfiles and Compose files, verifying process states, maps, and volumes.
+*   **[Secrets & Credentials Guard](security/managing_secrets_and_vaults.md):** Audits `.gitignore` files, runs dynamic log scrubbers, and safely retrieves or rotates credentials using secret vaults.
+*   **[Spreadsheets & Data Analyst](data/analyzing_data.md):** Cleans telemetry log inputs, filters duplicate records, standardizes ISO 8601 datetimes, and compiles structured markdown tables or Excel spreadsheets.
+*   **[Personal System Administrator](operations/managing_system_operations.md):** Automates repetitive folder cleanups, manages local compressed backup files (retaining max 5 history logs), and verifies disk allocations.
+
+---
+
+## 🚀 How to use this in your AI client
+To equip your local AI coding agent (e.g., Roo Code or Cline) with these skills:
+
+1. Copy the skill file (e.g., `executing_sop_and_runbooks.md`) that you want your agent to learn.
+2. Paste the contents directly into your project's custom instructions directory (such as `.clinerules` or `.roo-code-instructions` or a local `skills/` directory).
+3. Trigger the skill in your chat conversation:
+   > *"Based on my public runbook skill instructions, execute the server backup SOP."*
+
+---
+_Feel free to open Pull Requests to contribute new blueprints, refine checklists, or add vendor-specific system configurations!_
