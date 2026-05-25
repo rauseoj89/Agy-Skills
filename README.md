@@ -30,6 +30,7 @@ agy-skills/
 ├── network/
 │   └── general_network_audit.md          # Hardening management protocols & vetting unused ports
 ├── operations/
+│   ├── documenting_sessions.md           # Private daily reviews & .gitignore automation
 │   ├── executing_sop_and_runbooks.md     # Step-by-step interactive runbook execution
 │   └── managing_system_operations.md     # Sorting folder assets & executing tar backups
 └── security/
@@ -39,6 +40,7 @@ agy-skills/
 ### 🧠 Summarized Skill Index
 
 *   **[SOP & Runbooks Orchestrator](operations/executing_sop_and_runbooks.md):** Guides the agent through a safe, sequential **Validate $\rightarrow$ Execute $\rightarrow$ Verify** lifecycle when executing complex technical SOPs, database migrations, or server maintenance scripts.
+*   **[Session Review Documenter](operations/documenting_sessions.md):** Tracks local work sessions, hides the private `CHG-Review` logs directory, and automatically manages `.gitignore` rules to keep diaries private.
 *   **[Docker Container Specialist](devops/managing_containers.md):** Formulates highly optimized, secure multi-stage Dockerfiles and Compose files, verifying process states, maps, and volumes.
 *   **[Secrets & Credentials Guard](security/managing_secrets_and_vaults.md):** Audits `.gitignore` files, runs dynamic log scrubbers, and safely retrieves or rotates credentials using secret vaults.
 *   **[Spreadsheets & Data Analyst](data/analyzing_data.md):** Cleans telemetry log inputs, filters duplicate records, standardizes ISO 8601 datetimes, and compiles structured markdown tables or Excel spreadsheets.
