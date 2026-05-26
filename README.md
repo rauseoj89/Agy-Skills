@@ -30,6 +30,8 @@ agy-skills/
 ├── network/
 │   └── general_network_audit.md          # Hardening management protocols & vetting unused ports
 ├── operations/
+│   ├── creating_agy_mcps.md              # Automate blueprinting & git deployment of custom MCP servers
+│   ├── creating_agy_skills.md            # Automate blueprinting & git deployment of custom Agy-skills
 │   ├── documenting_sessions.md           # Private daily reviews & .gitignore automation
 │   ├── executing_sop_and_runbooks.md     # Step-by-step interactive runbook execution
 │   └── managing_system_operations.md     # Sorting folder assets & executing tar backups
@@ -45,6 +47,8 @@ agy-skills/
 *   **[Secrets & Credentials Guard](security/managing_secrets_and_vaults.md):** Audits `.gitignore` files, runs dynamic log scrubbers, and safely retrieves or rotates credentials using secret vaults.
 *   **[Spreadsheets & Data Analyst](data/analyzing_data.md):** Cleans telemetry log inputs, filters duplicate records, standardizes ISO 8601 datetimes, and compiles structured markdown tables or Excel spreadsheets.
 *   **[Personal System Administrator](operations/managing_system_operations.md):** Automates repetitive folder cleanups, manages local compressed backup files (retaining max 5 history logs), and verifies disk allocations.
+*   **[Agy-Skills Automator](operations/creating_agy_skills.md):** Generates and deploys new security-first operational skill files inside the local Agy-Skills repository.
+*   **[Agy-MCP Automator](operations/creating_agy_mcps.md):** Designs, blueprints, and structures custom Model Context Protocol (MCP) server configurations.
 
 ---
 

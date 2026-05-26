@@ -5,7 +5,7 @@ description: Automates the blueprinting, structural setup, and Git deployment wo
 
 # Skill: Agy-MCP Blueprint Automator (creating-agy-mcps)
 
-This skill automates the blueprinting and deployment pipeline for custom Model Context Protocol (MCP) servers.
+This skill automates the blueprinting and deployment pipeline for custom Model Context Protocol (MCP) servers inside the `Agy-MCP` repository.
 
 ## When to use this skill
 - When the user requests to design, create, or modify an MCP server blueprint.
@@ -106,6 +106,6 @@ git push origin main
 
 ## Validation Checklist
 Before declaring success, verify that:
-- [ ] The folder is created at `C:/Users/JimmyR/OneDrive/Documentos/Projects/Agy-MCP/mcp-blueprints/<mcp-name>/`.
+- [ ] The folder is created at `C:/Users/JimmyR/OneDrive/Documentos/Projects/Agy-MCP/mcp-blueprints/<mcp-name>/.`
 - [ ] `BLUEPRINT.md` features the system requirements, Mermaid flowchart, `.env.example` placeholders, and pure JSON tool schemas.
 - [ ] Git commit and push completed successfully without any conflicts.
