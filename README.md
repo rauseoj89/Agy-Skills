@@ -36,11 +36,14 @@ agy-skills/
 │   ├── executing_sop_and_runbooks.md     # Step-by-step interactive runbook execution
 │   └── managing_system_operations.md     # Sorting folder assets & executing tar backups
 └── security/
-    └── managing_secrets_and_vaults.md    # In-memory secrets injection & vault bridge operations
+    ├── managing_secrets_and_vaults.md    # In-memory secrets injection & vault bridge operations
+    ├── sec_engineer.md                   # Hardened Vanilla enforcement & STRIDE threat modeling
+    └── resources/                        # Progressive disclosure language/platform directives
 ```
 
 ### 🧠 Summarized Skill Index
 
+*   **[Security Engineer](security/sec_engineer.md):** Senior Security Solutions Architect and Lead DevSecOps Engineer. Enforces security mandates, STRIDE modeling, and has Veto Power.
 *   **[SOP & Runbooks Orchestrator](operations/executing_sop_and_runbooks.md):** Guides the agent through a safe, sequential **Validate $\rightarrow$ Execute $\rightarrow$ Verify** lifecycle when executing complex technical SOPs, database migrations, or server maintenance scripts.
 *   **[Session Review Documenter](operations/documenting_sessions.md):** Tracks local work sessions, hides the private `CHG-Review` logs directory, and automatically manages `.gitignore` rules to keep diaries private.
 *   **[Docker Container Specialist](devops/managing_containers.md):** Formulates highly optimized, secure multi-stage Dockerfiles and Compose files, verifying process states, maps, and volumes.
