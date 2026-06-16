@@ -13,11 +13,11 @@ Automate the standard blueprinting, directory structuring, security auditing, an
 
 ## 📊 Inputs Required
 - Target MCP server specifications (tools, APIs, and databases).
-- Local `Agy-MCP` repository path (`C:\Users\JimmyR\OneDrive\Documentos\Projects\Agy-MCP`).
+- Local `Agy-MCP` repository path (`${AGY_MCP_DIR}`).
 
 ## 🛠️ Step-by-Step Instructions
 1. **Identify Target Path & Name**:
-   - Standardize target folder path in lowercase and hyphenated snake_case format: `C:\Users\JimmyR\OneDrive\Documentos\Projects\Agy-MCP\mcp-blueprints\<mcp-name>\`.
+   - Standardize target folder path in lowercase and hyphenated snake_case format: `${AGY_MCP_DIR}/mcp-blueprints/<mcp-name>/`.
 2. **Create Directory Structure**:
    - Establish `BLUEPRINT.md` (root architectural details, setup, and tool schemas).
    - Establish `schemas/` folder (JSON tool schemas) and `templates/` folder (boilerplate configuration templates).

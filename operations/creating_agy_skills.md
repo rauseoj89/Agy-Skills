@@ -13,12 +13,12 @@ Automate the standard blueprinting, formatting, security scanning, and deploymen
 
 ## 📊 Inputs Required
 - Target skill specifications (name, category, triggers, and checklists).
-- Local `Agy-Skills` repository path (`C:\Users\JimmyR\OneDrive\Documentos\Projects\Agy-Skills`).
+- Local `Agy-Skills` repository path (`${AGY_SKILLS_DIR}`).
 
 ## 🛠️ Step-by-Step Instructions
 1. **Identify Target Path & Name**:
    - Determine the category (e.g., `data`, `devops`, `network`, `operations`, `security`).
-   - Standardize in snake_case: `C:\Users\JimmyR\OneDrive\Documentos\Projects\Agy-Skills\<category>\<skill_name>.md`.
+   - Standardize in snake_case: `${AGY_SKILLS_DIR}/<category>/<skill_name>.md`.
 2. **Structure flat Blueprint File**:
    - Generate standard YAML frontmatter (`name`, `description`, `category`, `tools_required`, `last_updated`).
    - Standardize sections: Goal, Inputs Required, Step-by-Step Instructions, Verification & Security Checklist.
@@ -27,7 +27,7 @@ Automate the standard blueprinting, formatting, security scanning, and deploymen
    - **No IPs:** Scan and remove any private production IP subnets. Use `${TARGET_HOST}` or `localhost`.
    - **No Raw Shell Exec:** Format all command blocks to use array-based parameter definitions, never raw concatenated shell executions.
 4. **Update Index**:
-   - Append the new skill to both the Directory Tree and the Summarized Skill Index in `C:\Users\JimmyR\OneDrive\Documentos\Projects\Agy-Skills\README.md`.
+   - Append the new skill to both the Directory Tree and the Summarized Skill Index in `${AGY_SKILLS_DIR}/README.md`.
 5. **Git Commit & Push**:
    - Run git staging, commit using conventional style (`feat(skill): add blueprint for <skill_name>`), and push to the central hub.
 
