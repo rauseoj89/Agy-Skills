@@ -2,7 +2,7 @@
 name: "Managing System Operations"
 description: "Handles directory organization, automated local backups, system settings checks, and disk health metrics."
 category: "generic/operations"
-tools_required: ["data-analyst-mcp"]
+tools_required: ["nas-tools"]
 last_updated: 2026-06-02
 ---
 

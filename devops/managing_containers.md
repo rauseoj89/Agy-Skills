@@ -2,7 +2,7 @@
 name: "Managing Docker Containers"
 description: "Deploys, monitors, and audits Docker containers and Compose configuration structures."
 category: "generic/devops"
-tools_required: ["data-analyst-mcp"]
+tools_required: ["nas-tools"]
 last_updated: 2026-06-02
 ---
 

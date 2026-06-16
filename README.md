@@ -24,8 +24,11 @@ agy-skills/
 ├── README.md
 ├── agy_skills_cover.png                  # Project cover banner
 ├── data/
-│   └── analyzing_data.md                 # Cleanup metrics logs & compile Excel summaries
+│   ├── analyzing_data.md                 # Cleanup metrics logs & compile Excel summaries
+│   └── designing_apis.md                 # REST/GraphQL endpoints design & OpenAPI 3.1 specs
 ├── devops/
+│   ├── browser_testing.md                # E2E browser automation & Lighthouse audits
+│   ├── managing_cicd.md                  # GitHub Actions, secrets mapping & pinned runners
 │   └── managing_containers.md            # Multi-stage, non-root Docker builds & diagnostics
 ├── network/
 │   └── general_network_audit.md          # Hardening management protocols & vetting unused ports
@@ -36,6 +39,7 @@ agy-skills/
 │   ├── executing_sop_and_runbooks.md     # Step-by-step interactive runbook execution
 │   └── managing_system_operations.md     # Sorting folder assets & executing tar backups
 └── security/
+    ├── database_management.md            # PostgreSQL schemas, indices, permissions & migrations
     ├── managing_secrets_and_vaults.md    # In-memory secrets injection & vault bridge operations
     ├── sec_engineer.md                   # Hardened Vanilla enforcement & STRIDE threat modeling
     └── resources/                        # Progressive disclosure language/platform directives
@@ -52,6 +56,10 @@ agy-skills/
 *   **[Personal System Administrator](operations/managing_system_operations.md):** Automates repetitive folder cleanups, manages local compressed backup files (retaining max 5 history logs), and verifies disk allocations.
 *   **[Agy-Skills Automator](operations/creating_agy_skills.md):** Generates and deploys new security-first operational skill files inside the local Agy-Skills repository.
 *   **[Agy-MCP Automator](operations/creating_agy_mcps.md):** Designs, blueprints, and structures custom Model Context Protocol (MCP) server configurations.
+*   **[Browser Testing Specialist](devops/browser_testing.md):** Automates browser E2E workflows, visual regressions, and Lighthouse audits.
+*   **[Database Security Administrator](security/database_management.md):** Governs database schemas, indexes, role separation, and DDL migrations.
+*   **[CI/CD Pipeline Specialist](devops/managing_cicd.md):** Configures automated pipelines, dependency audits, and secrets mapping.
+*   **[API Architect & Designer](data/designing_apis.md):** Designs RESTful and GraphQL API contracts, schemas, and OpenAPI 3.1 YAML specifications.
 
 ---
 

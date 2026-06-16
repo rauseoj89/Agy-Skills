@@ -2,7 +2,7 @@
 name: "Executing SOPs and Runbooks"
 description: "Parses, verifies, and executes Standard Operating Procedures (SOPs) and technical runbooks systematically."
 category: "generic/operations"
-tools_required: ["data-analyst-mcp"]
+tools_required: ["nas-tools"]
 last_updated: 2026-06-02
 ---
 
