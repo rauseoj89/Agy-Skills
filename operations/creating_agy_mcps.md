@@ -1,42 +1,111 @@
 ---
-name: "Creating Agy-MCPs"
-description: "Automates the blueprinting, structural setup, and Git deployment workflow for new or modified Model Context Protocol (MCP) servers."
+name: creating-agy-mcps
+description: Automates the blueprinting, structural setup, and Git deployment workflow for new or modified Model Context Protocol (MCP) servers in the Agy-MCP repository. Use when the user requests to create or modify an MCP server.
 category: "generic/operations"
-tools_required: ["data-analyst-mcp"]
-last_updated: 2026-06-02
+tools_required: []
+last_updated: 2026-06-19
 ---
 
-# 🧠 Skill: Agy-MCP Blueprint Automator
+# Skill: Agy-MCP Blueprint Automator
 
-## 🎯 Goal
-Automate the standard blueprinting, directory structuring, security auditing, and Git deployment pipeline for custom Model Context Protocol (MCP) servers.
+## Goal
+Automate the blueprinting, structure generation, and deployment of custom Model Context Protocol (MCP) servers inside the `jrauseo/Agy-MCP` repository, while strictly maintaining security, path isolation, least privilege, and input validation.
 
-## 📊 Inputs Required
-- Target MCP server specifications (tools, APIs, and databases).
-- Local `Agy-MCP` repository path (`${AGY_MCP_DIR}`).
+## MCP vs Native Fallback
 
-## 🛠️ Step-by-Step Instructions
-1. **Identify Target Path & Name**:
-   - Standardize target folder path in lowercase and hyphenated snake_case format: `${AGY_MCP_DIR}/mcp-blueprints/<mcp-name>/`.
-2. **Create Directory Structure**:
-   - Establish `BLUEPRINT.md` (root architectural details, setup, and tool schemas).
-   - Establish `schemas/` folder (JSON tool schemas) and `templates/` folder (boilerplate configuration templates).
-3. **Construct BLUEPRINT.md & Schemas**:
-   - Define architectural overview with Mermaid flowchart mappings.
-   - Outline system requirements, package dependencies, and docker spec files.
-   - Construct `.env.example` using strictly vault-aligned variable placeholders.
-4. **Hardened Vanilla Compliance Check**:
-   - **No Secrets:** Ensure NO live production API keys, passwords, or tokens are written into `BLUEPRINT.md` or `.env.example`. Use `${VAULT_SECRET_<MCP-NAME>_<KEY>}` structure.
-   - **No IPs:** Ensure no production private IPs are hardcoded. Use `${TARGET_HOST}` or `localhost` as placeholders.
-   - **No Raw Shell Exec:** Command examples must utilize array-based parameters, not raw shell strings.
-5. **Git Commit & Push**:
-   - Execute git staging, commit using conventional style (`feat(mcp-bp): add blueprint for <mcp-name>`), and push.
-
-## 🛡️ Verification & Security Checklist
-1. **Gitignore Verification**: Ensure `.env` and `node_modules` are excluded at the MCP repository root.
-2. **Secrets Sanity**: Verify that zero plain-text production passwords or active tokens are written.
-3. **Mermaid & Schema Validity**: Ensure that Mermaid diagrams render correctly and that all JSON schemas are well-formed.
-4. **Clean Deployment**: Verify that git push completes successfully without conflicts.
+| Capability | With filesystem MCP | Without MCP (Native) |
+|---|---|---|
+| Create directories / files | Use MCP file write tools | PowerShell: `New-Item -ItemType Directory -Path ...` |
+| Git operations | Use git MCP tools | PowerShell: run git commands directly |
 
 ---
-*Created by Efficiency Core*
+
+## When to use this skill
+- When the user requests to design, create, or modify an MCP server blueprint.
+- When creating custom integrations or tools connecting external APIs/databases to the agent workspace.
+
+## Rules & Constraints
+1. **Absolute Security Compliance (Hardened Vanilla)**:
+   - **No Hardcoded Secrets**: Use placeholders: `${VAULT_SECRET_<MCP-NAME>_<KEY>}`.
+   - **No Production IPs**: Use `${TARGET_HOST}` or `localhost` in configs.
+   - **No Raw Shell Exec**: Use array-based argument parsing to prevent shell injection.
+   - **Least Privilege**: Scopes must be minimally defined. Read-only by default.
+   - **Atomic Writes**: Write to a `.tmp` file and rename to the target destination to prevent corruption.
+2. **Path Isolation**: Never hardcode user absolute paths (like `C:/Users/JimmyR/...`). Use placeholders such as `${AGY_MCP_DIR}` or relative paths.
+3. **Required Outputs**: Every MCP blueprint must output both `BLUEPRINT.md` and `schemas/tools.json`.
+
+## Workflow Checklist
+- [ ] **Identify Target Path & Name**: Standardize in a lowercase, hyphen-separated name (e.g., `github-integrator`). Use target path `${AGY_MCP_DIR}/mcp-blueprints/<mcp-name>/`.
+- [ ] **Create Directory Structure**:
+  - `${AGY_MCP_DIR}/mcp-blueprints/<mcp-name>/` (Root)
+    - `BLUEPRINT.md` (6-section blueprint documentation)
+    - `schemas/tools.json` (Machine-readable tools schema with JSON Schema validation)
+    - `templates/` (Optional: config templates or boilerplate)
+- [ ] **Construct BLUEPRINT.md**: Create the 6-section document covering:
+  1. Architectural Overview (Mermaid diagrams)
+  2. Setup Requirements (Docker, Node, Python specs)
+  3. Environment Configuration (`.env.example` vault-aligned)
+  4. Least Privilege Design (minimizing scopes and access privileges)
+  5. Atomic Write Strategy (how writes are safely committed via `.tmp` rename)
+  6. Deployment / Verification Plan (how to verify tools function)
+- [ ] **Construct schemas/tools.json**: Define input parameters using JSON Schema with strict validation constraints (`maxLength`, `pattern` regex, `minimum`/`maximum`, `maxItems`).
+- [ ] **Audit Security**: Run the security checklist (least privilege, zero hardcoded secrets, no raw shell execution).
+- [ ] **Git Deploy**: Stage, commit, and push changes to `jrauseo/Agy-MCP`.
+
+## Collaboration Workflow
+```mermaid
+graph TD
+    User([User Request]) --> AB[Identify Target Path & Name]
+    AB --> CS[Create Directories & Files]
+    CS --> CB[Construct BLUEPRINT.md & schemas/tools.json]
+    CB --> SEC[Security Audit & Validation]
+    SEC -->|Approved| Git[Commit & Push to jrauseo/Agy-MCP]
+```
+
+## Templates
+
+### JSON Schema Input Validation Example (`schemas/tools.json`)
+```json
+{
+  "tools": [
+    {
+      "name": "query_database",
+      "description": "Executes read-only queries against database tables.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "table_name": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+            "description": "Sanitized table name (alphanumeric & underscore only)"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of rows to retrieve"
+          }
+        },
+        "required": ["table_name"]
+      }
+    }
+  ]
+}
+```
+
+### Git Deployment Commands
+```powershell
+# Stage all files including blueprint and schemas
+git add mcp-blueprints/<mcp-name>/BLUEPRINT.md
+git add mcp-blueprints/<mcp-name>/schemas/tools.json
+
+# Commit with standard conventional commit message
+git commit -m "feat(mcp-bp): add blueprint and schemas for <mcp-name>"
+
+# Push to jrauseo/Agy-MCP
+git push origin main
+```
+
+## Resources
+- [sec-engineer System Security Mandates](../sec-engineer/SKILL.md)

@@ -33,13 +33,18 @@ agy-skills/
 ├── network/
 │   └── general_network_audit.md          # Hardening management protocols & vetting unused ports
 ├── operations/
+│   ├── client_onboarding.md              # Structured client onboarding lifecycle
 │   ├── creating_agy_mcps.md              # Automate blueprinting & git deployment of custom MCP servers
 │   ├── creating_agy_skills.md            # Automate blueprinting & git deployment of custom Agy-skills
 │   ├── documenting_sessions.md           # Private daily reviews & .gitignore automation
 │   ├── executing_sop_and_runbooks.md     # Step-by-step interactive runbook execution
-│   └── managing_system_operations.md     # Sorting folder assets & executing tar backups
+│   ├── managing_m365.md                  # Administer M365 users, licenses, and security
+│   ├── managing_system_operations.md     # Sorting folder assets & executing tar backups
+│   ├── patch_management.md               # Govern patch windows and rollback policies
+│   └── powershell_automation.md          # Write, test, and deploy PowerShell automation
 └── security/
     ├── database_management.md            # PostgreSQL schemas, indices, permissions & migrations
+    ├── incident_response.md              # Triage, contain, investigate, and recover from incidents
     ├── managing_secrets_and_vaults.md    # In-memory secrets injection & vault bridge operations
     ├── sec_engineer.md                   # Hardened Vanilla enforcement & STRIDE threat modeling
     └── resources/                        # Progressive disclosure language/platform directives
@@ -60,6 +65,12 @@ agy-skills/
 *   **[Database Security Administrator](security/database_management.md):** Governs database schemas, indexes, role separation, and DDL migrations.
 *   **[CI/CD Pipeline Specialist](devops/managing_cicd.md):** Configures automated pipelines, dependency audits, and secrets mapping.
 *   **[API Architect & Designer](data/designing_apis.md):** Designs RESTful and GraphQL API contracts, schemas, and OpenAPI 3.1 YAML specifications.
+*   **[General Network Auditor](network/general_network_audit.md):** Audits and hardens network configurations, management protocols, and ports.
+*   **[Client Onboarding Specialist](operations/client_onboarding.md):** Coordinates tenant, network discovery, credential vaulting, and monitoring baseline setups during client onboarding.
+*   **[Microsoft 365 Administrator](operations/managing_m365.md):** Governs user provisioning, deprovisioning workflows, licensing, MFA checks, and Conditional Access policies.
+*   **[Patch Management Specialist](operations/patch_management.md):** Controls patch inventory, risk gating, pre-patch backups, staged deployment, and rollback configurations.
+*   **[PowerShell Automation Specialist](operations/powershell_automation.md):** Scripting authority enforcing strict parameter validation, SecureString management, and Pester tests.
+*   **[Incident Response Specialist](security/incident_response.md):** Governs triage, containment, log preservation, and recovery workflows during security incidents.
 
 ---
 
