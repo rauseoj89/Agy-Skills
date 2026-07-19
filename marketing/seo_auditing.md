@@ -1,6 +1,6 @@
 ---
 name: seo-auditing
-description: Realiza una auditoría técnica y de optimización on-page para cualquier sitio web, generando reportes profesionales bilingües.
+description: Evaluates technical SEO and on-page alignment across websites, generating structured report indices.
 version: 1.0.0
 tags: [universal, seo, audit, marketing, report]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
@@ -9,58 +9,57 @@ author: JimmyR
 ---
 # Skill: SEO Auditing
 
-## 🎯 Objetivo
-Evaluar exhaustivamente el posicionamiento orgánico, accesibilidad, jerarquía de contenido e infraestructura técnica de un sitio web para generar reportes en Markdown o PDFs corporativos bajo estándares profesionales.
+## 🎯 Goal
+Thoroughly inspect search engine optimizations, accessibility indices, page-content hierarchy, and base infrastructure of a website to produce Markdown files or branded LaTeX reports.
 
-## 🕒 Cuándo usar
-- Al evaluar las optimizaciones de motores de búsqueda de un nuevo sitio o desarrollo web.
-- Al revisar cabeceras de seguridad HTTP, archivos de rastreo (`robots.txt`, `sitemap.xml`) y redirecciones.
-- Al preparar informes SEO bilingües (Español/Inglés) estructurados para entrega formal.
+## 🕒 When to use
+- When evaluating search visibility optimizations for a target domain or new website development.
+- When inspecting HTTP headers, SSL status, crawling directive files (`robots.txt`, `sitemap.xml`), and redirection flows.
+- When producing bilingual (English/Spanish) structural audits.
 
-## 🛡️ Principios Universales
-1. **Verificar HTTPS:** Garantizar la navegación y cifrado SSL seguros antes de realizar la inspección técnica.
-2. **Jerarquía Semántica:** El sitio web debe poseer únicamente una etiqueta `H1` principal por página para una indexación correcta.
-3. **Optimización de Metadatos:** Los títulos no deben exceder 60 caracteres y las descripciones meta deben mantenerse por debajo de los 160 caracteres.
+## 🛡️ Universal Principles
+1. **Verify HTTPS:** Enforce SSL checks and inspect active redirect rules for protocol security.
+2. **Semantic Structure:** Verify the webpage contains exactly one primary `H1` tag to satisfy clean indexing parameters.
+3. **Metadata Integrity:** Check page titles do not exceed 60 characters and description tags are kept within 160 characters.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en [Antigravity]:
-Utiliza el comando integrado o localiza el script:
+### ▶️ If you are using [Antigravity]:
+Locate and run the python helper script using environment or relative path syntax:
 ```powershell
-python C:/Users/JimmyR/.gemini/antigravity/skills/seo-audit/scripts/generate_seo_report.py data.json report.md
+python {AGENT}/skills/seo-audit/scripts/generate_seo_report.py data.json report.md
 ```
 
-### ▶️ Si estás en [Hermes]:
-Invoca el skill auditando directamente la URL meta:
+### ▶️ If you are using [Hermes]:
+Query the remote server and parse headers:
 ```bash
-# Ejecutar curls sobre headers y validar robots.txt
-curl -I https://rauseojtech.com
+curl -I https://example.com
 ```
 
-### ⚠️ Si NO tienes herramientas:
-1. Pide al usuario el archivo `sitemap.xml` y `robots.txt` del sitio.
-2. Solicita el código fuente HTML principal o las secciones `head` y la estructura de encabezados.
-3. Genera manualmente las recomendaciones SEO y el reporte Markdown.
+### ⚠️ If you DO NOT have tools:
+1. Ask the user to paste the `robots.txt`, `sitemap.xml`, or raw HTML snippet of the target webpage.
+2. Analyze the title, description, images lacking `alt` text, and heading tags manually.
+3. Write down findings and optimization lists directly inside the chat window.
 
 ────────────────────────────────────
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Revisar Cabeceras | `curl -I <url>` | Pedir respuesta de red del navegador |
-| Estructura H1-H4 | `document.querySelectorAll("h1, h2, h3, h4")` | Pedir que extraigan el DOM del index |
-| Generación de Reporte | Ejecutar script python | Escribir el reporte en markdown en el chat |
+| Header Inspection | `curl -I <url>` | Request raw response block from User |
+| Heading Hierarchy | DOM query selectors | Request raw tag list from index page |
+| Report Generation | Run local Python helper | Provide Markdown outline within conversational text |
 
 ────────────────────────────────────
 
-## ✅ Verificación
-- [ ] El reporte contiene las secciones completas en el idioma seleccionado (`lang='es'` o `lang='en'`).
-- [ ] No se exponen credenciales de staging en las capturas o en las cabeceras reportadas.
-- [ ] La estructura de cabeceras H1-H4 no contiene saltos de nivel ilógicos (ej. H1 directamente a H3).
-- [ ] Se verifica si hay imágenes sin atributo `alt`.
+## ✅ Verification
+- [ ] The generated report supports language parameters (`lang='es'` or `lang='en'`) cleanly.
+- [ ] No local configurations or staging environments are exposed in reports.
+- [ ] Heading hierarchy is logical and sequential (no skips from H1 to H3).
+- [ ] Accessible styling checklist is fulfilled (e.g. check for missing alt attributes).
 
 ────────────────────────────────────
 Author: JimmyR
