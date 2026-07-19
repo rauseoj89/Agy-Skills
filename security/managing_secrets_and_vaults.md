@@ -1,103 +1,92 @@
 ---
 name: managing-secrets-and-vaults
 description: Secures system credentials, manages API keys, rotates environment variables, and orchestrates integration with secure vaults. Use when requested to configure environment keys, edit secrets, retrieve items from Vault, or secure sensitive configurations.
+version: 1.0.0
+tags: [universal, security, vault, secrets]
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
+last_updated: 2026-07-18
+author: Antigravity AI
 ---
 
 # Skill: Secrets & Credentials Manager
 
-## When to use this skill
-- When updating API keys, passwords, database strings, or certificates.
-- When configuring local or system environmental keys (`.env`, `.env.local`).
-- When initializing environment variables or secret configurations for a new project.
-- When querying, saving, rotating, or listing credentials using the `vault-bridge-mcp` tools.
-- When auditing files or Git repositories to prevent credential leaks.
+## 🎯 Objetivo
 
-## Role & Objectives
-You are the **Secrets & Credentials Manager**. Your objective is to enforce bulletproof security for application credentials, ensuring zero secrets are leaked to disk, logs, or repositories, while utilizing advanced vaulting and rotation workflows.
+Enforce bulletproof security for application credentials, ensuring zero secrets are leaked to disk, logs, or repositories, while utilizing advanced vaulting and rotation workflows.
 
-## Rules & Constraints
-1. **The Redaction Protocol**: Never output plaintext passwords, private keys, API keys, or JWT secrets to user screens or application logs. Dynamically scrub credentials in any trace files or logs.
-2. **Git-Leak Defense**: Before saving or modifying files, check that target configuration files (e.g., `.env`, `.env.local`, `.pem`) are explicitly declared in the workspace `.gitignore`. Never commit credentials to static source files.
-3. **Vault Integration Rules**:
-   - Query specific secret paths (`get_secret` with precise key) rather than requesting all credentials in bulk.
-   - Use `list_secrets` to inventory paths without exposing the actual credentials.
-   - Maintain strict isolation between dev, staging, and production namespaces.
-4. **Atomic Secret File Writes**: When updating `.env` files, write to `.env.tmp` first, then rename/move to `.env` using atomic shell commands (`Move-Item -Force` or `mv -f`). Never write directly to the target file.
-5. **No Hardcoded Absolute Paths, IPs, or Passwords**: Avoid hardcoding `C:/Users/...` paths, production IPs, or plaintext credentials. Use placeholders (e.g., `${ENV_VAR}`).
+## 🕒 Cuándo usar
 
-## Workflow Checklist
-- [ ] **Storage Strategy Decision**: Ask the user to choose between `.env`, Vault, or Hybrid before configuring environment credentials.
-- [ ] **Audit Path**: Run `list_secrets` via `vault-bridge-mcp` to inventory paths and check workspace `.gitignore` status.
-- [ ] **Get Secrets**: Retrieve required secrets securely via `get_secret`.
-- [ ] **Rotate Credentials**: When rotating, run `rotate_secret` via `vault-bridge-mcp` to generate and apply new keys, then document it in the Rotation Schedule.
-- [ ] **Atomic Write**: Output updated configuration files using the `.tmp` buffer and rename pattern.
-- [ ] **Scrub Diagnostics**: Run a post-operation audit to verify zero credentials leaked in logs.
+- Al actualizar contraseñas, claves de API, cadenas de conexión o certificados.
+- Al configurar o modificar archivos de variables de entorno (`.env`, `.env.local`).
+- Al inventariar o rotar secretos usando bovedas externas.
+- Para auditar y prevenir fugas de secretos en el historial de Git.
 
-## Collaboration Workflow
-```mermaid
-graph TD
-    User([Secret Rotation Request]) --> ListPaths[1. Run list_secrets via vault-bridge-mcp]
-    ListPaths --> Choice[2. Verify Environment & Gitignore]
-    Choice --> Auth{Authorized?}
-    Auth -->|Yes| Rotate[3. Call rotate_secret / put_secret]
-    Auth -->|No| Abort[Abort & Alert Security Engineer]
-    Rotate --> Write[4. Apply Atomic Write to .env.tmp]
-    Write --> Clean[5. Scrub Logs & Verify State]
+## 🛡️ Principios Universales
+
+1. **The Redaction Protocol**: Strip or replace plaintext passwords/keys with `[REDACTED]` or `********` in all logs, screenshots, and terminal outputs.
+2. **Git-Leak Defense**: Force the target config files (like `.env`) to be explicitly in `.gitignore` before writing secrets to them.
+3. **Atomic Secret File Writes**: Never edit environment files directly. Write updates to `.env.tmp` first, then replace.
+4. **Least Privilege**: Query specific paths rather than reading all credentials in bulk.
+
+---
+
+## 🤖 Ejecución Multi-Agente
+
+### ▶️ Si estás en Antigravity:
+
+```bash
+# Interactuar con vault-bridge-mcp para leer o rotar secretos
+# Utilizar variables del sistema local de forma segura
 ```
 
-## Templates
+### ▶️ Si estás en Hermes Agent:
 
-### Credentials Integration Audit Template
-```markdown
-# Credentials Integration Audit: [System Name]
-- **Integration Date:** [Timestamp]
-- **Storage Strategy:** [.env file / Vault / Hybrid]
-- **Target Path / System:** [e.g. vault-bridge-mcp path]
-- **Auditor:** Secrets & Credentials Manager
-
-## 1. Secrets Source Inventory
-| Env Key | Source (Vault / Env File) | Permissions Level | Masking Status |
-| :--- | :--- | :--- | :--- |
-| **DATABASE_URL** | `.env` file | Read-Only (DML App User) | MASKED |
-| **API_KEY** | HashiCorp Vault | Restricted to App | REDACTED |
-
-## 2. Security Defense Review
-- **Gitignore Check:** Verified `.env` and all related credential profiles are ignored.
-- **In-Memory Injection:** App loads secrets purely via process variables. No secrets are written dynamically to static files.
-- **Trace Audit:** Reviewed all exception blocks. Stack traces redaction matches standard secure specifications.
-```
-
-### Secret Rotation Schedule Template
-```markdown
-# Secret Rotation Schedule
-
-| Secret Key Path | Owner / Service | Rotation Interval | Last Rotated | Next Scheduled Rotation | Method (Manual/Auto) |
-|---|---|---|---|---|---|
-| `projects/app/prod/db-pass` | Database | 90 Days | 2026-06-15 | 2026-09-13 | `rotate_secret` MCP |
-| `projects/app/prod/api-key` | Integration | 30 Days | 2026-06-10 | 2026-07-10 | Manual Rotation |
-```
-
-### Python Remote Secret Bootstrap
 ```python
+# Cargar secretos de forma dinámica usando hermes_secrets o variables de entorno
 import os
-import json
-import subprocess
-
-def load_vault_secrets(vault_path: str):
-    """
-    Retrieves secrets dynamically using vault-bridge-mcp style calls
-    or vault CLI, injecting them into os.environ.
-    """
-    try:
-        cmd = ["vault", "kv", "get", "-format=json", vault_path]
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        secrets = json.loads(result.stdout).get("data", {}).get("data", {})
-        
-        for key, val in secrets.items():
-            os.environ[key] = str(val)
-    except Exception as e:
-        print(f"Error loading secrets from Vault path: {vault_path}. Ensure you have logged in.")
+db_pass = os.getenv("DB_PASSWORD") or hermes_secrets.get("db_password")
 ```
 
-## Resources
-- [sec-engineer System Security Mandates](../sec-engineer/SKILL.md)
+### ▶️ Si estás en Cline / Roo Code:
+
+```javascript
+// Llamar al MCP de bóveda o vault-bridge-mcp para consultar secretos
+const secret = await vault.getSecret({ path: "production/db", key: "password" });
+```
+
+### ▶️ Si estás en GitHub Copilot / Cursor:
+
+```python
+# Guiar al usuario para que guarde las claves en sus variables de entorno locales:
+# Pide: "Configura la variable de entorno 'DB_PASSWORD' en tu equipo local."
+```
+
+### ⚠️ Si NO tienes herramientas (Fallback Manual):
+
+1. Solicita al usuario que defina las variables de entorno de forma manual en su sistema operativo.
+2. Genera plantillas `.env.example` vacías con placeholders claros (ej: `DB_PASSWORD=YOUR_PASSWORD_HERE`).
+3. Advierte al usuario sobre no subir nunca estos archivos a Git y verificar que estén en `.gitignore`.
+
+---
+
+## 🔄 Fallbacks
+
+| Funcionalidad | Con herramientas | Sin herramientas |
+| :--- | :--- | :--- |
+| Obtener secreto | `get_secret()` / vault.getSecret() | Pedir al usuario configurar variable localmente |
+| Escribir archivo .env | Escribir via `.env.tmp` y renombrar | Dar la plantilla de variables de entorno al usuario |
+| Rotar credencial | `rotate_secret()` | Proporcionar guía de rotación en consola al usuario |
+
+---
+
+## 5. ✅ Verificación
+
+- El archivo `.env` está en `.gitignore`.
+- No hay secretos en texto plano en la consola o los logs del agente.
+- Los archivos temporales `.tmp` de secretos fueron eliminados tras la escritura.
+
+---
+
+Author: Antigravity AI
+Last Updated: 2026-07-18
+Version: 1.0.0

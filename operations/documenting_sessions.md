@@ -1,93 +1,90 @@
 ---
 name: docum-md
 description: Manages developer and agent session logs inside a hidden, git-ignored folder (CHG-Review). Use when the user requests project documentation, session tracking, daily progress reports, or immediately after executing a git push command.
-category: "generic/operations"
-tools_required: []
-last_updated: 2026-06-19
+version: 1.0.0
+tags: [universal, operations, session, documentation]
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
+last_updated: 2026-07-18
+author: Antigravity AI
 ---
 
 # Skill: Session Review Documenter
 
-## Goal
+## 🎯 Objetivo
+
 Manage developer and agent session logs inside a hidden, git-ignored folder (`CHG-Review`), ensuring that all changes are securely documented without leaking PII, secrets, or configurations, and restricting local directory access to the current user.
 
-## MCP vs Native Fallback
+## 🕒 Cuándo usar
 
-| Capability | With filesystem MCP | Without MCP (Native) |
-|---|---|---|
-| Read/Write files | Use MCP file tools | Use native Read/Write file tools |
-| Set directory permissions | Run shell commands via terminal MCP | PowerShell: `Get-Acl` / `Set-Acl` locally |
+- Inmediatamente después de ejecutar `git push`.
+- Al compilar resúmenes de progreso diarios o semanales.
+- Al final de una sesión larga del agente para guardar registro de decisiones, cambios y resultados.
+
+## 🛡️ Principios Universales
+
+1. **CHG-Review Folder Security**: Hidden directory restricted to the current executing user (e.g. `chmod 700` or NTFS permissions).
+2. **Never Push to Git**: `CHG-Review/` must always be ignored in `.gitignore`. Never track it.
+3. **Secrets Sanitization**: Automatically strip keys, tokens, and raw IP addresses from log files.
+4. **No Absolute Paths**: Avoid referencing the absolute home directories of the user in generated reports.
 
 ---
 
-## When to use this skill
-- Immediately after any `git push` command is executed in the workspace.
-- When compiling daily developer progress logs or session summaries.
-- At the end of a long-running agent session to record changes, decisions, and outcomes.
-- When asked to set up private change logs or review workflows.
+## 🤖 Ejecución Multi-Agente
 
-## Rules & Constraints
-1. **Hidden and Restricted CHG-Review Folder**:
-   - Every project/repository must have a folder named `CHG-Review` at the root. On Windows, mark this directory with the **Hidden** OS attribute.
-   - **Access Control Isolation**: To prevent local privilege escalation or information disclosure on multi-user systems, restrict directory permissions so only the owner/current executing user has access (Windows: NTFS ACLs; Linux: `chmod 700`).
-2. **Never Push to Git**:
-   - The `CHG-Review` directory **MUST NEVER** be tracked or pushed to remote repositories. Ensure `CHG-Review/` is added to the project's `.gitignore` file. Never run `git add` on this folder.
-3. **Automatic Log Creation upon Git Push**:
-   - Any time you run `git push`, immediately write or append a log file named `DATE.md` (e.g. `2026-05-24.md`) under `CHG-Review/`.
-4. **Log Content Security & Sanitization**:
-   - **Secrets Scan**: Scan all logs for API keys, passwords, environment variable values, and raw IP addresses before writing. Replace with `[REDACTED]` placeholders in the "Commands Executed" section.
-   - **No Error Stack Leaks**: Do not log raw database error tracebacks or system exception logs. Use generic terms and references.
-5. **No Hardcoded Paths**: Never include absolute system paths (like `C:/Users/...`) in log files. Use placeholders or relative paths.
+### ▶️ Si estás en Antigravity:
 
-## Workflow Checklist
-- [ ] **Initialize Workspace**: Ensure `CHG-Review/` exists and is hidden, has restricted user access permissions, and `.gitignore` contains `CHG-Review/`.
-- [ ] **Scan Session Context**: Collect all modified files, git logs, and commands run.
-- [ ] **Sanitize Context**: Check for PII, secrets, or IP addresses in the captured data.
-- [ ] **Format Summary**: Apply the Official Log Template.
-- [ ] **Write Log Entry**: Run the helper script or write directly to `CHG-Review/DATE.md`.
-- [ ] **Verify Git Status**: Run `git status --ignored` to confirm that the `CHG-Review` folder is correctly ignored.
-
-## Collaboration Workflow
-```mermaid
-graph TD
-    GitPush[git push completed] -->|Trigger| SRD[Session Review Documenter]
-    SRD -->|1. Scan for PII & Secrets| SRD_Scan[Sanitized Session Data]
-    SRD_Scan -->|2. Format Log using Template| SRD_Log[Write to CHG-Review/DATE.md]
-    SRD_Log -->|3. Verify Ignore| GitStatus[git status --ignored]
+```bash
+# Escribir registros en CHG-Review/ y correr comandos locales para verificar git ignore
+# Ocultar carpeta usando comandos del sistema de archivos local
 ```
 
-## Templates
+### ▶️ Si estás en Hermes Agent:
 
-### Official Log Template
-Every log entry written to the session log must follow this structure:
-```markdown
-### 🚀 Session Overview
-- **Summary:** [Brief description of what was worked on]
-- **Changes Made:** [Detailed list of changes made, files modified, and directories updated]
-- **Commands Executed:**
-  - `git push`
-  - [List other commands, ensuring any credentials or secrets are replaced with `[REDACTED]`]
-
-### 💡 Decisions & Context
-- [Why specific patterns or libraries were chosen]
-- [Architectural adjustments made during the session]
-
-### 🎯 Outcomes & Verification
-- [Results of the changes and how they were validated]
-- [Status of automated test runs, if applicable]
-
-### 🛡️ Security Notes
-- [Document any security evaluations, credential rotations, or hardening performed. Write "None" if clean]
+```python
+# Usar read_file y write_file para guardar el log del dia
+content = write_file(path="CHG-Review/2026-07-18.md", content="...")
 ```
 
-## Resources
-- **PowerShell Helper Script**: Locate the helper script relatively at `./scripts/docum-helper.ps1` (or use `${DOCUM_HELPER_PATH}`).
-- **Initialization Command**:
-  ```powershell
-  powershell -ExecutionPolicy Bypass -File "./scripts/docum-helper.ps1" -Action Initialize
-  ```
-- **Log Session Command**:
-  ```powershell
-  powershell -ExecutionPolicy Bypass -File "./scripts/docum-helper.ps1" -Action LogSession -Summary "YOUR_MARKDOWN_SUMMARY_HERE"
-  ```
-- [sec-engineer System Security Mandates](../sec-engineer/SKILL.md)
+### ▶️ Si estás en Cline / Roo Code:
+
+```javascript
+// Usar el MCP de filesystem para administrar logs locales
+await filesystem.writeFile("CHG-Review/2026-07-18.md", sessionSummary);
+```
+
+### ▶️ Si estás en GitHub Copilot / Cursor:
+
+```python
+# Guiar al desarrollador:
+# Pide: "Crea la carpeta CHG-Review/ y agrega este resumen de sesión en un archivo de texto."
+```
+
+### ⚠️ Si NO tienes herramientas (Fallback Manual):
+
+1. Genera el resumen estructurado usando la plantilla oficial.
+2. Recuerda al usuario: "Guarda esto en tu archivo local git-ignorado de registro diario bajo la carpeta `CHG-Review/`".
+3. Genera comandos manuales para inicializar y restringir la carpeta si es necesario.
+
+---
+
+## 🔄 Fallbacks
+
+| Funcionalidad | Con herramientas | Sin herramientas |
+| :--- | :--- | :--- |
+| Inicializar carpeta | `docum-helper` / terminal | Pedir al usuario que cree la carpeta y la oculte |
+| Guardar log de sesión | write_to_file() | Mostrar markdown del log en chat para guardado manual |
+| Ocultar carpeta | terminal / attrib +h | Dar instrucciones al usuario para ocultar la carpeta en su OS |
+
+---
+
+## ✅ Verificación
+
+- La carpeta `CHG-Review` está listada en `.gitignore`.
+- Los logs no contienen claves ni IPs duras.
+- El log del día fue creado.
+
+---
+
+Author: Antigravity AI
+Last Updated: 2026-07-18
+Version: 1.0.0

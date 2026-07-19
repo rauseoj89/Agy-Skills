@@ -1,73 +1,90 @@
 ---
-name: "general-network-audit"
-description: "Performs network configuration audits, scanning for plain-text secrets, default credentials, inadequate VLAN segmentation, and outdated management protocols."
-category: "generic/network"
-tools_required: []
-last_updated: 2026-06-19
+name: general-network-audit
+description: Performs network configuration audits, scanning for plain-text secrets, default credentials, inadequate VLAN segmentation, and outdated management protocols.
+version: 1.0.0
+tags: [universal, network, security, audit]
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
+last_updated: 2026-07-18
+author: Antigravity AI
 ---
 
 # Skill: Network Audit Specialist
 
-## Goal
+## 🎯 Objetivo
+
 Perform a comprehensive network configuration audit to identify vulnerabilities, credential leaks, segmentation weaknesses, and unsecure protocol usage. Outputs a timestamped audit report with an executive summary.
 
-## Inputs Required
-- Network ranges (CIDR) or network configuration files to analyze.
-- Known VLAN mappings and site information.
+## 🕒 Cuándo usar
 
-## MCP vs Native Fallback
+- Al realizar auditorías de configuración de red para identificar vulnerabilidades.
+- Al revisar políticas de segmentación de VLAN o reglas de firewall.
+- Para buscar contraseñas por defecto, protocolos de administración inseguros (Telnet, HTTP, SNMPv1/v2).
 
-| Capability | With filesystem/markitdown MCPs | Without MCP |
-|---|---|---|
-| Read configuration files | Use MCP file read tools | Native file read tools |
-| Parse complex network docs | Use markitdown tool for PDF/Word | User manually extracts/pastes config text |
+## 🛡️ Principios Universales
 
----
-
-## Step-by-Step Instructions
-
-### 1. Immediate Secret Scan
-- **Mandatory Step 1:** Before performing any other analysis, run a regex scan on configuration files for potential secrets:
-  - Search patterns: `password =`, SNMP community strings (e.g., `public`, `private`), and IPSec pre-shared keys.
-  - **Redaction Gate:** Immediately redact all identified secrets in memory or temporary files. Replace them with `[REDACTED]` in all output logs and reports before saving.
-
-### 2. Default Credential Check
-- Analyze configuration files or device accesses for default accounts.
-- Flag as **CRITICAL** any occurrences of known default usernames (such as `admin`, `cisco`, `enable`, `root`, `ubnt`) paired with default or blank passwords.
-
-### 3. VLAN & Segmentation Review
-- Review configuration files (routing, switchport settings, firewall rules) to verify network segmentation:
-  - Check that database and application servers are on isolated VLANs.
-  - Verify that database/server VLANs are not directly routable from general user or Guest Wi-Fi VLANs.
-  - Inspect trunk ports and flag any undocumented trunk ports or VLAN leakage.
-
-### 4. Management Protocol Audit
-- Review active management protocols against the standard security baseline:
-
-  | Insecure Protocol | Secure Alternative | Action Required |
-  |---|---|---|
-  | Telnet (port 23) | SSH (port 22) | Disable Telnet, enforce SSH v2 only. |
-  | HTTP (port 80) | HTTPS (port 443) | Disable HTTP management, redirect to HTTPS. |
-  | SNMP v1 / v2c | SNMP v3 | Migrate to SNMP v3 (encrypted credentials). |
-  | FTP (port 21) | SFTP / SCP | Enforce SFTP/SCP for configuration backups. |
-  | WPS / UPnP | Disabled | Disable WPS and UPnP on all routers/firewalls. |
-
-### 5. Report Generation
-- Compile audit findings into a report file named `network_audit_YYYYMMDD.md`.
-- The report must begin with an **Executive Summary** detailing:
-  - Total Critical, High, Medium, and Low severity findings counts.
-  - Key recommendations and security posture rating.
-  - Timestamped log of the audit run.
+1. **Immediate Secrets Redaction**: Never include raw passwords, SNMP strings, or PSKs in reports. Mask as `[REDACTED]`.
+2. **Default Credentials Check**: Actively search for and flag default usernames/passwords.
+3. **Protocol Audit Rules**: Enforce encryption (SSH instead of Telnet, HTTPS instead of HTTP, SNMPv3 instead of SNMPv1/v2c).
+4. **Data Privacy**: Do not expose internal private IP networks in public audit summaries unless using placeholders.
 
 ---
 
-## Verification & Security Checklist
+## 🤖 Ejecución Multi-Agente
 
-1. **Immediate Secrets Redaction**: Verified that no plain-text passwords or community strings are stored in the final report.
-2. **Default Credentials Check**: Confirmed that all systems were scanned for default usernames and blank passwords.
-3. **Segmentation Verified**: Flagged any VLAN bridging or undocumented trunk ports.
-4. **Protocols Validated**: Confirmed all Telnet, HTTP, SNMP v1/v2c, and FTP instances are flagged for remediation.
-5. **Severity Counts Validation**: Cross-validated that the sum of findings in the detailed section matches the counts listed in the Executive Summary.
+### ▶️ Si estás en Antigravity:
+
+```bash
+# Leer archivos de configuración de routers/switches/firewalls
+# Usar read_file para escanear configuraciones
+```
+
+### ▶️ Si estás en Hermes Agent:
+
+```python
+# Utilizar terminal para buscar o analizar archivos de configuración
+config = read_file(path="switch_config.cfg")
+```
+
+### ▶️ Si estás en Cline / Roo Code:
+
+```javascript
+// Usar MCP de filesystem para analizar los archivos de configuración de red
+const config = await filesystem.readFile("firewall.conf");
+```
+
+### ▶️ Si estás en GitHub Copilot / Cursor:
+
+```python
+# Pide al usuario que proporcione la configuración:
+# "Por favor, pega el contenido del archivo de configuración del router (sin secretos)."
+```
+
+### ⚠️ Si NO tienes herramientas (Fallback Manual):
+
+1. Solicita al usuario: "Por favor, sube o pega las directivas de configuración de tus dispositivos de red".
+2. Analiza manualmente en el contexto del chat.
+3. Devuelve el reporte de auditoría estructurado en Markdown directamente en el chat.
 
 ---
-*agy-skills — updated 2026-06-19*
+
+## 🔄 Fallbacks
+
+| Funcionalidad | Con herramientas | Sin herramientas |
+| :--- | :--- | :--- |
+| Leer archivos de config | read_file() | Pedir al usuario que pegue la configuración |
+| Validar IPs y subredes | Scripts automatizados de verificación | Revisión visual manual por parte de la IA |
+| Exportar reporte | write_to_file() | Mostrar reporte Markdown para que el usuario lo guarde |
+
+---
+
+## ✅ Verificación
+
+- No se listan contraseñas reales en los outputs.
+- Se clasificaron las vulnerabilidades por niveles de criticidad (Crítico, Alto, Medio, Bajo).
+- Se proponen alternativas cifradas para cada protocolo inseguro detectado.
+
+---
+
+Author: Antigravity AI
+Last Updated: 2026-07-18
+Version: 1.0.0

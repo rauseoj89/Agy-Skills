@@ -1,145 +1,90 @@
 ---
-name: "Incident Response"
-description: "Structured triage, containment, investigation, remediation, and documentation workflow for security and operational incidents."
-category: "generic/security"
-tools_required: []
-last_updated: 2026-06-19
+name: incident-response
+description: Structured triage, containment, investigation, remediation, and documentation workflow for security and operational incidents.
+version: 1.0.0
+tags: [universal, security, incident, response]
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
+last_updated: 2026-07-18
+author: Antigravity AI
 ---
 
 # Skill: Incident Response Specialist
 
-## Goal
+## 🎯 Objetivo
+
 Execute a structured, evidence-preserving incident response workflow from initial detection through full remediation and post-incident documentation. Integrates with the PSA system for ticket creation and audit trail.
 
-## Inputs Required
-- Incident description or alert trigger (user report, RMM alert, detection tool output).
-- Affected systems, users, or services.
-- Approximate time of first detection or suspicious activity.
+## 🕒 Cuándo usar
 
-## Toolstack
-- **Monitoring / Alert Source**: RMM (Remote Monitoring and Management) — primary source for endpoint and network alerts.
-- **Backup / Recovery**: Veeam (VMs and servers) and BCDR/Axcient (BCDR / physical endpoints).
-- **Ticketing**: PSA (Professional Services Automation) — all incident actions logged here.
+- Ante la sospecha de una brecha de seguridad activa (ransomware, exfiltración, phishing).
+- Para contener accesos no autorizados en cuentas o servidores.
+- Al coordinar la erradicación de amenazas y la posterior recuperación desde respaldos.
 
-## MCP vs Native Fallback
+## 🛡️ Principios Universales
 
-| Capability | With psa-mcp | Without MCP |
-|---|---|---|
-| Ticket lookup | Search tickets by keyword or ID | Ask user for ticket number |
-| Time entry logging | Review time entries tool | Document in session log manually |
-| Notes review | Retrieve ticket notes | User pastes prior notes |
+1. **Containment Before Remediation**: Always isolate the affected systems or accounts before running cleaning steps to preserve evidence.
+2. **Authorization Gate**: Always request user/client authorization before isolating production networks or restoring backups.
+3. **Evidence Preservation**: Do not work on original logs or drives; make copies, compute hashes, and preserve timestamps.
+4. **No Hardcoded Secrets**: Ensure credentials rotated during eradication are stored in vaults, not in ticket logs.
 
 ---
 
-## Incident Severity Classification
+## 🤖 Ejecución Multi-Agente
 
-| Severity | Definition | Response Time |
-|---|---|---|
-| P1 — Critical | Active breach, ransomware, data exfiltration, full outage | Immediate — escalate within 15 min |
-| P2 — High | Compromised credentials, partial outage, malware detected | Within 1 hour |
-| P3 — Medium | Suspicious activity, single-system issue, policy violation | Within 4 hours |
-| P4 — Low | Informational alert, minor anomaly, no active threat | Within 24 hours |
+### ▶️ Si estás en Antigravity:
 
----
+```bash
+# Consultar logs de seguridad locales para identificar el origen
+# Bloquear accesos locales o coordinar el aislamiento mediante comandos de firewall
+```
 
-## Step-by-Step Instructions
+### ▶️ Si estás en Hermes Agent:
 
-### 1. Detect & Triage
-- Gather all available information before taking any action:
-  - What system/service is affected?
-  - What is the timeline of observed events?
-  - Is the activity ongoing or historical?
-  - How many users or systems are impacted?
-- **Check the RMM** for the affected endpoint(s):
-  - RMM console → Computer view → review recent alerts, script history, and agent status.
-  - Check if the issue first appeared as an RMM alert — note the exact alert time as T0.
-- Assign a severity level (P1–P4) based on the classification table above.
-- **Do not remediate before containing** — premature action can destroy evidence.
+```python
+# Utilizar terminal para inspeccionar conexiones activas
+result = terminal(command="netstat -ano", timeout=30)
+```
 
-### 2. Create or Update PSA Ticket
-- If a ticket does not exist, instruct user to create one with:
-  - Summary: `[IR-P{severity}] {brief description} — {date}`
-  - Service Board: Security Incidents (or equivalent)
-  - Priority: mapped to P1–P4
-  - Initial note: time detected, affected systems, reporter name.
-- If a ticket exists, search it with `Find service tickets` and pull full details.
+### ▶️ Si estás en Cline / Roo Code:
 
-### 3. Contain
-- **Do not skip containment** — isolate before investigating.
+```javascript
+// Usar el MCP de terminal o firewall para ejecutar comandos de aislamiento de red
+const result = await shell.exec("powershell -Command \"Disable-NetAdapter -Name 'Ethernet'\"");
+```
 
-  | Incident Type | Containment Action |
-  |---|---|
-  | Compromised user account | Revoke sessions → disable account → reset password |
-  | Infected endpoint | Isolate from network (VLAN or physical disconnect) |
-  | Ransomware | Isolate infected segment → take VSS snapshots before cleaning |
-  | Data exfiltration | Block outbound destination IP/domain at firewall |
-  | Brute force in progress | Block source IP → enable account lockout policy |
+### ▶️ Si estás en GitHub Copilot / Cursor:
 
-- Document every containment action with exact timestamp in the PSA ticket.
-- **Authorization Gate**: Stop and confirm with user/client before any containment that causes downtime or service disruption.
+```python
+# Alertar e indicar al usuario los pasos críticos para aislar el equipo:
+# Pide: "Desconecta inmediatamente el equipo de la red (WiFi y cable Ethernet)."
+```
 
-### 4. Investigate
-- Collect and preserve evidence before making changes:
-  - Export relevant logs (event logs, firewall logs, email headers) to a dated folder.
-  - Note log file paths, hash values, and collection timestamps.
-  - Do not modify original log files — work on copies.
-- Establish timeline: first indicator → lateral movement → impact.
-- Identify root cause: phishing, unpatched CVE, misconfiguration, insider, other.
-- Secrets Scan: check if any credentials, API keys, or certificates may have been exposed.
+### ⚠️ Si NO tienes herramientas (Fallback Manual):
 
-### 5. Eradicate & Remediate
-- Remove the threat (malware, unauthorized accounts, malicious rules):
-  - Delete or quarantine malicious files.
-  - Remove unauthorized email forwarding rules, inbox rules, OAuth app grants.
-  - Revoke any API keys or certificates that may have been compromised.
-- Patch the root cause vulnerability before restoring service.
-- Reset credentials for all accounts that touched affected systems.
-- **Destructive Gate**: Stop and confirm before deleting any files, accounts, or configurations that cannot be recovered.
-
-### 6. Recover
-- **Verify backup exists before restoring** — confirm last successful backup pre-dates the incident:
-  - **Veeam** (VMs and servers): Veeam console → Backups → locate affected VM → confirm restore point timestamp is before incident T0.
-  - **Axcient** (physical endpoints / BCDR): Axcient portal → client device → confirm last clean backup timestamp.
-- **Restore procedure**:
-  - **Veeam VM restore**: right-click VM → Restore → Instant VM Recovery (fastest) or Full VM Restore. Select restore point dated before T0.
-  - **Axcient restore**: portal → client → Restore → select pre-incident snapshot. For full bare-metal, use Axcient appliance or cloud failover.
-  - **Authorization Gate**: Confirm with client before any restore — all post-incident data will be lost.
-- Bring systems back in a controlled sequence: infrastructure → services → users.
-- Monitor via RMM for 24–48 hours post-recovery for recurrence.
-- Confirm normal operation with the affected user or system owner.
-
-### 7. Document & Close
-- Write a complete post-incident summary in the PSA ticket:
-  ```
-  ## Incident Summary
-  **Detection:** [timestamp] — [how detected]
-  **Root Cause:** [description]
-  **Scope:** [affected systems/users]
-  **Containment:** [actions taken + timestamps]
-  **Eradication:** [what was removed/patched]
-  **Recovery:** [how restored, from what backup]
-  **Lessons Learned:** [what to prevent recurrence]
-  **Follow-up Actions:** [owner + due date]
-  ```
-- Apply security notes rule: never include plaintext passwords or keys in ticket notes — use `[REDACTED]`.
-- Close ticket only after client/stakeholder sign-off.
+1. Clasifica la severidad (P1-P4) y genera los pasos de contención inmediatos.
+2. Pide al usuario: "Por favor, realiza estas acciones de aislamiento (ej. apagar el switch, deshabilitar la cuenta) de inmediato".
+3. Proporciona instrucciones de recopilación de logs para que el usuario guarde las evidencias antes de limpiar.
 
 ---
 
-## Verification & Security Checklist
+## 🔄 Fallbacks
 
-1. **Containment Before Remediation**: Confirmed threat was isolated before any eradication steps.
-2. **Evidence Preserved**: Log copies saved with timestamps and hash values before system changes.
-3. **Authorization Obtained**: Confirmed explicit approval for any action that causes downtime or data deletion.
-4. **Credentials Reset**: All accounts touching affected systems had passwords/tokens rotated.
-5. **Root Cause Patched**: Confirmed the initial attack vector has been closed, not just the symptom.
-6. **Ticket Closed with Summary**: Full post-incident summary in PSA with lessons learned and follow-up owners.
-
-## Future Integrations
-- `psa-mcp` *(already active)*: Ticket lookup and note review during active incidents.
-- `rmm-mcp` *(agy-MCP blueprint — pending)*: Pull RMM alert history and endpoint status during triage without opening the console.
-- `backup-mcp` *(agy-MCP blueprint — pending)*: Verify backup/restore point availability and initiate restores during recovery phase.
-- `vault-bridge-mcp` *(agy-MCP blueprint — pending)*: Automated credential rotation during eradication phase.
+| Funcionalidad | Con herramientas | Sin herramientas |
+| :--- | :--- | :--- |
+| Aislar Endpoint | terminal("Disable-NetAdapter") | Pedir al usuario que desconecte el cable de red / WiFi |
+| Deshabilitar Cuenta | psa.revokeSessions() / terminal | Instruir al administrador para revocar accesos en el portal Azure/AD |
+| Verificar Backups | backup.getBackupStatus() | Pedir al usuario buscar el último backup saludable en consola |
 
 ---
-*agy-skills — updated 2026-06-19*
+
+## ✅ Verificación
+
+- La amenaza fue contenida y aislada.
+- Se identificó el vector de ataque original y se aplicó el parche correspondiente.
+- El informe de incidentes post-mortem se redactó y guardó sin revelar secretos.
+
+---
+
+Author: Antigravity AI
+Last Updated: 2026-07-18
+Version: 1.0.0

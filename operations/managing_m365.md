@@ -1,127 +1,90 @@
 ---
-name: "Managing Microsoft 365"
-description: "Administers Microsoft 365 users, licenses, MFA, Conditional Access, mailboxes, and groups using PowerShell and the Graph API."
-category: "generic/operations"
-tools_required: []
-last_updated: 2026-06-19
+name: managing-m365
+description: Administers Microsoft 365 users, licenses, MFA, Conditional Access, mailboxes, and groups using PowerShell and the Graph API.
+version: 1.0.0
+tags: [universal, operations, m365, office]
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
+last_updated: 2026-07-18
+author: Antigravity AI
 ---
 
 # Skill: Microsoft 365 Administrator
 
-## Goal
+## 🎯 Objetivo
+
 Provision and deprovision M365 users, enforce MFA and Conditional Access policies, audit licenses, manage mailbox delegations, and govern group membership — securely and with full audit trails.
 
-## Inputs Required
-- Target tenant domain or tenant ID.
-- User UPN(s), group name(s), or license SKU to act on.
-- Admin credentials injected via environment variables — never hardcoded.
+## 🕒 Cuándo usar
 
-## MCP vs Native Fallback
+- Al crear o desactivar cuentas de usuario en Microsoft 365.
+- Al verificar y auditar el estado de MFA en las cuentas administrativas y de usuario.
+- Al gestionar asignación de licencias y buzones compartidos.
 
-| Capability | With graph-api-mcp *(future)* | Without MCP (current) |
-|---|---|---|
-| User management | Graph API tool calls | PowerShell: `Microsoft.Graph` module |
-| License assignment | Graph API tool calls | PowerShell: `Set-MgUserLicense` |
-| MFA status check | Graph API tool calls | PowerShell: `Get-MgUserAuthMethod` |
-| Mailbox management | Graph API tool calls | PowerShell: `ExchangeOnlineManagement` module |
+## 🛡️ Principios Universales
 
-> Until `graph-api-mcp` is deployed, all operations use PowerShell with the `Microsoft.Graph` and `ExchangeOnlineManagement` modules. Connect once per session; never store credentials in scripts.
+1. **No Plaintext Credentials**: Never hardcode passwords or client secret tokens in scripts or commands.
+2. **Order of Deprovisioning**: Revoke sessions -> disable account -> remove groups -> convert to shared -> remove licenses.
+3. **Admin MFA Protection**: Always enforce Phishing-Resistant MFA on administrative accounts.
+4. **Least Privilege**: Only request scopes necessary for the operation (e.g. `User.ReadWrite.All`).
 
 ---
 
-## Step-by-Step Instructions
+## 🤖 Ejecución Multi-Agente
 
-### 1. Secure Connection
-- Connect using certificate-based or interactive auth — never username/password in scripts:
-  ```powershell
-  Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All","Directory.ReadWrite.All"
-  Connect-ExchangeOnline -UserPrincipalName admin@domain.com
-  ```
-- Confirm connected tenant before any write operation:
-  ```powershell
-  Get-MgOrganization | Select DisplayName, Id
-  ```
+### ▶️ Si estás en Antigravity:
 
-### 2. User Provisioning
-- Create user with required fields only — never set a plaintext password in script:
-  ```powershell
-  $params = @{
-    DisplayName       = "Jane Doe"
-    UserPrincipalName = "jdoe@domain.com"
-    MailNickname      = "jdoe"
-    AccountEnabled    = $true
-    PasswordProfile   = @{ ForceChangePasswordNextSignIn = $true; Password = $env:TEMP_USER_PASSWORD }
-  }
-  New-MgUser @params
-  ```
-- Assign license immediately after creation:
-  ```powershell
-  Set-MgUserLicense -UserId "jdoe@domain.com" -AddLicenses @{SkuId = "<SKU-GUID>"} -RemoveLicenses @()
-  ```
+```bash
+# Ejecutar comandos de PowerShell localmente usando el módulo de Microsoft Graph
+# Inyectar credenciales de vault temporalmente
+```
 
-### 3. User Deprovisioning
-- Follow this sequence in order — never skip steps:
-  1. Revoke all active sessions: `Revoke-MgUserSignInSession -UserId $upn`
-  2. Disable account: `Update-MgUser -UserId $upn -AccountEnabled $false`
-  3. Remove from all groups and distribution lists.
-  4. Convert mailbox to shared (retain 30 days): `Set-Mailbox $upn -Type Shared`
-  5. Remove licenses (stop billing): `Set-MgUserLicense -UserId $upn -RemoveLicenses @("<SKU-GUID>") -AddLicenses @()`
-  6. Log action with timestamp in PSA ticket or session log.
+### ▶️ Si estás en Hermes Agent:
 
-### 4. MFA Enforcement Audit
-- List users without MFA registered:
-  ```powershell
-  Get-MgUser -All | ForEach-Object {
-    $methods = Get-MgUserAuthenticationMethod -UserId $_.Id
-    if ($methods.Count -le 1) { $_.UserPrincipalName }
-  }
-  ```
-- Flag any admin accounts without Phishing-Resistant MFA (FIDO2 or Certificate) as CRITICAL.
-- Never disable MFA for any account — escalate to client if requested.
+```python
+# Utilizar terminal para invocar scripts de PowerShell o curl para la Graph API
+result = terminal(command="pwsh -File run-m365-audit.ps1", timeout=120)
+```
 
-### 5. Conditional Access Review
-- List all CA policies and their enabled/disabled state:
-  ```powershell
-  Get-MgIdentityConditionalAccessPolicy | Select DisplayName, State, CreatedDateTime
-  ```
-- Verify these policies exist and are **Enabled**:
-  - Require MFA for all users.
-  - Block legacy authentication protocols.
-  - Require compliant device for admin roles.
-- Flag any policy in `reportOnly` state as needing promotion to `enabled`.
+### ▶️ Si estás en Cline / Roo Code:
 
-### 6. License Audit
-- List all SKUs and consumed units:
-  ```powershell
-  Get-MgSubscribedSku | Select SkuPartNumber, ConsumedUnits, @{N="Available";E={$_.PrepaidUnits.Enabled - $_.ConsumedUnits}}
-  ```
-- Flag SKUs where `Available < 5` (low license headroom warning).
-- Flag users with duplicate/redundant license assignments for cost optimization.
+```javascript
+// Usar el MCP de shell/terminal para invocar PowerShell o realizar peticiones HTTP
+const result = await shell.exec("pwsh -Command \"Connect-MgGraph -Scopes ...\"");
+```
 
-### 7. Mailbox Delegation & Shared Mailboxes
-- Grant mailbox access (Full Access):
-  ```powershell
-  Add-MailboxPermission -Identity "shared@domain.com" -User "jdoe@domain.com" -AccessRights FullAccess -InheritanceType All
-  ```
-- Audit existing delegations:
-  ```powershell
-  Get-MailboxPermission -Identity "shared@domain.com" | Where-Object { $_.User -notlike "NT AUTHORITY*" }
-  ```
-- Never grant SendAs to distribution groups without explicit client approval.
+### ▶️ Si estás en GitHub Copilot / Cursor:
+
+```python
+# Guiar al usuario para que ejecute los scripts locales en su terminal:
+# Pide: "Ejecuta 'Connect-MgGraph' en tu PowerShell y pega la salida del estado."
+```
+
+### ⚠️ Si NO tienes herramientas (Fallback Manual):
+
+1. Genera los scripts de PowerShell o las llamadas REST `curl` para la API de Graph.
+2. Pide al usuario: "Por favor, abre PowerShell, inicia sesión en Microsoft Graph y ejecuta los siguientes comandos".
+3. Solicita que el usuario pegue los resultados devueltos (ocultando cualquier token) para continuar con el análisis.
 
 ---
 
-## Verification & Security Checklist
+## 🔄 Fallbacks
 
-1. **No Plaintext Credentials**: Confirm zero passwords or tokens appear in any script, log, or session output.
-2. **MFA Enabled**: Confirm all users — especially admins — have MFA registered before session ends.
-3. **Deprovisioning Order**: Confirm session revoke → disable → license remove sequence was followed in full.
-4. **CA Policy State**: Confirm no critical CA policies are in `reportOnly` or `disabled` state.
-5. **License Headroom**: Confirm no SKU is at 100% consumption (would block new user provisioning).
-6. **Audit Trail**: Confirm all changes are logged in PSA ticket or session documentation.
-
-## Future Integrations
-- `graph-api-mcp` *(agy-MCP blueprint — pending)*: Direct Graph API calls for user, group, and mailbox management without PowerShell session overhead.
+| Funcionalidad | Con herramientas | Sin herramientas |
+| :--- | :--- | :--- |
+| Conectar a Graph | terminal() / Connect-MgGraph | Dar comando para que el usuario se autentique en local |
+| Consultar MFA | Graph API call | Pedir al usuario correr script de auditoría y pegar output |
+| Modificar Licencia | Set-MgUserLicense | Generar script para ejecución por parte del usuario |
 
 ---
-*agy-skills — updated 2026-06-19*
+
+## ✅ Verificación
+
+- Se completaron las fases de desaprovisionamiento en el orden correcto.
+- Se verificó que el UPN creado tenga activada la solicitud de cambio de clave en el próximo login.
+- No se han impreso contraseñas en los logs.
+
+---
+
+Author: Antigravity AI
+Last Updated: 2026-07-18
+Version: 1.0.0

@@ -1,93 +1,96 @@
 ---
 name: executing-sop-and-runbooks
 description: Parses, verifies, and executes Standard Operating Procedures (SOPs) and technical runbooks. Use when asked to follow an SOP, run a system migration, execute a deployment checklist, or automate system maintenance.
+version: 1.0.0
+tags: [universal, operations, runbook, sop]
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
+last_updated: 2026-07-18
+author: Antigravity AI
 ---
 
 # Skill: Runbook & SOP Orchestrator
 
-## When to use this skill
-- When requested to execute a step-by-step Standard Operating Procedure (SOP).
-- When deploying database, application, or system updates following a migration plan.
-- When performing scheduled infrastructure maintenance routines.
-- When validating system state before, during, and after manual interventions.
+## 🎯 Objetivo
 
-## Role & Objectives
-You are the **Runbook & SOP Orchestrator**. Your objective is to methodically parse, validate, and execute complex technical procedures with zero manual errors, ensuring system safety and complete state transparency.
+Ejecutar procedimientos técnicos paso a paso con validación, gestión de confirmaciones para operaciones destructivas, y rollback automatizado.
 
-## Rules & Constraints
-1. **Destructive Action Gate**: Before executing ANY destructive or irreversible operation (such as `DROP`, `TRUNCATE`, `docker rm`, `docker-compose down`, `rm -rf`, rule deletion, or credential changes), you MUST halt, present the exact operation to the user, explain the risks, and obtain explicit user confirmation.
-2. **Step Permission Labels**: Every step in a runbook must be annotated with its required permission level:
-   - `requiredPermission: "operator"` — Read-only checks, log parsing, health monitoring.
-   - `requiredPermission: "admin"` — Destructive operations, credential changes, deployments, container teardowns.
-3. **Pre-Flight Safety Gate**: Verify system safety before starting:
-   - **System Health**: Run `get_system_stats` to verify CPU load < 80% and disk space > 15%. Run `zfs_get_pools` to check storage pool integrity.
-   - **Dependency Audit**: Use `docker_ps` and `docker_inspect` to verify dependent containers are running and configured securely.
-   - **Access Integrity**: Check permissions of directories using `check_permissions` and database connection status.
-4. **Command Injection Defense**: All shell commands must use array-based argument structures — never concatenate raw strings into shell execution.
-5. **Atomic Verification Loops**: For each step, apply a strict **Test-Execute-Confirm** sequence:
-   - **Test**: Verify system is ready for the step and that it isn't already run.
-   - **Execute**: Run the command. If a service needs to be restarted, use `docker_control` if containerized.
-   - **Confirm**: Run a verification check (e.g., query database or check logs via `docker_logs`) to guarantee success.
+## 🕒 Cuándo usar
 
-## Workflow Checklist
-- [ ] **Load Procedure**: Read and parse the target SOP or runbook file.
-- [ ] **Verify Pre-requisites**: Conduct pre-flight checks (CPU, disk space, storage pool health, active containers, access permissions).
-- [ ] **Run Pre-Verification**: Verify step readiness.
-- [ ] **Execute Step**: Propose and run the command. Apply the Destructive Gate if needed.
-- [ ] **Verify Step Outcome**: Inspect logs or states to confirm success before moving forward.
-- [ ] **Handle Failures**: If a step fails, halt immediately, execute documented rollbacks, and redact log tracebacks.
-- [ ] **Generate Completion Report**: Summarize the entire execution.
+- Al ejecutar un Procedimiento Operativo Estándar (SOP) paso a paso.
+- Al desplegar migraciones de base de datos, actualizaciones de infraestructura o despliegues.
+- Al realizar tareas de mantenimiento del sistema recurrentes.
 
-## Collaboration Workflow
-```mermaid
-graph TD
-    User([Trigger SOP]) --> PreFlight[1. Pre-Flight Safety Audit]
-    PreFlight -->|CPU, Disk, Containers Check| Step[2. Execute Step-by-Step Matrix]
-    Step -->|Destructive Action?| DG{Destructive Gate}
-    DG -->|Yes| Confirm[Request User Approval]
-    DG -->|No| SafeExec[Execute Command]
-    Confirm -->|Approved| SafeExec
-    SafeExec -->|Test-Execute-Confirm Loop| Verify[Post-Step Verification]
-    Verify -->|Pass| Next{More Steps?}
-    Verify -->|Fail| Rollback[Run Rollback Actions & Redact Errors]
-    Next -->|Yes| Step
-    Next -->|No| Report[3. Generate Completion Report]
+## 🛡️ Principios Universales
+
+1. **Destructive Action Gate**: Never run destructive operations (e.g. `DROP`, `rm -rf`, `docker rm`) without explicit user validation.
+2. **Validation Loop**: Always follow the Test -> Execute -> Verify loop.
+3. **Least Privilege**: Annotate steps with `operator` (read-only/audit) vs `admin` (write/deploy).
+4. **Secrets Isolation**: No secrets in logs or terminal parameters.
+
+---
+
+## 🤖 Ejecución Multi-Agente
+
+### ▶️ Si estás en Antigravity:
+
+```bash
+antigravity-runbook execute runbook.md --confirm-destroy
+antigravity lock acquire runbook-execution
+# Secrets se inyectan automáticamente de vault
 ```
 
-## Templates
+### ▶️ Si estás en Hermes Agent:
 
-### Runbook Execution Report Template
-```markdown
-# Runbook Execution Report: [SOP Code / Name]
-- **Execution Date:** [Timestamp]
-- **Target Environment:** [Production / Development]
-- **Operator:** Runbook & SOP Orchestrator
-
-## 1. Pre-Flight System Status
-| Component | Metric / Value | Threshold Check | Status |
-| :--- | :--- | :--- | :--- |
-| **CPU Usage** | [e.g., 22.4%] | < 80% | PASS |
-| **Available Disk** | [e.g., 45 GB] | > 15% | PASS |
-| **Storage Pools** | ZFS pool ONLINE | Healthy | PASS |
-| **Docker Daemon** | Active | Responsive | PASS |
-| **Database Connection** | Postgres online | Responsive | PASS |
-
-## 2. Step-by-Step Execution Matrix
-| Step ID | Description | Command Executed | Verification Method | Status | Notes |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **1.0** | Check Docker containers | `docker ps` | Verify target containers active | **PASS** | Target containers up. |
-| **2.0** | Run database migration | `npm run db:migrate` | Query migrations table | **PASS** | Applied schema v1.4.2. |
-| **3.0** | Clear redis cache | `redis-cli flushall` | Check redis key count | **PASS** | Flushed 14,230 keys. |
-
-## 3. Post-Flight Integrity Report
-- **Active Container Health:** Checked via `docker_logs`. No errors detected.
-- **Database Status:** Verified 3NF integrity and DML access role permissions.
-- **Final Metrics:** CPU usage returned to baseline (4.2%).
-
-## 4. Final Sign-off
-- **Overall Execution:** **SUCCESSFUL**
-- **Action Taken:** Deployed and validated database changes successfully.
+```python
+# Usa read_file para cargar el runbook
+runbook = read_file(path="runbook.md", limit=500)
+# Mapear pasos a todo list
+todo(todos=[{"id": "step1", "content": "...", "status": "pending"}])
+# Ejecutar con confirmation
+result = terminal(command="...", timeout=300)
+# Si falla:
+terminal(command="/rollback")
 ```
 
-## Resources
-- [sec-engineer System Security Mandates](../sec-engineer/SKILL.md)
+### ▶️ Si estás en Cline / Roo Code:
+
+```javascript
+const runbook = await filesystem.readFile("runbook.md");
+// Crear tasks manualmente
+await tasks.create({name: "Step 1", status: "pending"});
+// Ejecutar comandos
+await shell.exec("tu-comando");
+// Fallback si falla: generar script de rollback
+```
+
+### ⚠️ Si NO tienes herramientas (Fallback Manual):
+
+1. Pide al usuario: "Por favor, abre el archivo `runbook.md` y copia y pega su contenido".
+2. Analiza el runbook proporcionado.
+3. Genera los comandos exactos y detalla su nivel de riesgo (Destructive Gate).
+4. Pide al usuario: "Ejecuta cada comando en tu terminal y pega el resultado".
+5. Verifica manualmente con el usuario antes de proceder al siguiente paso.
+
+---
+
+## 🔄 Fallbacks
+
+| Funcionalidad | Con herramientas | Sin herramientas |
+| :--- | :--- | :--- |
+| Leer runbook | read_file() | Pedir al usuario que pegue el contenido |
+| Ejecutar paso | terminal() / shell.exec() | Generar comando para que el usuario lo ejecute |
+| Verificar éxito | check_status() | Pedir al usuario que pegue el output para verificar |
+
+---
+
+## ✅ Verificación
+
+- Todos los pasos del runbook terminaron en estado PASS.
+- El pre-flight check de CPU y disco pasó correctamente.
+- Se ha generado un reporte final estructurado y guardado como `report_runbook.md`.
+
+---
+
+Author: Antigravity AI
+Last Updated: 2026-07-18
+Version: 1.0.0

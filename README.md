@@ -2,7 +2,7 @@
 
 ![Agy-Skills Cover Image](agy_skills_cover.png)
 
-Welcome to **Agy-Skills**! This repository contains a curated collection of standardized, security-first **AI Skill Blueprints** (written in Markdown) designed to guide advanced coding agents (such as Roo Code, Cline, Claude Code) and local LLMs (such as Ollama, Gemma 2, Llama 3) in executing operational and infrastructure workflows safely.
+Welcome to **Agy-Skills**! This repository contains a curated collection of standardized, security-first **AI Skill Blueprints** (written in Markdown) designed to guide advanced coding agents (such as Roo Code, Cline, Claude Code, GitHub Copilot, Cursor, Hermes, and Antigravity) and local LLMs (such as Ollama, Gemma 2, Llama 3) in executing operational and infrastructure workflows safely.
 
 ---
 
@@ -15,6 +15,19 @@ All skills in this repository are engineered to enforce high-security postures d
 
 ---
 
+## 🚀 Multi-Agent & Universal Compatibility
+Every skill in this library has been upgraded to be **Universal**:
+- Compatible with Hermes, Antigravity, Cline, Roo-Code, Copilot, and Cursor.
+- Includes specific execution directives per agent.
+- Features standard manual fallbacks in case advanced tools (read_file, terminal access) are not available.
+
+To use:
+1. Copy the contents of the chosen skill file (e.g., `executing_sop_and_runbooks.md`).
+2. Paste it into your agent's system prompt or configuration rules (e.g., `.clinerules`, `.roo-code-instructions`, or custom system fields).
+3. If the agent lacks direct tool access, follow the **Fallback** instructions provided inside the skill.
+
+---
+
 ## 📂 Active Skill Library
 
 The repository is structured logically by domain categories:
@@ -22,6 +35,8 @@ The repository is structured logically by domain categories:
 ```bash
 agy-skills/
 ├── README.md
+├── MIGRATION.md                          # Migration history and universal guidelines
+├── TEMPLATE-universal-skill.md           # Template for new universal skills
 ├── agy_skills_cover.png                  # Project cover banner
 ├── data/
 │   ├── analyzing_data.md                 # Cleanup metrics logs & compile Excel summaries
@@ -71,16 +86,6 @@ agy-skills/
 *   **[Patch Management Specialist](operations/patch_management.md):** Controls patch inventory, risk gating, pre-patch backups, staged deployment, and rollback configurations.
 *   **[PowerShell Automation Specialist](operations/powershell_automation.md):** Scripting authority enforcing strict parameter validation, SecureString management, and Pester tests.
 *   **[Incident Response Specialist](security/incident_response.md):** Governs triage, containment, log preservation, and recovery workflows during security incidents.
-
----
-
-## 🚀 How to use this in your AI client
-To equip your local AI coding agent (e.g., Roo Code or Cline) with these skills:
-
-1. Copy the skill file (e.g., `executing_sop_and_runbooks.md`) that you want your agent to learn.
-2. Paste the contents directly into your project's custom instructions directory (such as `.clinerules` or `.roo-code-instructions` or a local `skills/` directory).
-3. Trigger the skill in your chat conversation:
-   > *"Based on my public runbook skill instructions, execute the server backup SOP."*
 
 ---
 _Feel free to open Pull Requests to contribute new blueprints, refine checklists, or add vendor-specific system configurations!_
