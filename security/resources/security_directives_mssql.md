@@ -40,7 +40,7 @@ Avoid hardcoding database usernames and passwords in cleartext application files
   - Disable the default system administrator (`sa`) account or rename it and assign a complex, randomized password.
   - Enforce password policies:
     ```sql
-    ALTER LOGIN app_user WITH PASSWORD = 'secure_password' MUST_CHANGE, CHECK_EXPIRATION = ON, CHECK_POLICY = ON;
+    ALTER LOGIN app_user WITH PASSWORD = '<strong_password>' MUST_CHANGE, CHECK_EXPIRATION = ON, CHECK_POLICY = ON;
     ```
 
 ### 4. Custom Schema Scoping & Privileges
