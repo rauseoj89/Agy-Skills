@@ -60,8 +60,8 @@ if __name__ == "__main__":
     
     for ext in ["md", "md.universal"]:
         for skill_file in Path(".").rglob(f"*.{ext}"):
-            # Skip templates, readmes, guides, posts, and security directives resources
-            if any(p in str(skill_file).lower() for p in ["template", "readme", "migration", "instruction", ".bak", "post", "resources\\"]):
+            # Skip templates, readmes, guides, posts, chg-reviews, and security directives resources
+            if any(p in str(skill_file).lower() for p in ["template", "readme", "migration", "instruction", ".bak", "post", "chg-review", "resources\\"]):
                 continue
             total_count += 1
             if validate_skill(skill_file):

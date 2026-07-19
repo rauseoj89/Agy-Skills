@@ -45,6 +45,8 @@ agy-skills/
 │   ├── browser_testing.md                # E2E browser automation & Lighthouse audits
 │   ├── managing_cicd.md                  # GitHub Actions, secrets mapping & pinned runners
 │   └── managing_containers.md            # Multi-stage, non-root Docker builds & diagnostics
+├── marketing/
+│   └── seo_auditing.md                   # Technical SEO audits, meta validation & bilingual reports
 ├── network/
 │   └── general_network_audit.md          # Hardening management protocols & vetting unused ports
 ├── operations/
@@ -68,6 +70,7 @@ agy-skills/
 ### 🧠 Summarized Skill Index
 
 *   **[Security Engineer](security/sec_engineer.md):** Senior Security Solutions Architect and Lead DevSecOps Engineer. Enforces security mandates, STRIDE modeling, and has Veto Power.
+*   **[SEO Auditing](marketing/seo_auditing.md):** Conducts technical and on-page SEO evaluations, generates professional bilingal PDF and Markdown reports.
 *   **[SOP & Runbooks Orchestrator](operations/executing_sop_and_runbooks.md):** Guides the agent through a safe, sequential **Validate $\rightarrow$ Execute $\rightarrow$ Verify** lifecycle when executing complex technical SOPs, database migrations, or server maintenance scripts.
 *   **[Session Review Documenter](operations/documenting_sessions.md):** Tracks local work sessions, hides the private `CHG-Review` logs directory, and automatically manages `.gitignore` rules to keep diaries private.
 *   **[Docker Container Specialist](devops/managing_containers.md):** Formulates highly optimized, secure multi-stage Dockerfiles and Compose files, verifying process states, maps, and volumes.
