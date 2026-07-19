@@ -1,0 +1,7 @@
+CHG-Review/
+.env
+*.key
+*.pem
+id_rsa
+*.db
+*.sqlite
