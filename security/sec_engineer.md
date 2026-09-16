@@ -5,7 +5,8 @@ version: 1.1.0
 tags: [universal, security, devsecops, STRIDE, UHSS]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Security Engineer
@@ -122,6 +123,7 @@ const result = await lighthouse.lighthouse_audit({ url: "http://localhost:3000" 
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
 Version: 1.1.0

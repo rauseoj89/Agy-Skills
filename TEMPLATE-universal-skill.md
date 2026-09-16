@@ -5,7 +5,8 @@ version: 1.0.0
 tags: [universal, <tag1>, <tag2>]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: <YYYY-MM-DD>
-author: <tu-nombre>
+author: <your-name>
+powered_by: AntigravityAI
 ---
 # Skill: <Nombre Legible>
 
@@ -69,6 +70,7 @@ agente-b-command --flag
 
 ────────────────────────────────────
 
-Author: <tu-nombre>
-Last Updated: <YYYY-MM-DD>
+**Author:** <your-name>  
+**Powered by:** AntigravityAI  
+Last Updated: <YYYY-MM-DD>  
 Version: 1.0.0

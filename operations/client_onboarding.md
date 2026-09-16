@@ -5,7 +5,8 @@ version: 1.0.0
 tags: [universal, operations, onboarding]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: MSP Client Onboarding Specialist
@@ -85,6 +86,7 @@ const company = await psa.searchCompanies({ name: "Cliente" });
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
 Version: 1.0.0

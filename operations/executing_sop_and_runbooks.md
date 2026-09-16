@@ -5,7 +5,8 @@ version: 1.0.0
 tags: [universal, operations, runbook, sop]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Runbook & SOP Orchestrator
@@ -91,6 +92,7 @@ await shell.exec("tu-comando");
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
 Version: 1.0.0

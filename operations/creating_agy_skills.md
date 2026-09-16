@@ -1,11 +1,12 @@
 ---
 name: creating-agy-skills
 description: Automates the blueprinting, creation, and Git deployment workflow for new or modified Skills inside the Agy-Skills repository. Use when the user requests to create, design, or update a Skill.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, operations, skills, creation]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Agy-Skills Creator
@@ -34,26 +35,27 @@ Automate the creation, blueprinting, indexing, and Git deployment of custom oper
 
 ```bash
 # Escribir el nuevo skill directamente a su ruta en el workspace
-# Copiar al directorio local de skills en ~/.gemini/antigravity/skills/
+# Validar la estructura usando el script del repositorio:
+python3 scripts/validate-skill.py
 ```
 
 ### ▶️ Si estás en Hermes Agent:
 
 ```python
 # Crear y guardar el nuevo skill usando herramientas nativas de Hermes
-content = write_file(path="skills/data/new_skill.md", content="...")
+content = write_file(path="data/new_skill.md", content="...")
 ```
 
 ### ▶️ Si estás en Cline / Roo Code:
 
 ```javascript
 // Usar el MCP filesystem para guardar el archivo markdown
-await filesystem.writeFile("skills/data/new_skill.md", skillContent);
+await filesystem.writeFile("data/new_skill.md", skillContent);
 ```
 
 ### ▶️ Si estás en GitHub Copilot / Cursor:
 
-```python
+```bash
 # Si no hay terminal ni filesystem tools:
 # Guiar al usuario para que guarde el archivo en la ruta correspondiente.
 ```
@@ -70,9 +72,9 @@ await filesystem.writeFile("skills/data/new_skill.md", skillContent);
 
 | Funcionalidad | Con herramientas | Sin herramientas |
 | :--- | :--- | :--- |
-| Crear archivo de skill | write_to_file() | Proporcionar markdown en chat para guardar manualmente |
-| Actualizar el README | edit_file() | Pedir al usuario que añada la línea al README |
-| Sync Local de Skills | Copiar a carpeta de agentes local | Pedir al usuario que reinicie la sesión o cargue las reglas |
+| Crear archivo de skill | `write_to_file()` | Proporcionar markdown en chat para guardar manualmente |
+| Actualizar el README | `edit_file()` | Pedir al usuario que añada la línea al README |
+| Validar formato | `python3 scripts/validate-skill.py` | Validación manual con checklist de principios universales |
 
 ---
 
@@ -84,6 +86,7 @@ await filesystem.writeFile("skills/data/new_skill.md", skillContent);
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
-Version: 1.0.0
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
+Version: 1.1.0

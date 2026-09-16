@@ -6,6 +6,7 @@ tags: [universal, seo, audit, marketing, technical-seo, on-page-seo, pdf-report]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-19
 author: JimmyR
+powered_by: AntigravityAI
 ---
 # Skill: SEO Audit
 
@@ -200,8 +201,9 @@ DO NOT hard-code section titles like `"1. Resumen Ejecutivo"` or `"2. Auditoría
 - Alignment: `TA_JUSTIFY` (justified)
 - Color: Black, optional use of `<b>` and `<code>` inline tags
 
-────────────────────────────────────
+---
 
-Author: JimmyR
-Last Updated: 2026-07-19
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-19  
 Version: 1.1.0

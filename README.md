@@ -92,3 +92,8 @@ agy-skills/
 
 ---
 _Feel free to open Pull Requests to contribute new blueprints, refine checklists, or add vendor-specific system configurations!_
+
+---
+**Author:** JimmyR  
+**Powered by:** AntigravityAI
+

@@ -1,32 +1,33 @@
 ---
 name: analyzing-data
 description: Parses CSV/JSON datasets, cleans data values, calculates key business metrics, and formats tabular summaries. Use when asked to parse datasets, clean data logs, calculate averages, or generate formatted data tables.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, data, analysis]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Data Analyst
 
 ## 🎯 Objetivo
 
-Convert raw data records into structured, high-value metrics, exposing patterns and anomalies while ensuring data classification compliance, secret redaction, and PII protection.
+Convert raw data records and documents into structured, high-value metrics, exposing patterns and anomalies while ensuring data classification compliance, secret redaction, and PII protection.
 
 ## 🕒 Cuándo usar
 
-- Cuando se solicita analizar registros de datos raw en CSV, JSON o texto.
-- Al limpiar registros o tablas desordenadas (inconsistencias de formato, valores en blanco).
-- Al calcular métricas de negocio clave (totales, promedios, porcentajes, tendencias).
-- Al formatear datos numéricos en tablas Markdown altamente estructuradas.
+- Cuando se solicita analizar registros de datos raw en CSV, JSON, Excel, PDF o texto plano.
+- Al limpiar registros o tablas desordenadas (inconsistencias de formato, valores en blanco, espacios).
+- Al calcular métricas de negocio clave (totales, promedios, medianas, porcentajes, tendencias).
+- Al formatear datos numéricos en tablas Markdown altamente estructuradas o exportar a hojas de cálculo (.xlsx).
 
 ## 🛡️ Principios Universales
 
 1. **PII and PHI Detection**: Scan all records for sensitive data (SSNs, emails, phone numbers). Mask or redact sensitive information.
 2. **Secrets Scan Pass (Security Gate)**: Ingested data must be scanned for API keys, passwords, and connection strings. Redact with `[REDACTED]`.
 3. **Float Artifact Prevention**: All numeric outputs must pass through rounding mechanisms (e.g., `Math.round()` or `.toFixed(2)`).
-4. **File Size Cap**: Enforce a 50 MB limit on ingested files.
+4. **File Size Cap**: Enforce memory limits (max 50 MB / 100,000 rows) on ingested files.
 5. **Least Privilege**: Always request minimum required permissions to read or write database datasets.
 
 ---
@@ -36,28 +37,40 @@ Convert raw data records into structured, high-value metrics, exposing patterns 
 ### ▶️ Si estás en Antigravity:
 
 ```bash
-# Leer datasets locales usando las herramientas nativas
-# Usar read_file para leer datasets y procesarlos
+# Ingestión con data-analyst-mcp:
+# parse_csv(path="dataset.csv", max_rows=50000)
+# parse_excel(path="report.xlsx", sheet_name="Sheet1")
+# extract_pdf_data(path="document.pdf")
+# read_word_document(path="notes.docx")
+
+# Limpieza y métricas:
+# clean_tabular_data(records=data, null_strategy="drop", trim_strings=true)
+# calculate_metrics(records=cleaned_data, numeric_columns=["revenue", "cost"])
+
+# Generación de Excel con office-mcp:
+# write_excel_sheet(filePath="summary.xlsx", data=excel_payload)
 ```
 
 ### ▶️ Si estás en Hermes Agent:
 
 ```python
-# Usar herramientas nativas de Hermes para cargar y procesar
+# Usar herramientas nativas de Hermes o scripts Python para cargar y procesar
 content = read_file(path="dataset.csv", limit=5000)
+# Procesar con pandas / in-memory analytics
 ```
 
 ### ▶️ Si estás en Cline / Roo Code:
 
 ```javascript
-// Usar MCP filesystem para leer datos
-const content = await filesystem.readFile("dataset.csv");
+// Usar MCP data-analyst o filesystem para leer y transformar datos
+const dataset = await data_analyst.parse_csv({ path: "dataset.csv" });
+const metrics = await data_analyst.calculate_metrics({ records: dataset.rows, numeric_columns: ["amount"] });
 ```
 
 ### ▶️ Si estás en GitHub Copilot / Cursor:
 
 ```python
-# Guíar al usuario si no hay herramientas de terminal o archivo:
+# Guiar al usuario si no hay herramientas de terminal o archivo:
 # Pide: "Por favor, copie y pegue las primeras 100 líneas del archivo dataset.csv"
 ```
 
@@ -73,9 +86,12 @@ const content = await filesystem.readFile("dataset.csv");
 
 | Funcionalidad | Con herramientas | Sin herramientas |
 | :--- | :--- | :--- |
-| Leer dataset | read_file() / filesystem.readFile() | Pedir al usuario que copie y pegue el contenido |
-| Escribir reporte | write_to_file() | Mostrar el reporte en el chat para que el usuario lo guarde |
-| Consultar base de datos | postgres.query() | Generar SQL exacto para que el usuario lo ejecute y pegue el resultado |
+| Ingestar CSV / Excel | `parse_csv()` / `parse_excel()` | Pedir al usuario que copie y pegue el contenido |
+| Ingestar PDF / Word | `extract_pdf_data()` / `read_word_document()` | Pedir al usuario texto extraído |
+| Limpiar datos | `clean_tabular_data()` | Limpieza mediante razonamiento en contexto |
+| Calcular métricas | `calculate_metrics()` | Calcular métricas en chat |
+| Escribir reporte Excel | `write_excel_sheet()` / `write_to_file()` | Mostrar tabla Markdown en chat |
+| Consultar base de datos | `postgres.execute_query()` | Generar SQL exacto para que el usuario lo ejecute |
 
 ---
 
@@ -87,6 +103,7 @@ const content = await filesystem.readFile("dataset.csv");
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
-Version: 1.0.0
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
+Version: 1.1.0

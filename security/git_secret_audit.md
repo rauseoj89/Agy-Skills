@@ -5,7 +5,8 @@ version: 1.0.0
 tags: [universal, security, git, secrets]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Git Secret Audit & Sanitization
@@ -84,6 +85,7 @@ const files = await git.git_status();
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
 Version: 1.0.0

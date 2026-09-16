@@ -5,7 +5,8 @@ version: 1.0.0
 tags: [universal, operations, powershell, automation]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: PowerShell Automation Specialist
@@ -86,6 +87,7 @@ const result = await shell.exec("pwsh -Command \"Invoke-Pester\"");
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
 Version: 1.0.0

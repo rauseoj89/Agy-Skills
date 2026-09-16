@@ -1,11 +1,12 @@
 ---
 name: creating-agy-mcps
 description: Automates the blueprinting, structural setup, and Git deployment workflow for new or modified Model Context Protocol (MCP) servers in the Agy-MCP repository. Use when the user requests to create or modify an MCP server.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, operations, mcp, blueprint]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Agy-MCP Blueprint Automator
@@ -34,8 +35,9 @@ Automate the blueprinting, structure generation, and deployment of custom Model 
 ### ▶️ Si estás en Antigravity:
 
 ```bash
-# Crear la estructura de carpetas en el repositorio local Agy-MCP
-# Usar read_file/write_file nativos para crear BLUEPRINT.md
+# Crear la estructura de carpetas en el repositorio local Agy-MCP:
+# mkdir -p mcp-blueprints/my-server/schemas
+# Usar write_to_file para crear BLUEPRINT.md y schemas/tools.json
 ```
 
 ### ▶️ Si estás en Hermes Agent:
@@ -54,9 +56,10 @@ await filesystem.createDirectory("mcp-blueprints/my-mcp");
 
 ### ▶️ Si estás en GitHub Copilot / Cursor:
 
-```python
-# Guiar al usuario paso a paso:
-# Pide: "Crea un folder mcp-blueprints/nombre-mcp y guarda este BLUEPRINT.md"
+```bash
+# Guiar al usuario paso a paso con comandos estándar:
+mkdir -p mcp-blueprints/my-mcp/schemas
+# Guardar BLUEPRINT.md y schemas/tools.json en el directorio creado
 ```
 
 ### ⚠️ Si NO tienes herramientas (Fallback Manual):
@@ -71,9 +74,9 @@ await filesystem.createDirectory("mcp-blueprints/my-mcp");
 
 | Funcionalidad | Con herramientas | Sin herramientas |
 | :--- | :--- | :--- |
-| Crear Directorios | write_to_file() / create_directory() | Pedir al usuario que cree la carpeta |
+| Crear Directorios | `create_directory()` / `write_to_file()` | Pedir al usuario que cree la carpeta |
 | Validar Schema JSON | Librerías de validación local | Validar sintaxis mediante el motor de la IA |
-| Deploy en Git | git.commit() / terminal("git push") | Proporcionar los comandos de Git para que el usuario los ejecute |
+| Deploy en Git | `git commit` / `git push` | Proporcionar los comandos de Git para que el usuario los ejecute |
 
 ---
 
@@ -85,6 +88,7 @@ await filesystem.createDirectory("mcp-blueprints/my-mcp");
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
-Version: 1.0.0
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
+Version: 1.1.0

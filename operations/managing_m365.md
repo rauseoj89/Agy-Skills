@@ -5,7 +5,8 @@ version: 1.0.0
 tags: [universal, operations, m365, office]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Microsoft 365 Administrator
@@ -85,6 +86,7 @@ const result = await shell.exec("pwsh -Command \"Connect-MgGraph -Scopes ...\"")
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
 Version: 1.0.0

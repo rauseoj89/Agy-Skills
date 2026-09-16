@@ -1,11 +1,12 @@
 ---
 name: browser-testing
 description: Automates browser-based E2E testing, visual regression, Lighthouse audits, and interactive UI validation using chrome-devtools. Use when asked to test web pages, run accessibility audits, capture screenshots, validate UI flows, or perform visual regression testing.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, devops, browser, testing]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
 last_updated: 2026-07-18
-author: Antigravity AI
+author: JimmyR
+powered_by: AntigravityAI
 ---
 
 # Skill: Browser Testing Specialist
@@ -36,13 +37,13 @@ Run automated browser scripts, capture frontend performance metrics, audit acces
 
 ```bash
 # Usar el plugin chrome-devtools nativo / herramientas integradas
-# Capturar pantallazos y auditar
+# Capturar pantallazos, inspeccionar DOM y auditar
 ```
 
 ### ▶️ Si estás en Hermes Agent:
 
 ```python
-# Utilizar scripts de python con selenium o playwright, o herramientas integradas de Hermes
+# Utilizar scripts de Python con playwright o selenium, o herramientas integradas de Hermes
 # Si están disponibles, llamar a las herramientas de chrome-devtools correspondientes
 ```
 
@@ -50,15 +51,21 @@ Run automated browser scripts, capture frontend performance metrics, audit acces
 
 ```javascript
 // Usar el MCP chrome-devtools-mcp para navegar y probar
-const page = await chrome_devtools.navigate_page({ url: "https://localhost:3000" });
+const page = await chrome_devtools.navigate_page({ url: "http://localhost:3000" });
 ```
 
 ### ▶️ Si estás en GitHub Copilot / Cursor:
 
-```python
-# Si no hay herramientas de navegador automatizadas directas:
-# Guía al usuario para que use herramientas locales:
-# "Ejecuta 'npx playwright test' o abre Chrome en modo debug para interactuar."
+```bash
+# Iniciar Chrome con depuración remota para conexión MCP o Playwright:
+# macOS:
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_profile"
+
+# Linux:
+google-chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_profile"
+
+# Windows PowerShell:
+& "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="$env:TEMP\chrome_dev_profile"
 ```
 
 ### ⚠️ Si NO tienes herramientas (Fallback Manual):
@@ -83,10 +90,11 @@ const page = await chrome_devtools.navigate_page({ url: "https://localhost:3000"
 
 - El test reporta éxito sin excepciones JS en la consola.
 - Las puntuaciones de Lighthouse superan los mínimos requeridos.
-- Se verificó la encriptación HTTPS.
+- Se verificó la encriptación HTTPS o localhost seguro.
 
 ---
 
-Author: Antigravity AI
-Last Updated: 2026-07-18
-Version: 1.0.0
+**Author:** JimmyR  
+**Powered by:** AntigravityAI  
+Last Updated: 2026-07-18  
+Version: 1.1.0
