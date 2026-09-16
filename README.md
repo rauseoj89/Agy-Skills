@@ -61,6 +61,7 @@ agy-skills/
 │   └── powershell_automation.md          # Write, test, and deploy PowerShell automation
 └── security/
     ├── database_management.md            # PostgreSQL schemas, indices, permissions & migrations
+    ├── git_secret_audit.md               # Audit Git history, sanitize tracked credentials & .gitignore rules
     ├── incident_response.md              # Triage, contain, investigate, and recover from incidents
     ├── managing_secrets_and_vaults.md    # In-memory secrets injection & vault bridge operations
     ├── sec_engineer.md                   # Hardened Vanilla enforcement & STRIDE threat modeling
@@ -75,7 +76,8 @@ agy-skills/
 *   **[Session Review Documenter](operations/documenting_sessions.md):** Tracks local work sessions, hides the private `CHG-Review` logs directory, and automatically manages `.gitignore` rules to keep diaries private.
 *   **[Docker Container Specialist](devops/managing_containers.md):** Formulates highly optimized, secure multi-stage Dockerfiles and Compose files, verifying process states, maps, and volumes.
 *   **[Secrets & Credentials Guard](security/managing_secrets_and_vaults.md):** Audits `.gitignore` files, runs dynamic log scrubbers, and safely retrieves or rotates credentials using secret vaults.
-*   **[Spreadsheets & Data Analyst](data/analyzing_data.md):** Cleans telemetry log inputs, filters duplicate records, standardizes ISO 8601 datetimes, and compiles structured markdown tables or Excel spreadsheets.
+*   **[Git Secret Auditor](security/git_secret_audit.md):** Audits local Git repositories, detects tracked credentials, and safely purges sensitive data from commit history.
+*   **[Data Analyst & Processing Suite](data/analyzing_data.md):** Ingests and cleans multi-format datasets (CSV, Excel, PDF, Word, Logs), calculates statistical metrics via `data-analyst-mcp`, and compiles structured summaries and spreadsheets.
 *   **[Personal System Administrator](operations/managing_system_operations.md):** Automates repetitive folder cleanups, manages local compressed backup files (retaining max 5 history logs), and verifies disk allocations.
 *   **[Agy-Skills Automator](operations/creating_agy_skills.md):** Generates and deploys new security-first operational skill files inside the local Agy-Skills repository.
 *   **[Agy-MCP Automator](operations/creating_agy_mcps.md):** Designs, blueprints, and structures custom Model Context Protocol (MCP) server configurations.
