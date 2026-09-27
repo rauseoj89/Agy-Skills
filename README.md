@@ -43,6 +43,10 @@ agy-skills/
 │   └── designing_apis.md                 # REST/GraphQL endpoints design & OpenAPI 3.1 specs
 ├── devops/
 │   ├── browser_testing.md                # E2E browser automation & Lighthouse audits
+│   ├── docker_build_strategies.md        # BuildKit cache mounts, secret injection & multi-stage builds
+│   ├── docker_compose_patterns.md        # Compose v2, readiness dependencies & sidecar healthchecks
+│   ├── docker_destructive_guardrails.md  # 3-tier risk classification & confirmation gates for Docker
+│   ├── docker_project_foundations.md     # Scaffolding the foundational triad (.dockerignore, Dockerfile, compose)
 │   ├── managing_cicd.md                  # GitHub Actions, secrets mapping & pinned runners
 │   └── managing_containers.md            # Multi-stage, non-root Docker builds & diagnostics
 ├── marketing/
@@ -55,22 +59,38 @@ agy-skills/
 │   ├── creating_agy_skills.md            # Automate blueprinting & git deployment of custom Agy-skills
 │   ├── documenting_sessions.md           # Private daily reviews & .gitignore automation
 │   ├── executing_sop_and_runbooks.md     # Step-by-step interactive runbook execution
+│   ├── idea_assessment.md                # Feasibility, spikes & bounded solution shaping (Go/Clarify/Stop)
+│   ├── legal_compliance_drafting.md      # Attorney-grade contracts, DPAs, BAAs & CC0 legal templates
 │   ├── managing_m365.md                  # Administer M365 users, licenses, and security
 │   ├── managing_system_operations.md     # Sorting folder assets & executing tar backups
 │   ├── patch_management.md               # Govern patch windows and rollback policies
-│   └── powershell_automation.md          # Write, test, and deploy PowerShell automation
+│   ├── powershell_automation.md          # Write, test, and deploy PowerShell automation
+│   ├── spec_driven_development.md        # Spec-Kit workflow (spec.md -> plan.md -> tasks.md)
+│   └── systematic_debugging.md           # Root-cause-first debugging (Assess -> Fix -> Test)
 └── security/
     ├── database_management.md            # PostgreSQL schemas, indices, permissions & migrations
     ├── git_secret_audit.md               # Audit Git history, sanitize tracked credentials & .gitignore rules
+    ├── host_security_audit.md            # Linux VPS audit, SSH hardening, Fail2ban sync & firewall
     ├── incident_response.md              # Triage, contain, investigate, and recover from incidents
     ├── managing_secrets_and_vaults.md    # In-memory secrets injection & vault bridge operations
-    ├── sec_engineer.md                   # Hardened Vanilla enforcement & STRIDE threat modeling
+    ├── sec_engineer.md                   # Hardened Vanilla enforcement, STRIDE & adversarial disproof
+    ├── security_audit.md                 # Autonomous 6-phase coverage-led vulnerability hunting harness
     └── resources/                        # Progressive disclosure language/platform directives
 ```
 
 ### 🧠 Summarized Skill Index
 
-*   **[Security Engineer](security/sec_engineer.md):** Senior Security Solutions Architect and Lead DevSecOps Engineer. Enforces security mandates, STRIDE modeling, and has Veto Power.
+*   **[Security Engineer](security/sec_engineer.md):** Senior Security Solutions Architect and Lead DevSecOps Engineer. Enforces security mandates, STRIDE modeling, and holds Veto Power.
+*   **[Autonomous Security Audit Harness](security/security_audit.md):** 6-phase coverage-led vulnerability discovery harness (Cloudflare methodology): reconnaissance, coverage ledger mapping, isolated hunting, adversarial disproof, schema validation, and reporting.
+*   **[Linux Host Security Specialist](security/host_security_audit.md):** Audits Linux VPS, servers, and host OS security configurations (SSH hardening, firewall vs. listening sockets alignment, Fail2ban/CrowdSec jail sync).
+*   **[Specification-Driven Development](operations/spec_driven_development.md):** Eliminates agent drift and hallucinated assumptions by enforcing the Spec-Kit progression (`spec.md` $\rightarrow$ `plan.md` $\rightarrow$ `tasks.md`).
+*   **[Systematic Debugging](operations/systematic_debugging.md):** Root-cause-first debugging harness enforcing reproduction before modification, surgical minimal patching, and regression testing (**Assess $\rightarrow$ Fix $\rightarrow$ Test**).
+*   **[Idea & Feasibility Assessment](operations/idea_assessment.md):** Pre-implementation evaluation and technical spike framework delivering evidence-backed scorecards (**Go**, **Clarify**, **Stop**).
+*   **[Legal & Compliance Drafting](operations/legal_compliance_drafting.md):** Generates attorney-drafted contracts, terms of use, privacy policies, DPAs, and HIPAA BAAs based on General Legal CC0 standards.
+*   **[Docker Build Strategies](devops/docker_build_strategies.md):** Architects and optimizes production Dockerfiles using BuildKit cache mounts, secret mounts, and distroless minimal runtimes.
+*   **[Docker Compose Patterns](devops/docker_compose_patterns.md):** Manages multi-container stacks using canonical `compose.yaml`, readiness dependencies (`condition: service_healthy`), and healthcheck sidecars.
+*   **[Docker Destructive Guardrails](devops/docker_destructive_guardrails.md):** Enforces 3-tier risk classification and explicit user confirmation gates before destructive Docker commands.
+*   **[Docker Project Foundations](devops/docker_project_foundations.md):** Scaffolds the foundational container triad (`.dockerignore`, `Dockerfile`, `compose.yaml`) with zero host toolchain pollution.
 *   **[SEO Audit](marketing/seo_audit.md):** Conducts technical and on-page SEO evaluations, generates professional bilingual PDF and Markdown reports.
 *   **[SOP & Runbooks Orchestrator](operations/executing_sop_and_runbooks.md):** Guides the agent through a safe, sequential **Validate $\rightarrow$ Execute $\rightarrow$ Verify** lifecycle when executing complex technical SOPs, database migrations, or server maintenance scripts.
 *   **[Session Review Documenter](operations/documenting_sessions.md):** Tracks local work sessions, hides the private `CHG-Review` logs directory, and automatically manages `.gitignore` rules to keep diaries private.
