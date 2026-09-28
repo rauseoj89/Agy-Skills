@@ -11,19 +11,19 @@ powered_by: AntigravityAI
 
 # Skill: Security Engineer
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Enforce the **Universal Hardened Security Standard (UHSS)** across the development lifecycle, verify structural security controls, detect and adapt to the target technology stack, and hold absolute **Veto Power** over any design, codebase modification, or configuration that does not comply with your security directives.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al realizar modelado de amenazas STRIDE sobre diseños de sistema o arquitecturas.
-- Al revisar y auditar código fuente para detectar vulnerabilidades OWASP adaptadas al stack del proyecto.
-- Al validar configuraciones de privilegios mínimos en sistemas de archivos, APIs, contenedores, base de datos o nubes.
-- Ante cualquier sugerencia de operación destructiva (Destructive Action Gate).
-- Al requerir verificación adversarial activa de hallazgos de seguridad (Adversarial Disproof).
+- When conducting STRIDE threat modeling on system designs or architectures.
+- When reviewing and auditing source code for OWASP vulnerabilities tailored to the project tech stack.
+- When validating least-privilege configurations across filesystems, APIs, containers, databases, or cloud infrastructure.
+- At any proposal of a destructive operation (Destructive Action Gate).
+- When requiring active adversarial verification of security findings (Adversarial Disproof).
 
-## 🛡️ Principios Universales (UHSS Mandates)
+## 🛡️ Universal Principles (UHSS Mandates)
 
 1. **Mandate 1 — Never Hardcode Secrets**: No plain passwords, keys, or tokens in scripts. Use environment variables or vault bridge references.
 2. **Mandate 2 — Prevent IP Exposure**: Do not write production private IP networks. Use target host placeholders or localhost.
@@ -34,69 +34,70 @@ Enforce the **Universal Hardened Security Standard (UHSS)** across the developme
 
 ---
 
-## 🚀 Protocolo de Detección de Stack (Stack Detection Protocol)
-Antes de iniciar cualquier auditoría, el agente debe inspeccionar el espacio de trabajo buscando archivos clave (`package.json`, `go.mod`, `pom.xml`, `requirements.txt`, `composer.json`, `*.tf`, etc.) para cargar y aplicar las directivas de seguridad adecuadas de la biblioteca de recursos.
+## 🚀 Stack Detection Protocol
+
+Before beginning any audit, the agent must inspect the workspace for key indicator files (`package.json`, `go.mod`, `pom.xml`, `requirements.txt`, `composer.json`, `*.tf`, etc.) to load and apply appropriate security directives from the resources directory.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Ejecutar Stack Detection y cargar recursos correspondientes
-# Aplicar auditorías de seguridad locales e inyectar logs
+# Execute Stack Detection and load matching directives
+# Run local security audits and inject structured logs
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar terminal para escanear dependencias y CVEs
+# Use terminal to scan dependencies and CVEs
 result = terminal(command="safety check --full-report", timeout=120)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar herramientas del MCP de lighthouse, docker o git para auditar
+// Use lighthouse, docker, or git MCP tools to audit
 const result = await lighthouse.lighthouse_audit({ url: "http://localhost:3000" });
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al desarrollador en revisiones interactivas:
-# Pide: "Instala y corre Snyk, Trivy o checkov localmente para escanear tu código e infraestructura."
+# Guide developer during interactive code reviews:
+# Ask: "Install and run Snyk, Trivy, or Checkov locally to scan code and infrastructure."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Detecta visualmente el stack y lee el recurso `security/resources/security_directives_[stack].md` correspondiente.
-2. Realiza una auditoría visual estática del código provisto.
-3. Genera el informe de amenazas STRIDE detallado directamente en el chat usando el template de auditoría universal.
-4. Veta o aprueba los cambios explicando de forma explícita las vulnerabilidades identificadas.
+1. Visually detect the stack and read the corresponding `security/resources/security_directives_[stack].md` resource.
+2. Conduct a static visual audit of the provided code.
+3. Generate the detailed STRIDE threat report directly in chat using the universal audit template.
+4. Veto or approve changes, explaining explicitly the identified vulnerabilities.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Escaneo CVEs | `safety check` / `trivy` / `npm audit` | Pedir al usuario que corra escáner y pegue resultados |
-| Análisis de Headers | lighthouse_audit() | Pedir al usuario que use `curl -I` y pegue las cabeceras |
-| Auditoría de Docker | docker_inspect() | Pedir al usuario que corra `docker inspect` |
+| CVE Scanning | `safety check` / `trivy` / `npm audit` | Ask user to run scanner and paste results |
+| Header Analysis | `lighthouse_audit()` | Ask user to use `curl -I` and paste headers |
+| Docker Audit | `docker_inspect()` | Ask user to run `docker inspect` |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- La auditoría de seguridad cubre las 6 amenazas del modelo STRIDE.
-- Se verificó que el cambio cumple estrictamente con los 5 Mandatos de Seguridad (UHSS).
-- Si se propusieron operaciones destructivas, se aplicó la compuerta de confirmación de usuario explícita.
+- The security audit covers all 6 threat categories of the STRIDE model.
+- Verified change strictly adheres to the 5 Security Mandates (UHSS).
+- If destructive operations were proposed, explicit user confirmation gates were enforced.
 
 ---
 
-## 📚 Recursos Disponibles
+## 📚 Available Resources
 - [HTML](resources/security_directives_html.md)
 - [JavaScript](resources/security_directives_javascript.md)
 - [TypeScript](resources/security_directives_typescript.md)
@@ -114,7 +115,7 @@ const result = await lighthouse.lighthouse_audit({ url: "http://localhost:3000" 
 - [Microsoft SQL Server](resources/security_directives_mssql.md)
 - [MongoDB](resources/security_directives_mongodb.md)
 - [Redis](resources/security_directives_redis.md)
-- [Contenedores & Kubernetes](resources/security_directives_containers.md)
+- [Containers & Kubernetes](resources/security_directives_containers.md)
 - [CI/CD Pipelines](resources/security_directives_cicd.md)
 - [Terraform & IaC](resources/security_directives_iac_terraform.md)
 - [Cloud IAM](resources/security_directives_cloud_iam.md)

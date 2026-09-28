@@ -11,17 +11,17 @@ powered_by: AntigravityAI
 
 # Skill: Network Audit Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Perform a comprehensive network configuration audit to identify vulnerabilities, credential leaks, segmentation weaknesses, and unsecure protocol usage. Outputs a timestamped audit report with an executive summary.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al realizar auditorías de configuración de red para identificar vulnerabilidades.
-- Al revisar políticas de segmentación de VLAN o reglas de firewall.
-- Para buscar contraseñas por defecto, protocolos de administración inseguros (Telnet, HTTP, SNMPv1/v2).
+- When conducting network configuration audits to identify vulnerabilities.
+- When reviewing VLAN segmentation policies or firewall rules.
+- When scanning for default passwords or insecure management protocols (Telnet, HTTP, SNMPv1/v2).
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Immediate Secrets Redaction**: Never include raw passwords, SNMP strings, or PSKs in reports. Mask as `[REDACTED]`.
 2. **Default Credentials Check**: Actively search for and flag default usernames/passwords.
@@ -30,59 +30,59 @@ Perform a comprehensive network configuration audit to identify vulnerabilities,
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Leer archivos de configuración de routers/switches/firewalls
-# Usar read_file para escanear configuraciones
+# Read router, switch, or firewall configuration files
+# Use read_file to scan configuration directives
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar terminal para buscar o analizar archivos de configuración
+# Use terminal to search or analyze configuration files
 config = read_file(path="switch_config.cfg")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar MCP de filesystem para analizar los archivos de configuración de red
+// Use filesystem MCP to analyze network configuration files
 const config = await filesystem.readFile("firewall.conf");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Pide al usuario que proporcione la configuración:
-# "Por favor, pega el contenido del archivo de configuración del router (sin secretos)."
+# Ask user to provide configuration text:
+# "Please paste the contents of your router configuration file (redacting any active secrets)."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Solicita al usuario: "Por favor, sube o pega las directivas de configuración de tus dispositivos de red".
-2. Analiza manualmente en el contexto del chat.
-3. Devuelve el reporte de auditoría estructurado en Markdown directamente en el chat.
+1. Ask user: "Please upload or paste your network device configuration directives".
+2. Analyze configurations manually in chat context.
+3. Return the structured audit report in Markdown directly in chat.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Leer archivos de config | read_file() | Pedir al usuario que pegue la configuración |
-| Validar IPs y subredes | Scripts automatizados de verificación | Revisión visual manual por parte de la IA |
-| Exportar reporte | write_to_file() | Mostrar reporte Markdown para que el usuario lo guarde |
+| Read configuration files | `read_file()` | Ask user to paste configuration |
+| Validate IPs and subnets | Automated verification scripts | Manual visual review by AI |
+| Export audit report | `write_to_file()` | Output Markdown report for user to save |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- No se listan contraseñas reales en los outputs.
-- Se clasificaron las vulnerabilidades por niveles de criticidad (Crítico, Alto, Medio, Bajo).
-- Se proponen alternativas cifradas para cada protocolo inseguro detectado.
+- No actual passwords are listed in outputs.
+- Vulnerabilities are categorized by severity levels (Critical, High, Medium, Low).
+- Encrypted alternatives are proposed for every unsecure protocol detected.
 
 ---
 

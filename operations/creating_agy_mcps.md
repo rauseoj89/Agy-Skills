@@ -11,16 +11,16 @@ powered_by: AntigravityAI
 
 # Skill: Agy-MCP Blueprint Automator
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Automate the blueprinting, structure generation, and deployment of custom Model Context Protocol (MCP) servers inside the Agy-MCP repository, while strictly maintaining security, path isolation, least privilege, and input validation.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al diseñar, crear o modificar planos (blueprints) de servidores MCP.
-- Al crear integraciones personalizadas conectando APIs o bases de datos externas con el workspace del agente.
+- When designing, creating, or modifying MCP server blueprints.
+- When creating custom integrations connecting external APIs or databases with the agent workspace.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **No Hardcoded Secrets**: Use placeholders like `${VAULT_SECRET_<MCP-NAME>_<KEY>}`.
 2. **No Production IPs**: Use `${TARGET_HOST}` or `localhost` in configurations.
@@ -30,61 +30,61 @@ Automate the blueprinting, structure generation, and deployment of custom Model 
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Crear la estructura de carpetas en el repositorio local Agy-MCP:
+# Create directory structure in local Agy-MCP repository:
 # mkdir -p mcp-blueprints/my-server/schemas
-# Usar write_to_file para crear BLUEPRINT.md y schemas/tools.json
+# Use write_to_file to create BLUEPRINT.md and schemas/tools.json
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar terminal o herramientas de archivos para crear carpetas
-# Crear mcp-blueprints/<mcp-name>/BLUEPRINT.md
+# Use terminal or filesystem tools to create directories
+# Create mcp-blueprints/<mcp-name>/BLUEPRINT.md
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP de filesystem para crear directorios y escribir BLUEPRINT.md y schemas/tools.json
+// Use filesystem MCP to create directories and write BLUEPRINT.md and schemas/tools.json
 await filesystem.createDirectory("mcp-blueprints/my-mcp");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```bash
-# Guiar al usuario paso a paso con comandos estándar:
+# Guide user step-by-step using standard commands:
 mkdir -p mcp-blueprints/my-mcp/schemas
-# Guardar BLUEPRINT.md y schemas/tools.json en el directorio creado
+# Save BLUEPRINT.md and schemas/tools.json into the created directory
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera el contenido de `BLUEPRINT.md` y `schemas/tools.json`.
-2. Solicita al usuario que cree la estructura de carpetas manualmente.
-3. Pide al usuario que guarde los contenidos en sus respectivos destinos y te confirme el resultado.
+1. Generate the contents of `BLUEPRINT.md` and `schemas/tools.json`.
+2. Ask user to create the folder structure manually.
+3. Instruct user to save the files in their respective destinations and confirm the result.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Crear Directorios | `create_directory()` / `write_to_file()` | Pedir al usuario que cree la carpeta |
-| Validar Schema JSON | Librerías de validación local | Validar sintaxis mediante el motor de la IA |
-| Deploy en Git | `git commit` / `git push` | Proporcionar los comandos de Git para que el usuario los ejecute |
+| Create directories | `create_directory()` / `write_to_file()` | Ask user to create directory manually |
+| Validate JSON Schema | Local schema validation libraries | Validate syntax via AI reasoning |
+| Git deployment | `git commit` / `git push` | Provide git commands for user to run |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El JSON Schema pasa la validación sin errores sintácticos.
-- `BLUEPRINT.md` cubre las 6 secciones requeridas de arquitectura y seguridad.
-- No hay paths absolutos del host local.
+- The JSON Schema passes validation without syntax errors.
+- `BLUEPRINT.md` covers the 6 required architectural and security sections.
+- No absolute local host paths are present.
 
 ---
 

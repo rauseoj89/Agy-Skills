@@ -10,17 +10,17 @@ powered_by: AntigravityAI
 ---
 # Skill: SEO Audit
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Inspect webpage SEO structures, HTTP connectivity, index crawlability files, and semantic content layout, generating structured bilingual (English/Spanish) reports in PDF or Markdown format.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
 - When evaluating search visibility optimizations for a target domain or new website development.
 - When inspecting HTTP headers, SSL status, crawling directive files (`robots.txt`, `sitemap.xml`), and redirection flows.
 - When producing bilingual (English/Spanish) structural audits.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Verify HTTPS:** Enforce SSL checks and inspect active redirect rules for protocol security.
 2. **Semantic Structure:** Verify the webpage contains exactly one primary `H1` tag to satisfy clean indexing parameters.
@@ -28,50 +28,50 @@ Inspect webpage SEO structures, HTTP connectivity, index crawlability files, and
 
 ---
 
-## 🤖 Ejecución Multi-Agente / Multi-Agent Execution
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en [Antigravity] o [Hermes]:
+### ▶️ If you are on [Antigravity] or [Hermes]:
 Locate and run the python helper script inside the skill references:
 ```bash
-# Para informe PDF:
-python generate_seo_pdf.py data.json logo.png reports/output-report.pdf es
+# For PDF report:
+python generate_seo_pdf.py data.json logo.png reports/output-report.pdf en
 
-# Para informe Markdown:
+# For Markdown report:
 python generate_seo_markdown.py data.json reports/output-report.md en
 ```
 
-### ▶️ Si estás en [Cline] o [Roo-Code]:
+### ▶️ If you are on [Cline] or [Roo-Code]:
 Use `filesystem-mcp` to write report data or execute commands via terminal.
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Pide al usuario que proporcione las cabeceras HTTP, el contenido de `robots.txt` y `sitemap.xml`, y la estructura de HTML del sitio.
-2. Realice el análisis manualmente.
-3. Genere la estructura de informe en Markdown directamente en el chat.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+1. Ask the user to provide HTTP headers, the contents of `robots.txt` and `sitemap.xml`, and the HTML structure of the site.
+2. Perform the analysis manually.
+3. Generate the report structure in Markdown directly in the chat.
 
 ────────────────────────────────────
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Inspección de Cabeceras | `curl -I <url>` | Solicitar respuesta HTTP raw al usuario |
-| Estructura de Encabezados | Selectores de DOM | Solicitar lista de tags HTML al usuario |
-| Generación de Reportes | Ejecutar scripts locales de python | Generar Markdown directamente en la conversación |
+| Header Inspection | `curl -I <url>` | Request raw HTTP response from user |
+| Heading Structure | DOM Selectors | Request HTML tag list from user |
+| Report Generation | Execute local Python scripts | Generate Markdown directly in conversation |
 
 ────────────────────────────────────
 
-## ✅ Verificación
-- [ ] ¿El sitio utiliza HTTPS?
-- [ ] ¿Tiene un archivo `robots.txt` válido?
-- [ ] ¿Hay exactamente un encabezado `H1` por página?
-- [ ] ¿Todas las imágenes tienen etiqueta `alt`?
-- [ ] ¿La meta descripción está presente y tiene menos de 160 caracteres?
-- [ ] (PDF) ¿El logotipo se inserta y formatea correctamente?
-- [ ] (PDF/MD) ¿El reporte está en el idioma solicitado (ES/EN)?
+## ✅ Verification
+- [ ] Does the site use HTTPS?
+- [ ] Does it have a valid `robots.txt` file?
+- [ ] Is there exactly one `H1` heading per page?
+- [ ] Do all images have an `alt` tag?
+- [ ] Is the meta description present and under 160 characters?
+- [ ] (PDF) Is the logo inserted and formatted correctly?
+- [ ] (PDF/MD) Is the report generated in the requested language (ES/EN)?
 
 ────────────────────────────────────
 
-## 🌐 Soporte Bilingüe y Valores por Defecto
+## 🌐 Multilingual Support & Defaults
 - **Default language**: **English** (`lang='en'`) — All reports are generated in English by default unless explicitly requested in Spanish.
 - **Spanish** (`lang='es'`): Set explicitly ONLY when the user requests Spanish output.
 - **CRITICAL: NO HARDCODED TEXT** — All text elements (section titles, table headers, labels, footer, messages) MUST use bilingual dictionaries indexed by `lang`:
@@ -102,8 +102,8 @@ Use `filesystem-mcp` to write report data or execute commands via terminal.
 - **Markdown Fallback:** If PDF generation fails, the Markdown report offers a portable, universally readable alternative.
 - **Spanish Typo Check:** Verify all Spanish labels are correct before final generation. Critical checks:
   - "Contenido **Actual**" (NOT "Actuel")
-  - "Fecha de análisis" (NOT "Fecha de Análisis" con mayúscula incorrecta)
-  - "Servidor" (NOT "Server" en la versión ES)
+  - "Fecha de análisis" (NOT "Fecha de Análisis" with improper capitalization)
+  - "Servidor" (NOT "Server" in ES version)
 - **Bilingual Table Headers in Markdown (CRITICAL FIX):** All table headers in `generate_seo_markdown.py` MUST use bilingual constants (e.g., `TABLE_TECH_HEADER[lang]`) instead of hardcoded strings. Hardcoded Spanish headers will appear in English reports. Pattern: define `TABLE_* = {'es': "...", 'en': "..."}` and always access with `[lang]`.
 - **CRITICAL: No Hard-Coded Text in PDF Scripts:** ALL text elements (section titles, table headers, labels, footer messages, pagination) must use bilingual dictionaries (`SECTIONS[lang]`, `LABELS_HEADER[lang]`). Hard-coded strings like `"1. Resumen Ejecutivo"` or `"Sitio Web:"` will appear in reports even when English is requested. This is a common bug that requires careful review of the entire script.
 
@@ -117,10 +117,10 @@ Use `filesystem-mcp` to write report data or execute commands via terminal.
 
 #### 2. Corporate Color Palette
 Define and use consistently:
-- `COLOR_BRAND_BLUE = HexColor('#1A365D')` — Azul Oscuro Ejecutivo (headers, divider line)
-- `COLOR_TECH_GRAY = HexColor('#4A5568')` — Gris Técnico (labels, meta text)
-- `COLOR_SUCCESS = HexColor('#38a169')` — Verde para estados OK
-- `COLOR_WARNING = HexColor('#e53e3e')` — Rojo para fallos/missing
+- `COLOR_BRAND_BLUE = HexColor('#1A365D')` — Executive Dark Blue (headers, divider line)
+- `COLOR_TECH_GRAY = HexColor('#4A5568')` — Technical Gray (labels, meta text)
+- `COLOR_SUCCESS = HexColor('#38a169')` — Green for OK status
+- `COLOR_WARNING = HexColor('#e53e3e')` — Red for failures/missing
 
 #### 3. Header Layout (Page 1 — Exact Structure)
 Structure the header exactly as **2 minipages** (simulated via Table with 2 columns):

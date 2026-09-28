@@ -11,19 +11,19 @@ powered_by: AntigravityAI
 
 # Skill: Docker & Kubernetes Container Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Design, deploy, and maintain robust, high-performance containerized and orchestrated infrastructures, strictly adhering to modern Docker standards (BuildKit, Compose v2) and CIS Docker and Kubernetes Security Benchmarks.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al configurar u optimizar archivos `Dockerfile` o `compose.yaml`.
-- Al configurar manifiestos de Kubernetes (Deployments, Services, NetworkPolicies).
-- Al inspeccionar procesos, redes o volúmenes activos de Docker/K8s.
-- Al analizar logs de contenedores para diagnosticar caídas o errores de arranque.
-- Al verificar límites de recursos, políticas no-root o gates de operaciones destructivas.
+- When configuring or optimizing `Dockerfile` or `compose.yaml` files.
+- When configuring Kubernetes manifests (Deployments, Services, NetworkPolicies).
+- When inspecting active Docker/K8s processes, networks, or volumes.
+- When analyzing container logs to diagnose crashes or startup errors.
+- When validating resource limits, non-root policies, or destructive operation guardrails.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Canonical Compose v2:** Always use `compose.yaml` (never legacy `docker-compose.yml`).
 2. **BuildKit Standards:** Always declare `# syntax=docker/dockerfile:1`. Use package cache mounts (`--mount=type=cache`), secret mounts (`--mount=type=secret`), and `COPY --link`.
@@ -34,56 +34,61 @@ Design, deploy, and maintain robust, high-performance containerized and orchestr
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# Inspeccionar procesos y logs con nas-tools o shell nativo
+# Inspect processes and logs with nas-tools or native shell
 # docker compose -f compose.yaml up -d
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Usar el terminal integrado para inspeccionar contenedores
+# Use integrated terminal to inspect containers
 result = terminal(command="docker compose ps", timeout=60)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Usar el MCP de shell/terminal o docker
+// Use shell/terminal or docker MCP
 const result = await shell.exec("docker compose ps");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Pide al usuario que corra comandos de diagnóstico locales si no tienes terminal:
-# "Por favor ejecuta 'docker compose ps' y 'docker logs <nombre-contenedor>'."
+# Ask user to run local diagnostic commands if terminal is unavailable:
+# "Please run 'docker compose ps' and 'docker logs <container-name>'."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Genera los archivos `Dockerfile` y `compose.yaml` correctos.
-2. Pide al usuario: "Guarda estos archivos y ejecuta 'docker compose up -d'".
-3. Solicita que ejecute comandos de verificación y te reporte los logs.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Generate valid `Dockerfile` and `compose.yaml` files.
+2. Ask the user: "Save these files and run 'docker compose up -d'".
+3. Request that the user run verification commands and report the logs back.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Ver estado de contenedores | docker_ps() / terminal("docker compose ps") | Pedir al usuario que ejecute `docker compose ps` |
-| Ver logs del contenedor | docker_logs() / terminal("docker logs") | Pedir al usuario que ejecute y pegue `docker logs` |
-| Control de contenedor | docker_control() / terminal("docker start/stop") | Generar el comando correspondiente para el usuario |
-| Eliminar recursos (Tier 3) | Solicitar confirmación + terminal("docker rm") | Advertir sobre pérdida de datos y generar comando exacto |
+| View container status | `docker_ps()` / `terminal("docker compose ps")` | Ask user to run `docker compose ps` |
+| View container logs | `docker_logs()` / `terminal("docker logs")` | Ask user to run and paste `docker logs` |
+| Container control | `docker_control()` / `terminal("docker start/stop")` | Generate appropriate command for user |
+| Delete resources (Tier 3) | Request confirmation + `terminal("docker rm")` | Warn about data loss and generate exact command |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El archivo de orquestación se llama `compose.yaml`.
-- El contenedor corre bajo un usuario no-root (`USER nonroot`).
-- El sistema de archivos raíz es de sólo lectura.
-- Los logs del contenedor no muestran excepciones críticas y el estado es `healthy`.
+- Orchestration file is named `compose.yaml`.
+- Container runs under an unprivileged user (`USER nonroot`).
+- Root filesystem is read-only.
+- Container logs show no critical exceptions and status is `healthy`.
 
 ---
 

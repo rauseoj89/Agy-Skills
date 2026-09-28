@@ -11,17 +11,17 @@ powered_by: AntigravityAI
 
 # Skill: PowerShell Automation Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Write production-quality, secure PowerShell scripts for Windows automation — with proper parameter validation, secret handling via SecureString or Vault, structured error handling, Pester test coverage, and safe deployment patterns.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al crear scripts de automatización del sistema en entornos Windows (PowerShell/pwsh).
-- Al configurar tareas programadas locales.
-- Al escribir pruebas Pester para verificar lógica en scripts de infraestructura.
+- When writing system automation scripts for Windows environments (PowerShell / pwsh).
+- When configuring local scheduled tasks.
+- When writing Pester tests to verify infrastructure script logic.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **No Hardcoded Secrets**: Load secrets from environment variables or secure vaults, never in plaintext script files.
 2. **Parameter Validation**: Validate all inputs at parameter level (e.g. `[ValidateRange()]`, `[ValidatePattern()]`).
@@ -30,60 +30,60 @@ Write production-quality, secure PowerShell scripts for Windows automation — w
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Escribir y probar scripts de PowerShell en el entorno local
-# Utilizar terminal nativa para ejecutar pwsh
+# Write and test PowerShell scripts in the local environment
+# Use native terminal to execute pwsh
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Invocar scripts de PowerShell pasándole parámetros seguros por la terminal
+# Invoke PowerShell scripts passing secure parameters via terminal
 result = terminal(command="pwsh -File myscript.ps1", timeout=60)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP de terminal o shell para ejecutar Pester tests o lanzar scripts
+// Use terminal/shell MCP to run Pester tests or launch scripts
 const result = await shell.exec("pwsh -Command \"Invoke-Pester\"");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al usuario para ejecutar scripts de forma interactiva:
-# Pide: "Ejecuta 'pwsh -ExecutionPolicy Bypass -File script.ps1' en tu terminal."
+# Guide user to execute scripts interactively:
+# Ask: "Run 'pwsh -ExecutionPolicy Bypass -File script.ps1' in your terminal."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Escribe el script de PowerShell estructurado siguiendo la plantilla oficial.
-2. Pide al usuario: "Crea el archivo `script.ps1` y pega este contenido".
-3. Proporciona comandos de ejecución con `-WhatIf` para que el usuario pueda pre-evaluar los cambios.
-4. Solicita que el usuario pegue la salida o cualquier error devuelto para depurar.
+1. Write the structured PowerShell script following the official template.
+2. Ask user: "Create the file `script.ps1` and paste this content".
+3. Provide execution commands with `-WhatIf` so the user can preview changes safely.
+4. Request that user paste any errors or output for debugging.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Correr scripts pwsh | terminal("pwsh") / shell.exec() | Generar comando pwsh para que el usuario lo ejecute |
-| Crear archivo .ps1 | write_to_file() | Proporcionar código en chat para guardado manual |
-| Ejecutar Pester Tests | terminal("Invoke-Pester") | Dar comando para que el usuario corra Pester en local |
+| Run pwsh scripts | `terminal("pwsh")` / `shell.exec()` | Generate pwsh command for user to run |
+| Create .ps1 file | `write_to_file()` | Provide code in chat for manual save |
+| Run Pester tests | `terminal("Invoke-Pester")` | Provide command for user to run Pester locally |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El script contiene `Set-StrictMode` y `$ErrorActionPreference = 'Stop'`.
-- Los parámetros críticos están tipados y restringidos por validaciones de entrada.
-- El script retorna códigos de salida adecuados (0 en éxito, 1 en error).
+- Script contains `Set-StrictMode` and `$ErrorActionPreference = 'Stop'`.
+- Critical parameters are typed and constrained by input validation attributes.
+- Script returns appropriate exit codes (0 on success, 1 on failure).
 
 ---
 

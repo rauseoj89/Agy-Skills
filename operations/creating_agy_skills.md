@@ -11,16 +11,16 @@ powered_by: AntigravityAI
 
 # Skill: Agy-Skills Creator
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Automate the creation, blueprinting, indexing, and Git deployment of custom operational skill files inside the external Agy-Skills repository while enforcing absolute security, standardized formatting, and local synchronization.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al crear nuevos skills o modificar los existentes en el repositorio de Agy-Skills.
-- Al organizar comportamientos de agentes y reglas operativas en archivos planos y modulares.
+- When creating new skills or modifying existing ones in the Agy-Skills repository.
+- When organizing agent behaviors and operational rules into modular, plain text markdown documents.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **No Hardcoded Secrets**: Ensure NO passwords or credentials are hardcoded. Use vault or env vars.
 2. **No Production IPs**: Use `${TARGET_HOST}` or `localhost` in examples.
@@ -29,60 +29,60 @@ Automate the creation, blueprinting, indexing, and Git deployment of custom oper
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Escribir el nuevo skill directamente a su ruta en el workspace
-# Validar la estructura usando el script del repositorio:
+# Write the new skill directly to its path in the workspace
+# Validate structure using the repository script:
 python3 scripts/validate-skill.py
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Crear y guardar el nuevo skill usando herramientas nativas de Hermes
+# Create and save new skill using native Hermes tools
 content = write_file(path="data/new_skill.md", content="...")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP filesystem para guardar el archivo markdown
+// Use filesystem MCP to save markdown file
 await filesystem.writeFile("data/new_skill.md", skillContent);
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```bash
-# Si no hay terminal ni filesystem tools:
-# Guiar al usuario para que guarde el archivo en la ruta correspondiente.
+# If terminal or filesystem tools are unavailable:
+# Guide user to save the file in the designated category path.
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera el contenido markdown completo del nuevo skill.
-2. Pide al usuario: "Por favor, crea el archivo en la carpeta `operations/` o la categoría que corresponda y pega este contenido".
-3. Proporciona el comando de Git para subir los cambios.
+1. Generate the complete markdown content of the new skill.
+2. Ask the user: "Please create the file in the appropriate category folder (e.g. `operations/`) and paste this content".
+3. Provide the Git command to commit and push changes.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Crear archivo de skill | `write_to_file()` | Proporcionar markdown en chat para guardar manualmente |
-| Actualizar el README | `edit_file()` | Pedir al usuario que añada la línea al README |
-| Validar formato | `python3 scripts/validate-skill.py` | Validación manual con checklist de principios universales |
+| Create skill file | `write_to_file()` | Provide markdown in chat for manual save |
+| Update README | `edit_file()` | Ask user to append entry to README index |
+| Validate formatting | `python3 scripts/validate-skill.py` | Manual validation using universal principles checklist |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El archivo de salida contiene las secciones requeridas.
-- Pasa la validación de `scripts/validate-skill.py`.
-- No contiene secretos ni IPs duras.
+- Output file contains all required sections.
+- Passes validation by `scripts/validate-skill.py`.
+- Contains no secrets or hardcoded production IPs.
 
 ---
 

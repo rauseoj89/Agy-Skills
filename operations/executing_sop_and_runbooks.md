@@ -11,17 +11,17 @@ powered_by: AntigravityAI
 
 # Skill: Runbook & SOP Orchestrator
 
-## 🎯 Objetivo
+## 🎯 Objective
 
-Ejecutar procedimientos técnicos paso a paso con validación, gestión de confirmaciones para operaciones destructivas, y rollback automatizado.
+Execute technical procedures step-by-step with validation, confirmation management for destructive operations, and automated rollback support.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al ejecutar un Procedimiento Operativo Estándar (SOP) paso a paso.
-- Al desplegar migraciones de base de datos, actualizaciones de infraestructura o despliegues.
-- Al realizar tareas de mantenimiento del sistema recurrentes.
+- When executing a Standard Operating Procedure (SOP) step-by-step.
+- When deploying database migrations, infrastructure updates, or staging rollouts.
+- When performing routine system maintenance tasks.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Destructive Action Gate**: Never run destructive operations (e.g. `DROP`, `rm -rf`, `docker rm`) without explicit user validation.
 2. **Validation Loop**: Always follow the Test -> Execute -> Verify loop.
@@ -30,65 +30,65 @@ Ejecutar procedimientos técnicos paso a paso con validación, gestión de confi
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
 antigravity-runbook execute runbook.md --confirm-destroy
 antigravity lock acquire runbook-execution
-# Secrets se inyectan automáticamente de vault
+# Secrets are automatically injected from vault
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Usa read_file para cargar el runbook
+# Use read_file to load the runbook
 runbook = read_file(path="runbook.md", limit=500)
-# Mapear pasos a todo list
+# Map steps to todo list
 todo(todos=[{"id": "step1", "content": "...", "status": "pending"}])
-# Ejecutar con confirmation
+# Execute with confirmation
 result = terminal(command="...", timeout=300)
-# Si falla:
+# If failed:
 terminal(command="/rollback")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
 const runbook = await filesystem.readFile("runbook.md");
-// Crear tasks manualmente
+// Create tasks manually
 await tasks.create({name: "Step 1", status: "pending"});
-// Ejecutar comandos
-await shell.exec("tu-comando");
-// Fallback si falla: generar script de rollback
+// Execute commands
+await shell.exec("your-command");
+// Fallback on failure: generate rollback script
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Pide al usuario: "Por favor, abre el archivo `runbook.md` y copia y pega su contenido".
-2. Analiza el runbook proporcionado.
-3. Genera los comandos exactos y detalla su nivel de riesgo (Destructive Gate).
-4. Pide al usuario: "Ejecuta cada comando en tu terminal y pega el resultado".
-5. Verifica manualmente con el usuario antes de proceder al siguiente paso.
+1. Ask user: "Please open the `runbook.md` file and copy and paste its contents".
+2. Analyze the provided runbook.
+3. Generate exact commands and detail their risk levels (Destructive Gate).
+4. Ask user: "Execute each command in your terminal and paste the outcome".
+5. Verify manually with user before proceeding to the next step.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Leer runbook | read_file() | Pedir al usuario que pegue el contenido |
-| Ejecutar paso | terminal() / shell.exec() | Generar comando para que el usuario lo ejecute |
-| Verificar éxito | check_status() | Pedir al usuario que pegue el output para verificar |
+| Read runbook | `read_file()` | Ask user to paste content |
+| Execute step | `terminal()` / `shell.exec()` | Generate command for user to execute |
+| Verify success | `check_status()` | Ask user to paste output to verify |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Todos los pasos del runbook terminaron en estado PASS.
-- El pre-flight check de CPU y disco pasó correctamente.
-- Se ha generado un reporte final estructurado y guardado como `report_runbook.md`.
+- All runbook steps completed in PASS state.
+- Pre-flight checks for CPU and disk passed successfully.
+- Final structured execution summary generated and saved as `report_runbook.md`.
 
 ---
 

@@ -11,77 +11,77 @@ powered_by: AntigravityAI
 
 # Skill: Git Secret Audit & Sanitization
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Run security audits on local Git repositories to detect tracked credentials, analyze `.gitignore` files, and safely purge sensitive files (like `.env` or configurations) from Git history without affecting local instances.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al revisar si se subieron secretos al repositorio remoto por accidente.
-- Al verificar y auditar las reglas de `.gitignore`.
-- Al limpiar el historial de commits de Git (e.g. usando `git rm --cached` o `git filter-repo`).
+- When checking whether secrets were accidentally pushed to remote repositories.
+- When verifying and auditing `.gitignore` rules.
+- When purging commits from Git history (e.g., using `git rm --cached` or `git filter-repo`).
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Secrets Sanitization**: Immediately detect and untrack `.env`, keys, certificates, or databases.
 2. **Never Force Destructive Git Purges Without Backup**: Git history rewrite commands (like `git filter-repo`) are dangerous and must be confirmed.
-3. **No Plaintext credentials**: Environment configurations must be vaulted, not stored in source code.
+3. **No Plaintext Credentials**: Environment configurations must be vaulted, not stored in source code.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Ejecutar comandos de Git locales
+# Run local Git commands
 git ls-files | grep -E "\.env|\.key|\.pem"
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar la terminal para correr checks de git
+# Use terminal to run git checks
 result = terminal(command="git ls-files", timeout=30)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP git para verificar status o shell para listar archivos
+// Use git MCP to verify status or shell to list files
 const files = await git.git_status();
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al desarrollador en su terminal local:
-# Pide: "Corre 'git ls-files | grep .env' para revisar si el archivo está siendo trackeado."
+# Guide developer in their local terminal:
+# Ask: "Run 'git ls-files | grep .env' to check if the file is tracked."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Pide al usuario que corra los comandos de Git para listar archivos o ver el status.
-2. Analiza los archivos reportados.
-3. Genera la línea exacta de comando (`git rm --cached <nombre>`) para que el usuario la ejecute.
+1. Ask user to run Git commands to list tracked files or inspect status.
+2. Analyze reported files.
+3. Generate the exact command (`git rm --cached <filename>`) for the user to execute.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Listar archivos de Git | `git_status()` / terminal | Pedir al usuario correr `git ls-files` |
-| Quitar archivo de cache | terminal("git rm --cached") | Dar comando exacto al usuario |
-| Limpiar historial | terminal("git filter-repo") | Instruir al usuario sobre uso de filter-repo o BFG |
+| List Git files | `git_status()` / `terminal()` | Ask user to run `git ls-files` |
+| Untrack cached file | `terminal("git rm --cached")` | Provide exact command to user |
+| Clean history | `terminal("git filter-repo")` | Guide user on using filter-repo or BFG |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El archivo `.env` o similar fue removido de la cache de Git.
-- `.gitignore` contiene las exclusiones correctas.
-- No quedan referencias a secretos en el historial de commits reciente.
+- The `.env` or sensitive file has been untracked from Git cache.
+- The `.gitignore` file contains proper exclusion patterns.
+- No references to secrets remain in recent commit history.
 
 ---
 

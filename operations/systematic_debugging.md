@@ -11,82 +11,87 @@ powered_by: AntigravityAI
 
 # Skill: Systematic Debugging
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Diagnose and repair software defects with absolute certainty, enforcing GitHub Spec-Kit's 3-phase debugging protocol (**Assess $\rightarrow$ Fix $\rightarrow$ Test**) and the "Root-Cause First" mandate. Eliminate speculative patching, unverified fixes, and accidental regressions.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Ante cualquier error, excepción en tiempo de ejecución, fallo de assertions o stack trace.
-- Cuando una prueba unitaria, de integración o E2E falle en el pipeline o en local.
-- Cuando un endpoint de API devuelva códigos de error inesperados (HTTP 500, 422, datos corruptos).
-- Para reparar bugs de forma quirúrgica sin alterar comportamiento no relacionado.
+- When encountering any error, runtime exception, assertion failure, or stack trace.
+- When a unit, integration, or E2E test fails in CI/CD pipelines or locally.
+- When an API endpoint returns unexpected error codes (HTTP 500, 422, corrupted payloads).
+- To surgically patch bugs without altering unrelated application behavior.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Root-Cause First:** Nunca adivinar rutas, flags o suponer la causa. Leer los archivos fuente involucrados y reproducir el fallo antes de alterar una sola línea de código.
-2. **Reproduction Mandate:** Crear un script de reproducción mínimo o un caso de test que falle de manera determinista demostrando el bug.
-3. **Surgical Minimal Patching:** Modificar estrictamente las líneas necesarias para subsanar la causa raíz. Cero refactorizaciones no solicitadas, formateos masivos o cambios colaterales.
-4. **Three-Attempt Backoff:** Si una solución falla dos veces, detenerse, releer el output del error, reformular la hipótesis. Si falla tres veces, pausar y reportar el bloqueo con evidencia al usuario.
-5. **Regression Defense:** Una vez aplicado el parche, ejecutar el test de reproducción (que ahora debe pasar) y la suite completa existente para garantizar cero regresiones.
+1. **Root-Cause First:** Never guess paths, flags, or assume root causes. Read involved source files and reliably reproduce the failure before modifying a single line of code.
+2. **Reproduction Mandate:** Create a minimal reproduction script or automated test case that deterministically demonstrates the bug.
+3. **Surgical Minimal Patching:** Modify strictly the minimal lines necessary to resolve the root cause. Zero unsolicited refactoring, broad reformatting, or collateral changes.
+4. **Three-Attempt Backoff:** If a fix fails twice, halt, re-read the error output, and reformulate the hypothesis. If it fails a third time, pause and report the blocker with evidence to the user.
+5. **Regression Defense:** Once the patch is applied, run the reproduction test (which must now pass) and the full existing test suite to ensure zero regressions.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# 1. Ejecutar test de reproducción que falla
+# 1. Run reproduction test that fails
 pytest tests/test_reproduce_bug.py
-# 2. Tras aplicar parche quirúrgico, verificar éxito
+# 2. After applying surgical patch, verify success
 pytest tests/test_reproduce_bug.py
-# 3. Ejecutar suite completa
+# 3. Run full test suite
 pytest
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Ejecutar suite de pruebas mediante el terminal
+# Run test suite via terminal
 result = terminal(command="npm test", timeout=120)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Correr el test de reproducción específico
+// Run the specific reproduction test
 const result = await shell.exec("npx jest -t 'handles null user token'");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Guiar al desarrollador en el aislamiento del bug:
-# "Ejecuta este comando para reproducir el fallo: 'go test -v -run TestBrokenEndpoint'."
+# Guide developer to isolate the defect:
+# "Execute this command to reproduce the failure: 'go test -v -run TestBrokenEndpoint'."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Pide al usuario el stack trace completo y las líneas de código circundantes.
-2. Escribe una prueba conceptual o paso a paso para reproducir la condición de fallo.
-3. Provee el diff quirúrgico exacto explicando por qué resuelve la causa raíz.
-4. Pide al usuario que corra la prueba y confirme el resultado antes de cerrar la tarea.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Ask user for the complete stack trace and surrounding code lines.
+2. Author a conceptual test or step-by-step procedure reproducing the failure condition.
+3. Provide the surgical unified diff explaining why it resolves the root cause.
+4. Ask user to run tests and confirm resolution before closing task.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Ejecutar pruebas | `terminal("npm test")` / MCP | Pedir al usuario que corra el comando y pegue el log |
-| Analizar logs | `docker_logs` / `parse_log_file` | Pedir las últimas 50 líneas del log de error |
-| Aplicar parches | Herramientas de edición de archivos | Proveer bloques de diff unificado (`diff -u`) |
+| Run tests | `terminal("npm test")` / MCP | Ask user to run command and paste log |
+| Analyze logs | `docker_logs` / `parse_log_file` | Request last 50 lines of error log |
+| Apply patches | File editing tools | Provide unified diff blocks (`diff -u`) |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Se reprodujo el fallo con evidencia directa antes de editar el código.
-- Se identificó la causa raíz exacta (no solo un síntoma superficial).
-- El parche aplicado es quirúrgico y respeta el alcance estricto.
-- La prueba de reproducción pasa exitosamente.
-- No se introdujeron regresiones en los tests adyacentes.
+- Defect was reproduced with direct evidence before editing code.
+- Exact root cause was identified (not merely a superficial symptom).
+- Applied patch is surgical and adheres to strict scope.
+- Reproduction test passes successfully.
+- No regressions introduced into adjacent tests.
 
 ---
 

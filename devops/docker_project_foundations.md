@@ -11,76 +11,81 @@ powered_by: AntigravityAI
 
 # Skill: Docker Project Foundations
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Scaffold complete, production-aligned containerization for any project from zero, delivering the foundational triad (`.dockerignore`, `Dockerfile`, `compose.yaml`) with zero host toolchain pollution and strict credential isolation.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al "Dockerizar" o inicializar la infraestructura de contenedores para un proyecto nuevo o existente.
-- Cuando un repositorio carece de activos de Docker o usa configuraciones obsoletas de `docker-compose.yml` v1.
-- Al agregar dependencias locales (Postgres, Redis, RabbitMQ) para desarrollo sin instalar binarios en el host del usuario.
+- When Dockerizing or initializing container infrastructure for a new or existing project.
+- When a repository lacks Docker assets or uses obsolete `docker-compose.yml` v1 configurations.
+- When adding local services (Postgres, Redis, RabbitMQ) for development without installing binaries on the host system.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **The Foundational Triad:** Todo proceso de containerización debe proveer los 3 artefactos esenciales:
-   - `.dockerignore`: previene contaminar el build context con dependencias locales, binarios o secretos.
-   - `Dockerfile`: compilación multi-stage, uso de BuildKit, usuario no-root.
-   - `compose.yaml`: orquestación de servicios con healthchecks y redes dedicadas.
-2. **Zero Host Toolchain Pollution:** Diseñar los flujos para que compilación, migraciones y ejecución ocurran dentro de los contenedores, sin forzar instalaciones globales (`npm -g`, `pip install`, `brew`) en la máquina host.
-3. **Strict Credential Isolation:** Asegurar que `.env` y certificados nunca sean indexados por el build context o versionados en git. Proveer `.env.example` sanitizado.
+1. **The Foundational Triad:** Every containerization workflow must provide the three essential artifacts:
+   - `.dockerignore`: Prevents polluting the build context with local dependencies, binaries, or secrets.
+   - `Dockerfile`: Multi-stage build, BuildKit optimization, non-root user.
+   - `compose.yaml`: Service orchestration with readiness healthchecks and dedicated networks.
+2. **Zero Host Toolchain Pollution:** Design workflows so compilation, migrations, and execution occur inside containers, without requiring global host installations (`npm -g`, `pip install`, `brew`).
+3. **Strict Credential Isolation:** Ensure `.env` and certificates are never indexed by build contexts or tracked in git. Always provide a sanitized `.env.example`.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# Validar el contexto de build y ejecutar la orquestación inicial
+# Validate build context and launch initial orchestration
 docker compose up -d --build
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Inicializar los archivos de configuración y verificar arranque
+# Initialize configuration files and verify startup
 result = terminal(command="docker compose up -d", timeout=120)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Escribir los 3 archivos de la tríada y verificar sintaxis con shell
+// Write the 3 triad files and verify syntax with shell
 await shell.exec("docker compose config");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Generar los archivos y solicitar al desarrollador ejecutar:
-# "Ejecuta 'docker compose up -d --build' para inicializar tu entorno de desarrollo."
+# Generate files and request the developer to run:
+# "Execute 'docker compose up -d --build' to initialize your development environment."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Detecta la tecnología principal (Node.js, Go, Python, PHP, Rust) examinando los archivos de manifiesto.
-2. Redacta la tríada completa (`.dockerignore`, `Dockerfile`, `compose.yaml`) y el archivo `.env.example`.
-3. Brinda al usuario la guía de inicialización y verificación paso a paso.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Detect primary tech stack (Node.js, Go, Python, PHP, Rust) by inspecting manifest files.
+2. Draft the complete triad (`.dockerignore`, `Dockerfile`, `compose.yaml`) and the `.env.example` file.
+3. Provide the user with step-by-step initialization and verification instructions.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Crear tríada | Herramientas de escritura de archivos | Generar contenido en markdown para copiar/pegar |
-| Validar stack | `docker compose up -d` / `docker compose ps` | Pedir al usuario confirmación de logs de arranque |
-| Verificar ignore | `docker build` (monitorear bytes enviados) | Revisión manual de exclusiones en `.dockerignore` |
+| Create triad | File writing tools | Generate Markdown code blocks to copy/paste |
+| Validate stack | `docker compose up -d` / `docker compose ps` | Ask user for startup log confirmation |
+| Verify ignore rules | `docker build` (monitor transferred bytes) | Manual review of `.dockerignore` patterns |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Se generaron los 3 archivos: `.dockerignore`, `Dockerfile`, `compose.yaml`.
-- `.dockerignore` excluye explícitamente `.git`, `.env*`, carpetas de dependencias y artefactos de compilación.
-- `compose.yaml` define dependencias ordenadas por comprobación de salud (`condition: service_healthy`).
-- El stack inicia sin requerir software instalado directamente en el host del desarrollador.
+- All 3 files generated: `.dockerignore`, `Dockerfile`, `compose.yaml`.
+- `.dockerignore` explicitly excludes `.git`, `.env*`, dependency directories, and build artifacts.
+- `compose.yaml` defines dependencies ordered by health checks (`condition: service_healthy`).
+- The stack starts cleanly without requiring software installed directly on the developer host.
 
 ---
 

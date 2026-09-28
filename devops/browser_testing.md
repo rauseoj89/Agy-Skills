@@ -11,18 +11,18 @@ powered_by: AntigravityAI
 
 # Skill: Browser Testing Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Run automated browser scripts, capture frontend performance metrics, audit accessibility (WCAG), and verify frontend integrity using browser control tools.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al realizar pruebas automatizadas E2E en interfaces web.
-- Al validar layouts visuales y capturar screenshots para regresión visual.
-- Al ejecutar auditorías de rendimiento, accesibilidad (Lighthouse) o SEO en la web.
-- Al depurar errores en la consola del navegador o payloads de red.
+- When executing automated E2E tests on web interfaces.
+- When validating visual layouts and capturing screenshots for visual regression.
+- When running performance, accessibility (Lighthouse), or SEO audits on web applications.
+- When debugging browser console errors or network payloads.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Security & Redaction**: Never leak plaintext passwords/keys in screenshots, logs, or inputs. Use environment variables.
 2. **No Hardcoded Absolute Paths**: Save screenshots in relative project folders (e.g. `./screenshots/`).
@@ -31,33 +31,33 @@ Run automated browser scripts, capture frontend performance metrics, audit acces
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Usar el plugin chrome-devtools nativo / herramientas integradas
-# Capturar pantallazos, inspeccionar DOM y auditar
+# Use native chrome-devtools plugin / integrated tools
+# Capture screenshots, inspect DOM, and perform audits
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar scripts de Python con playwright o selenium, o herramientas integradas de Hermes
-# Si están disponibles, llamar a las herramientas de chrome-devtools correspondientes
+# Use Python scripts with playwright or selenium, or integrated Hermes tools
+# If available, call the corresponding chrome-devtools tools
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP chrome-devtools-mcp para navegar y probar
+// Use the chrome-devtools-mcp MCP to navigate and test
 const page = await chrome_devtools.navigate_page({ url: "http://localhost:3000" });
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```bash
-# Iniciar Chrome con depuración remota para conexión MCP o Playwright:
+# Launch Chrome with remote debugging for MCP connection or Playwright:
 # macOS:
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_profile"
 
@@ -68,29 +68,29 @@ google-chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_prof
 & "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="$env:TEMP\chrome_dev_profile"
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera un script de test local (Playwright, Cypress, Selenium).
-2. Pide al usuario: "Guarda este script de test y ejecútalo localmente".
-3. Solicita al usuario que pegue los resultados del test y las capturas generadas.
+1. Generate a local test script (Playwright, Cypress, Selenium).
+2. Ask the user: "Please save this test script and execute it locally".
+3. Request that the user paste the test results and any captured screenshots.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Abrir página / Navegar | `navigate_page()` o herramientas del MCP | Pedir al usuario que visite la URL en su navegador local |
-| Tomar screenshot | `take_screenshot()` | Pedir al usuario que envíe una captura de pantalla |
-| Correr Lighthouse | `lighthouse_audit()` | Pedir al usuario que corra Lighthouse en Chrome DevTools y reporte |
+| Open page / Navigate | `navigate_page()` or MCP tools | Ask user to visit the URL in their local browser |
+| Capture screenshot | `take_screenshot()` | Ask user to provide a screenshot |
+| Run Lighthouse | `lighthouse_audit()` | Ask user to run Lighthouse in Chrome DevTools and report |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El test reporta éxito sin excepciones JS en la consola.
-- Las puntuaciones de Lighthouse superan los mínimos requeridos.
-- Se verificó la encriptación HTTPS o localhost seguro.
+- The test reports success without JS console exceptions.
+- Lighthouse scores exceed required minimum thresholds.
+- Secure HTTPS or localhost encryption verified.
 
 ---
 

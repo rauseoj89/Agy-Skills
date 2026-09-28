@@ -11,17 +11,17 @@ powered_by: AntigravityAI
 
 # Skill: Incident Response Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Execute a structured, evidence-preserving incident response workflow from initial detection through full remediation and post-incident documentation. Integrates with the PSA system for ticket creation and audit trail.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Ante la sospecha de una brecha de seguridad activa (ransomware, exfiltración, phishing).
-- Para contener accesos no autorizados en cuentas o servidores.
-- Al coordinar la erradicación de amenazas y la posterior recuperación desde respaldos.
+- When suspecting an active security breach (ransomware, exfiltration, phishing).
+- To contain unauthorized access to accounts or servers.
+- When coordinating threat eradication and subsequent backup recovery.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Containment Before Remediation**: Always isolate the affected systems or accounts before running cleaning steps to preserve evidence.
 2. **Authorization Gate**: Always request user/client authorization before isolating production networks or restoring backups.
@@ -30,59 +30,59 @@ Execute a structured, evidence-preserving incident response workflow from initia
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Consultar logs de seguridad locales para identificar el origen
-# Bloquear accesos locales o coordinar el aislamiento mediante comandos de firewall
+# Query local security logs to identify origin
+# Block local access or coordinate isolation using firewall rules
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar terminal para inspeccionar conexiones activas
+# Use terminal to inspect active network connections
 result = terminal(command="netstat -ano", timeout=30)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP de terminal o firewall para ejecutar comandos de aislamiento de red
+// Use terminal or firewall MCP to execute network isolation commands
 const result = await shell.exec("powershell -Command \"Disable-NetAdapter -Name 'Ethernet'\"");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Alertar e indicar al usuario los pasos críticos para aislar el equipo:
-# Pide: "Desconecta inmediatamente el equipo de la red (WiFi y cable Ethernet)."
+# Alert and guide user through critical device isolation steps:
+# Ask: "Immediately disconnect the device from network (WiFi and Ethernet cable)."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Clasifica la severidad (P1-P4) y genera los pasos de contención inmediatos.
-2. Pide al usuario: "Por favor, realiza estas acciones de aislamiento (ej. apagar el switch, deshabilitar la cuenta) de inmediato".
-3. Proporciona instrucciones de recopilación de logs para que el usuario guarde las evidencias antes de limpiar.
+1. Classify incident severity (P1-P4) and formulate immediate containment steps.
+2. Ask user: "Please execute these isolation steps (e.g., unplug network cable, disable account) immediately".
+3. Provide log acquisition instructions so user preserves evidence before remediation.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Aislar Endpoint | terminal("Disable-NetAdapter") | Pedir al usuario que desconecte el cable de red / WiFi |
-| Deshabilitar Cuenta | psa.revokeSessions() / terminal | Instruir al administrador para revocar accesos en el portal Azure/AD |
-| Verificar Backups | backup.getBackupStatus() | Pedir al usuario buscar el último backup saludable en consola |
+| Isolate endpoint | `terminal("Disable-NetAdapter")` | Ask user to disconnect network cable / WiFi |
+| Disable account | `psa.revokeSessions()` / `terminal()` | Instruct administrator to revoke access in Azure/AD portal |
+| Verify backups | `backup.getBackupStatus()` | Ask user to identify latest healthy backup in console |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- La amenaza fue contenida y aislada.
-- Se identificó el vector de ataque original y se aplicó el parche correspondiente.
-- El informe de incidentes post-mortem se redactó y guardó sin revelar secretos.
+- The threat has been contained and isolated.
+- The root attack vector has been identified and patched.
+- A post-incident post-mortem report was authored and saved without revealing secrets.
 
 ---
 

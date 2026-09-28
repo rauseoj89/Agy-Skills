@@ -11,77 +11,82 @@ powered_by: AntigravityAI
 
 # Skill: Idea & Feasibility Assessment
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Evaluate whether a proposed feature, architectural pivot, or technical initiative deserves investment, delivering an evidence-backed scorecard (**Go**, **Clarify**, or **Stop**) and bounded solution shape before engineering effort is committed.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Ante preguntas estratégicas de arquitectura o producto ("¿Deberíamos migrar a GraphQL?", "¿Es viable implementar WebSockets aquí?", "¿Deberíamos usar X biblioteca?").
-- Antes de comenzar tareas grandes de refactorización o integración de servicios externos.
-- Para definir el apetito de tiempo/esfuerzo y delimitar las madrigueras ("Rabbit Holes") que deben evitarse deliberadamente.
+- When facing strategic architectural or product questions ("Should we migrate to GraphQL?", "Is WebSockets viable here?", "Should we use library X?").
+- Prior to initiating major refactoring efforts or third-party service integrations.
+- To define time/effort appetite and explicitly delineate rabbit holes that must be avoided.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Evidence-Based Evaluation:** Evaluar con hechos y pruebas técnicas, no con preferencias subjetivas. Comparar costo de mantenimiento, latencia, seguridad y curva de aprendizaje.
-2. **Four-Stage Process:** Toda evaluación sigue rigurosamente:
-   - **Etapa 1 — Entrada y Planteamiento:** Problema real del usuario, métricas de éxito y beneficiarios.
-   - **Etapa 2 — Investigación Técnica:** Compatibilidad con la arquitectura existente, alternativas en el ecosistema, riesgos.
-   - **Etapa 3 — Modelado del Alcance (Shape):** Delimitar el apetito temporal y documentar trampas fuera de alcance.
-   - **Etapa 4 — Scorecard de Decisión:** Emitir veredicto fundamentado: 🟢 **GO**, 🟡 **CLARIFY**, o 🔴 **STOP**.
-3. **No Premature Implementation:** Prohibido comenzar a programar la solución hasta que el veredicto sea **GO** y se active `spec-driven-development`.
+1. **Evidence-Based Evaluation:** Evaluate with objective facts and technical benchmarks rather than subjective preference. Compare maintenance overhead, latency, security impact, and learning curves.
+2. **Four-Stage Process:** Every assessment strictly follows:
+   - **Stage 1 — Intake & Problem Framing:** Real user problem, success metrics, and beneficiaries.
+   - **Stage 2 — Technical Spikes & Research:** Architecture compatibility, ecosystem alternatives, trade-offs.
+   - **Stage 3 — Solution Shaping:** Define time appetite and document out-of-scope rabbit holes.
+   - **Stage 4 — Decision Scorecard:** Deliver justified verdict: 🟢 **GO**, 🟡 **CLARIFY**, or 🔴 **STOP**.
+3. **No Premature Implementation:** Writing solution code is prohibited until the verdict reaches **GO** and `spec-driven-development` is initiated.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# Investigar dependencias y licencias en el ecosistema
+# Research dependencies and licenses in the ecosystem
 npm view <package> dependencies license
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Realizar búsqueda o verificación de documentación
+# Perform documentation search and benchmarks
 result = web_search("benchmark postgres pgvector vs qdrant")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Inspeccionar compatibilidad de la base de código actual
+// Inspect current codebase compatibility
 const pkg = JSON.parse(await readFile("package.json"));
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Presentar la matriz comparativa de pros y contras al usuario:
-# "¿Deseas evaluar el impacto en infraestructura antes de decidir adoptar esta dependencia?"
+# Present comparative pros/cons matrix to user:
+# "Would you like to evaluate the infrastructure impact before adopting this dependency?"
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Formula las preguntas de apetito de tiempo y restricciones de infraestructura al usuario.
-2. Compara las alternativas en una tabla multidimensional (Facilidad de mantenimiento, Seguridad, Rendimiento, Riesgo de bloqueo/Vendor lock-in).
-3. Emite el veredicto final justificado (GO, CLARIFY o STOP).
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Pose appetite constraints and infrastructure boundaries to the user.
+2. Compare alternatives in a multi-dimensional table (Maintenance effort, Security, Performance, Vendor lock-in risk).
+3. Issue a justified final verdict (GO, CLARIFY, or STOP).
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Búsqueda de ecosistema | `search_web` / MCP | Evaluación basada en documentación conocida y análisis crítico |
-| Verificación de dependencias | Herramientas de lectura de manifiestos | Pedir al usuario su stack y dependencias clave |
-| Scorecard | Formato Markdown estructurado | Tabla de decisión directa en el chat |
+| Ecosystem research | `search_web` / MCP | Evaluation based on verified documentation and critical analysis |
+| Dependency check | Manifest inspection tools | Request tech stack and key dependencies from user |
+| Decision Scorecard | Structured Markdown template | Direct decision matrix in chat |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Se definió claramente el problema que resuelve la iniciativa.
-- Se cuantificaron los riesgos de seguridad, costo operativo y mantenimiento.
-- Se fijaron los límites de lo que NO se construirá (Rabbit Holes).
-- Se emitió un veredicto definitivo (GO, CLARIFY, o STOP) con justificación técnica.
+- The core problem solved by the initiative is unambiguously defined.
+- Risks regarding security, operational cost, and maintenance were quantified.
+- Explicit non-goals (rabbit holes) were delimited.
+- A definitive verdict (GO, CLARIFY, or STOP) with technical rationale was delivered.
 
 ---
 

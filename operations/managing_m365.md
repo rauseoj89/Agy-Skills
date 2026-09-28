@@ -11,17 +11,17 @@ powered_by: AntigravityAI
 
 # Skill: Microsoft 365 Administrator
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Provision and deprovision M365 users, enforce MFA and Conditional Access policies, audit licenses, manage mailbox delegations, and govern group membership — securely and with full audit trails.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al crear o desactivar cuentas de usuario en Microsoft 365.
-- Al verificar y auditar el estado de MFA en las cuentas administrativas y de usuario.
-- Al gestionar asignación de licencias y buzones compartidos.
+- When creating or deactivating user accounts in Microsoft 365.
+- When verifying and auditing MFA status on administrative and user accounts.
+- When managing license assignments and shared mailboxes.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **No Plaintext Credentials**: Never hardcode passwords or client secret tokens in scripts or commands.
 2. **Order of Deprovisioning**: Revoke sessions -> disable account -> remove groups -> convert to shared -> remove licenses.
@@ -30,59 +30,59 @@ Provision and deprovision M365 users, enforce MFA and Conditional Access policie
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Ejecutar comandos de PowerShell localmente usando el módulo de Microsoft Graph
-# Inyectar credenciales de vault temporalmente
+# Execute PowerShell commands locally using Microsoft Graph PowerShell SDK
+# Inject temporary credentials from vault
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar terminal para invocar scripts de PowerShell o curl para la Graph API
+# Use terminal to invoke PowerShell scripts or curl against Graph API
 result = terminal(command="pwsh -File run-m365-audit.ps1", timeout=120)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP de shell/terminal para invocar PowerShell o realizar peticiones HTTP
+// Use shell/terminal MCP to invoke PowerShell or make HTTP requests
 const result = await shell.exec("pwsh -Command \"Connect-MgGraph -Scopes ...\"");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al usuario para que ejecute los scripts locales en su terminal:
-# Pide: "Ejecuta 'Connect-MgGraph' en tu PowerShell y pega la salida del estado."
+# Guide user to execute local scripts in their terminal:
+# Ask: "Run 'Connect-MgGraph' in PowerShell and paste the connection status."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera los scripts de PowerShell o las llamadas REST `curl` para la API de Graph.
-2. Pide al usuario: "Por favor, abre PowerShell, inicia sesión en Microsoft Graph y ejecuta los siguientes comandos".
-3. Solicita que el usuario pegue los resultados devueltos (ocultando cualquier token) para continuar con el análisis.
+1. Generate PowerShell scripts or REST `curl` requests for the Microsoft Graph API.
+2. Ask user: "Please open PowerShell, sign into Microsoft Graph, and run the following commands".
+3. Request that user paste returned outputs (redacting tokens) to proceed with analysis.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Conectar a Graph | terminal() / Connect-MgGraph | Dar comando para que el usuario se autentique en local |
-| Consultar MFA | Graph API call | Pedir al usuario correr script de auditoría y pegar output |
-| Modificar Licencia | Set-MgUserLicense | Generar script para ejecución por parte del usuario |
+| Connect to Graph | `terminal()` / `Connect-MgGraph` | Provide command for user to authenticate locally |
+| Query MFA status | Graph API call | Ask user to run audit script and paste output |
+| Modify license | `Set-MgUserLicense` | Generate script for user execution |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Se completaron las fases de desaprovisionamiento en el orden correcto.
-- Se verificó que el UPN creado tenga activada la solicitud de cambio de clave en el próximo login.
-- No se han impreso contraseñas en los logs.
+- Deprovisioning phases executed in exact security order.
+- Verified newly created UPNs enforce password change on first login.
+- Zero passwords printed in logs or terminal outputs.
 
 ---
 

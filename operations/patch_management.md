@@ -11,17 +11,17 @@ powered_by: AntigravityAI
 
 # Skill: Patch Management Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Execute a controlled, risk-aware patch lifecycle for Windows and Linux systems — from vulnerability inventory through staged deployment, post-patch validation, and rollback readiness.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al planificar ventanas de mantenimiento para aplicar parches de seguridad (OS, drivers, firmware).
-- Al auditar vulnerabilidades pendientes y verificar la existencia de parches.
-- Al coordinar la restauración o el rollback de sistemas caídos tras una actualización fallida.
+- When planning maintenance windows to apply security patches (OS, drivers, firmware).
+- When auditing pending vulnerabilities and verifying available patches.
+- When coordinating restoration or rollback of impaired systems following an update failure.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Pre-Patch Baseline**: Never patch a production system without a verified restore point (Veeam, Axcient, snapshot) created within the last 24 hours.
 2. **Staged Deployment**: Apply patches in order: Test/Dev -> Pilot Group -> Production -> Critical Infrastructure.
@@ -30,59 +30,59 @@ Execute a controlled, risk-aware patch lifecycle for Windows and Linux systems �
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Integrar con rmm-mcp o backup-mcp locales para verificar copias de seguridad
-# Ejecutar scripts locales de PowerShell en sistemas de prueba
+# Integrate with local rmm-mcp or backup-mcp to verify backups
+# Execute local PowerShell scripts on test systems
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Ejecutar scripts de terminal para comprobar si el HotFix ya está aplicado
+# Execute terminal commands to check if HotFix is already applied
 result = terminal(command="powershell -Command \"Get-HotFix -Id KB5034441\"", timeout=60)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar terminal/shell para ejecutar PowerShell o bash locales de validación
+// Use terminal/shell to run local PowerShell or bash validation commands
 const status = await shell.exec("powershell -Command \"Get-HotFix\"");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al usuario para validar copias de seguridad en su consola RMM/BCDR:
-# Pide: "Revisa en Veeam/Axcient que exista un backup exitoso de las últimas 24 horas."
+# Guide user to validate backups in their RMM/BCDR console:
+# Ask: "Confirm in Veeam/Axcient that a successful backup exists from the last 24 hours."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera los scripts de validación (e.g. `Get-HotFix`, `wusa /uninstall` o comandos bash de actualización).
-2. Pide al usuario: "Por favor ejecuta estos comandos para verificar parches aplicados o desinstalar la actualización problemática".
-3. Solicita confirmación explícita de que se cuenta con un backup antes de proceder a la actualización de producción.
+1. Generate validation scripts (e.g. `Get-HotFix`, `wusa /uninstall`, or bash update commands).
+2. Ask user: "Please run these commands to verify applied patches or uninstall the problematic update".
+3. Request explicit confirmation that a backup exists before proceeding with production patching.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Verificar backup | backup.getBackupStatus() | Pedir al usuario verificar en portal Veeam/Axcient |
-| Programar Parches | rmm.approvePatches() | Pedir al usuario programar en consola RMM |
-| Desinstalar Parche | terminal("wusa /uninstall") | Generar el comando exacto para desinstalación manual |
+| Verify backup | `backup.getBackupStatus()` | Ask user to check in Veeam/Axcient portal |
+| Schedule patches | `rmm.approvePatches()` | Instruct user to schedule within RMM console |
+| Uninstall patch | `terminal("wusa /uninstall")` | Generate exact command for manual uninstallation |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Existe un punto de restauración funcional de Veeam o Axcient de las últimas 24 horas.
-- Todos los servicios de arranque automático están en ejecución tras el reinicio.
-- Los logs del sistema no presentan errores críticos del actualizador del sistema operativo.
+- A functional restore point from Veeam or Axcient exists from within the last 24 hours.
+- All automatic-startup services are running post-reboot.
+- System event logs show no critical OS updater errors.
 
 ---
 

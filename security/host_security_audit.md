@@ -11,80 +11,85 @@ powered_by: AntigravityAI
 
 # Skill: Linux Host Security Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Audit, diagnose, and harden Linux Virtual Private Servers (VPS) and host operating systems, ensuring minimal attack surfaces, strict SSH policies, synchronized intrusion detection systems (Fail2ban/CrowdSec), and least-privilege configurations.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al evaluar un servidor Linux nuevo o existente antes de pasarlo a producción.
-- Al verificar la configuración del demonio SSH (`/etc/ssh/sshd_config`).
-- Al revisar el estado del cortafuegos (`ufw`, `nftables`, `iptables`) frente a puertos y sockets en escucha (`ss -tulpn`).
-- Al validar que las cárceles de Fail2ban o CrowdSec coincidan con los puertos reales de los servicios.
-- Al auditar binarios con permisos SUID o privilegios de sudo sin contraseña.
+- When evaluating a new or existing Linux server before promoting it to production.
+- When verifying SSH daemon configuration (`/etc/ssh/sshd_config`).
+- When checking firewall status (`ufw`, `nftables`, `iptables`) against listening ports and sockets (`ss -tulpn`).
+- When validating that Fail2ban or CrowdSec jails match active listening ports and services.
+- When auditing SUID binaries or passwordless sudo privileges.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Read-Only Diagnostic First:** La fase de auditoría debe ser estrictamente de solo lectura. No aplicar cambios destructivos ni recargar cortafuegos sin autorización explícita.
-2. **Never Lock Out SSH:** Nunca reiniciar el servicio SSH ni bloquear el puerto de gestión sin requerir al usuario que mantenga una sesión abierta paralela para pruebas.
-3. **Alignment Audit:** Verificar que las reglas del cortafuegos y los filtros de Fail2ban correspondan exactamente a los puertos en los que los servicios están escuchando (prevenir fallos silenciosos de protección).
-4. **Zero Listening Databases:** Ninguna base de datos (PostgreSQL, MySQL, Redis, MongoDB) debe escuchar en `0.0.0.0` sin restricción de cortafuegos.
-5. **Sanitize Host Telemetry:** Enmascarar direcciones IP públicas, nombres de usuario y dominios en los reportes de auditoría.
+1. **Read-Only Diagnostic First:** The audit phase must be strictly read-only. Do not apply destructive changes or reload firewalls without explicit user authorization.
+2. **Never Lock Out SSH:** Never restart the SSH daemon or alter management ports without instructing the user to maintain an active parallel SSH session for testing.
+3. **Alignment Audit:** Verify that firewall rules and Fail2ban filters correspond exactly to the ports on which services are listening (preventing silent security protection failures).
+4. **Zero Listening Databases:** No database (PostgreSQL, MySQL, Redis, MongoDB) may listen on `0.0.0.0` without strict firewall restrictions.
+5. **Sanitize Host Telemetry:** Mask public IP addresses, usernames, and internal hostnames in audit reports.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# Inspección no destructiva de puertos y firewall
+# Non-destructive port and firewall inspection
 ss -tulpn
 sudo ufw status verbose
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Comprobar estado de sshd_config mediante el terminal
+# Check sshd_config status via terminal
 result = terminal(command="grep -E '^(PermitRootLogin|PasswordAuthentication|Port)' /etc/ssh/sshd_config", timeout=30)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Diagnosticar sockets abiertos y puertos
+// Diagnose listening sockets and ports
 const sockets = await shell.exec("ss -tulpn | grep LISTEN");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Proporcionar el script de auditoría y comandos al usuario:
-# "Ejecuta 'sudo ss -tulpn' y 'sudo ufw status verbose' para comparar puertos abiertos vs firewall."
+# Provide audit script and commands to the user:
+# "Execute 'sudo ss -tulpn' and 'sudo ufw status verbose' to compare open ports against firewall rules."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Provee al usuario una lista de comandos de diagnóstico de una sola línea (`ss -tulpn`, `ufw status`, `systemctl status fail2ban`).
-2. Pide que comparta las salidas (con IPs enmascaradas).
-3. Evalúa la postura de seguridad y genera recomendaciones de endurecimiento paso a paso.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Provide user with a list of one-line diagnostic commands (`ss -tulpn`, `ufw status`, `systemctl status fail2ban`).
+2. Ask user to share outputs (with IPs redacted).
+3. Evaluate security posture and generate step-by-step hardening recommendations.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Revisar sockets | `ss -tulpn` vía terminal | Pedir salida de `ss -tulpn` |
-| Estado de firewall | `ufw status` / `iptables -L -n -v` | Pedir salida de reglas activas del firewall |
-| Configuración SSH | Lectura de `/etc/ssh/sshd_config` | Pedir al usuario contenido filtrado con grep |
-| Binarios SUID | `find / -perm -4000 2>/dev/null` | Proveer comando y pedir revisar binarios inusuales |
+| Inspect sockets | `ss -tulpn` via terminal | Ask user for `ss -tulpn` output |
+| Firewall status | `ufw status` / `iptables -L -n -v` | Ask user for active firewall rules output |
+| SSH configuration | Read `/etc/ssh/sshd_config` | Ask user for grep-filtered sshd_config lines |
+| SUID binaries | `find / -perm -4000 2>/dev/null` | Provide command and ask user to review unusual binaries |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- `PermitRootLogin` está en `no` o `prohibit-password`.
-- `PasswordAuthentication` está en `no` (forzando autenticación por llaves públicas).
-- El cortafuegos está activo y no expone servicios internos no autenticados a Internet.
-- Las cárceles de Fail2ban monitorean los puertos y servicios correctos.
-- No se detectaron binarios SUID anómalos ni privilegios sudo desmedidos.
+- `PermitRootLogin` is set to `no` or `prohibit-password`.
+- `PasswordAuthentication` is set to `no` (forcing public key authentication).
+- Firewall is active and does not expose unauthenticated internal services to the internet.
+- Fail2ban jails monitor the correct services and ports.
+- No anomalous SUID binaries or excessive sudo privileges detected.
 
 ---
 

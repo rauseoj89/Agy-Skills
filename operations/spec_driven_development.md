@@ -11,80 +11,85 @@ powered_by: AntigravityAI
 
 # Skill: Specification-Driven Development (SDD)
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Eliminate agent drift, hallucinated assumptions, and unverified code generation by enforcing GitHub's Spec-Kit methodology: carrying every feature request through a formal progression of `spec.md` $\rightarrow$ `plan.md` $\rightarrow$ `tasks.md` before authoring implementation code.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al abordar requerimientos no triviales (>1 archivo o cambios estructurales/arquitectónicos).
-- Al diseñar o crear nuevos componentes, APIs, contratos o microservicios.
-- Cuando una solicitud es ambigua y requiere clarificación de alcance antes de programar.
-- Para prevenir scope-creep delimitando explícitamente lo que está "Fuera de Alcance" (Out of Scope).
+- When tackling non-trivial requirements (>1 file or structural/architectural changes).
+- When designing or creating new components, APIs, contracts, or microservices.
+- When a request is ambiguous and requires scope clarification prior to programming.
+- To prevent scope-creep by explicitly defining what is "Out of Scope".
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Contracts Before Code:** Definir esquemas de datos, interfaces TypeScript o especificaciones OpenAPI 3.1 antes de escribir la lógica de negocio.
-2. **Deterministic Triad Progression:** Todo desarrollo estructurado sigue:
-   - `spec.md`: Define el **QUÉ** (Historias de usuario, Criterios de Aceptación con Gherkin, Fuera de Alcance).
-   - `plan.md`: Define el **CÓMO** (Arquitectura, diagramas de flujo, modelos de datos, contratos).
-   - `tasks.md`: Define los **PASOS** (Matriz ordenada de fases atómicas con checkboxes dependientes).
-3. **No Code Drift:** No saltar directamente a modificar código sin que el plan y los contratos estén alineados y aprobados.
-4. **Incremental Convergence:** Implementar y verificar fase por fase, marcando las tareas en `tasks.md` tras validar su funcionamiento real.
+1. **Contracts Before Code:** Define data schemas, TypeScript interfaces, or OpenAPI 3.1 specifications before authoring business logic.
+2. **Deterministic Triad Progression:** All structured development follows:
+   - `spec.md`: Defines the **WHAT** (User stories, Acceptance Criteria with Gherkin, Out of Scope).
+   - `plan.md`: Defines the **HOW** (Architecture, flowcharts, data models, contracts).
+   - `tasks.md`: Defines the **STEPS** (Ordered matrix of atomic phases with dependent checkboxes).
+3. **No Code Drift:** Do not jump directly into modifying code without aligned and approved plan and contracts.
+4. **Incremental Convergence:** Implement and verify phase-by-phase, checking off tasks in `tasks.md` only after verifying working functionality.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# Crear directorio de especificaciones y validar estructura de tareas
+# Create specifications directory and validate task structure
 mkdir -p specs/feature-name
-# Escribir spec.md, plan.md, tasks.md
+# Write spec.md, plan.md, tasks.md
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Escribir el plan técnico y la matriz de tareas
+# Write technical plan and task matrix
 with open("plan.md", "w") as f:
-    f.write("# Plan de Implementación...")
+    f.write("# Implementation Plan...")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Usar las herramientas de archivos para crear la progresión spec.md -> plan.md -> tasks.md
+// Use file tools to establish the spec.md -> plan.md -> tasks.md progression
 await writeFile("specs/spec.md", specContent);
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Proponer el plan al usuario antes de modificar archivos de producción:
-# "He redactado la especificación y el plan técnico. Por favor revisa y aprueba para comenzar."
+# Propose plan to user before modifying production files:
+# "I have drafted the specification and technical plan. Please review and approve before we begin."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Redacta el `spec.md` (Historias de usuario en formato Gherkin + Criterios de Aceptación) directamente en el chat.
-2. Diseña el `plan.md` con los contratos de interfaz (TypeScript / OpenAPI / SQL DDL).
-3. Presenta la lista de tareas numeradas y solicita confirmación del usuario antes de emitir el código fuente.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Draft `spec.md` (User stories in Gherkin format + Acceptance Criteria) directly in the chat.
+2. Design `plan.md` with interface contracts (TypeScript / OpenAPI / SQL DDL).
+3. Present the numbered task list and request user confirmation before generating source code.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Creación de artefactos | `write_to_file` / MCP de filesystem | Generar bloques Markdown en el chat para guardar |
-| Seguimiento de tareas | Edición interactiva de `tasks.md` | Actualizar checklist en las respuestas del chat |
-| Verificación de contratos | Linters / validadores de esquema | Verificación estática visual de tipos y esquemas |
+| Artifact creation | `write_to_file` / filesystem MCP | Generate Markdown blocks in chat for user to save |
+| Task tracking | Interactive edits to `tasks.md` | Update checklist directly in chat responses |
+| Contract verification | Linters / schema validators | Manual visual verification of types and schemas |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Existe un `spec.md` con historias de usuario y criterios de aceptación claros.
-- Se documentó explícitamente qué queda fuera del alcance para evitar sobreingeniería.
-- Los contratos e interfaces (`plan.md`) se definieron antes de iniciar la codificación.
-- Las tareas en `tasks.md` se marcan como completadas únicamente tras evidencia verificable.
+- A `spec.md` exists with clear user stories and acceptance criteria.
+- Explicit non-goals (Out of Scope) are documented to avoid over-engineering.
+- Contracts and interfaces (`plan.md`) were defined prior to authoring code.
+- Tasks in `tasks.md` are marked complete only after verifiable evidence.
 
 ---
 

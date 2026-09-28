@@ -11,78 +11,83 @@ powered_by: AntigravityAI
 
 # Skill: Docker Build Strategies
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Architect, optimize, and secure container image builds using modern BuildKit capabilities: multi-stage architectures, package manager cache mounts, build-time secret injection, `COPY --link` optimizations, and minimal non-root runtime environments.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al crear o refactorizar archivos `Dockerfile` para cualquier tecnología (Node, Python, Go, Java, Rust).
-- Al optimizar la velocidad de compilación, el tamaño de imagen o resolver problemas de invalidación de caché.
-- Al necesitar inyectar credenciales privadas (tokens npm, claves SSH) de forma segura sin persistirlas en capas.
-- Al depurar capas infladas o generar archivos `.dockerignore` estrictos.
+- When creating or refactoring `Dockerfile` files for any technology (Node, Python, Go, Java, Rust).
+- When optimizing build speed, image size, or resolving cache invalidation bottlenecks.
+- When needing to inject private credentials (npm tokens, SSH keys) securely without persisting them in layers.
+- When debugging bloated layers or writing strict `.dockerignore` files.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **BuildKit First:** Siempre declarar `# syntax=docker/dockerfile:1` en la primera línea.
-2. **Secrets Hygiene:** Nunca usar `ARG` o `ENV` para contraseñas, tokens o SSH keys (se filtran en el historial y metadata). Usar `--mount=type=secret,id=...` o `--mount=type=ssh`.
-3. **Multi-Stage & Minimal Runtime:** Separar la etapa de build (`FROM ... AS build`) de la etapa de ejecución (`FROM ... AS runtime`). Usar distroless (`gcr.io/distroless/static-debian12:nonroot`) o imágenes Alpine/Slim.
-4. **Cache Optimization:** Ordenar instrucciones de menor a mayor frecuencia de cambio. Usar cache mounts (`--mount=type=cache,target=...`) para gestores de paquetes (Go, npm, pip, maven).
-5. **Decoupled Layers:** Usar `COPY --link` para desacoplar capas de archivos independientes y maximizar el reúso de caché.
-6. **Non-Root Execution:** Forzar siempre `USER nonroot` o un UID no privilegiado antes del `ENTRYPOINT`/`CMD`.
+1. **BuildKit First:** Always declare `# syntax=docker/dockerfile:1` as the very first line.
+2. **Secrets Hygiene:** Never use `ARG` or `ENV` for passwords, tokens, or SSH keys (these leak into layer history and metadata). Use `--mount=type=secret,id=...` or `--mount=type=ssh`.
+3. **Multi-Stage & Minimal Runtime:** Separate the build stage (`FROM ... AS build`) from the runtime stage (`FROM ... AS runtime`). Use distroless (`gcr.io/distroless/static-debian12:nonroot`) or Alpine/Slim base images.
+4. **Cache Optimization:** Order instructions from least to most frequently changing. Use cache mounts (`--mount=type=cache,target=...`) for package managers (Go, npm, pip, maven).
+5. **Decoupled Layers:** Use `COPY --link` to decouple independent file layers and maximize cache reuse.
+6. **Non-Root Execution:** Always enforce `USER nonroot` or an unprivileged UID before `ENTRYPOINT`/`CMD`.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# Ejecutar compilación con BuildKit activado
+# Execute build with BuildKit enabled
 DOCKER_BUILDKIT=1 docker build --secret id=npmrc,src=.npmrc -t myapp:latest .
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Ejecutar build a través del terminal
+# Execute build via terminal
 result = terminal(command="DOCKER_BUILDKIT=1 docker buildx build --tag myapp:latest .", timeout=300)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Usar el terminal o comando integrado
+// Use terminal or integrated shell command
 const result = await shell.exec("docker buildx build -t app:latest .");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Pide al usuario que corra la compilación con BuildKit:
-# "Ejecuta 'DOCKER_BUILDKIT=1 docker build -t mi-app .' para validar la sintaxis y caché."
+# Ask the user to run the build with BuildKit:
+# "Execute 'DOCKER_BUILDKIT=1 docker build -t my-app .' to validate syntax and caching."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Diseña el `Dockerfile` optimizado siguiendo el patrón multi-stage y cache mounts.
-2. Diseña el `.dockerignore` exhaustivo bloqueando `.git`, `.env*`, `node_modules`, `tests/`.
-3. Provee las instrucciones exactas de build al usuario con las banderas de BuildKit.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Design the optimized `Dockerfile` following multi-stage patterns and cache mounts.
+2. Design an exhaustive `.dockerignore` file blocking `.git`, `.env*`, `node_modules`, `tests/`.
+3. Provide the exact build instructions to the user with BuildKit flags.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Compilación de imagen | `docker buildx build` vía terminal/MCP | Generar comando con flags y pedir ejecución |
-| Inspección de capas | `docker history` / `docker_inspect()` | Pedir salida de `docker history <image>` |
-| Diagnóstico de tamaño | `docker images --format` | Solicitar reporte de peso al usuario |
+| Image build | `docker buildx build` via terminal/MCP | Generate command with flags and ask user to run |
+| Inspect layers | `docker history` / `docker_inspect()` | Ask for `docker history <image>` output |
+| Size diagnostics | `docker images --format` | Request image size report from user |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- La primera línea es `# syntax=docker/dockerfile:1`.
-- El archivo `.dockerignore` existe y previene filtraciones de secretos y archivos de desarrollo.
-- El usuario final en la imagen de producción es explícitamente no-root.
-- No existen secretos ni tokens en variables `ARG` o `ENV`.
-- La compilación aprovecha el caché en ejecuciones subsiguientes.
+- The first line is `# syntax=docker/dockerfile:1`.
+- A `.dockerignore` file exists and prevents leakage of secrets and development files.
+- The final user in the production image is explicitly non-root.
+- No secrets or tokens are stored in `ARG` or `ENV` variables.
+- Subsequent builds successfully leverage cache mounts.
 
 ---
 

@@ -11,18 +11,18 @@ powered_by: AntigravityAI
 
 # Skill: API Architect & Designer
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Design secure, highly performant, and self-documenting API interfaces, establishing contracts, schemas, and version gates before functional code implementation, while strictly complying with OWASP API Security Top 10 (2023) mandates.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al diseñar interfaces de API o endpoints HTTP.
-- Al crear especificaciones de OpenAPI 3.1 o Swagger.
-- Al planificar estrategias de control de versiones de API (URI, cabeceras).
-- Al definir patrones de autenticación, límites de tasa de peticiones y estructuras de error.
+- When designing API interfaces or HTTP endpoints.
+- When creating OpenAPI 3.1 or Swagger specifications.
+- When planning API versioning strategies (URI, headers).
+- When defining authentication patterns, rate limits, and standard error structures.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Security-First Architecture (OWASP API Security Top 10 2023)**:
    - **BOLA & BOPLA Mitigation (API1 / API3):** Server-side authorization checks on both object and property levels.
@@ -36,59 +36,59 @@ Design secure, highly performant, and self-documenting API interfaces, establish
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Escribir especificaciones OpenAPI 3.1 y guardarlas en el workspace
-# Usar el flujo de confirmaciones de la plataforma
+# Write OpenAPI 3.1 specifications and save them in the workspace
+# Use the platform's confirmation flow
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar read_file / write_file para crear los schemas
+# Use read_file / write_file to create the schemas
 spec_content = read_file(path="openapi.yaml")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el filesystem MCP para leer y escribir las especificaciones OpenAPI
+// Use the filesystem MCP to read and write OpenAPI specifications
 const currentSpec = await filesystem.readFile("openapi.yaml");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Si no hay terminal ni herramientas de edición directa:
-# Pide al usuario que cree el archivo schema.graphql o openapi.yaml
-# y proporciona el contenido completo formateado en bloques de código.
+# If terminal and direct editing tools are unavailable:
+# Ask the user to create the schema.graphql or openapi.yaml file
+# and provide the full content formatted in code blocks.
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera el contenido YAML/JSON completo del API Contract.
-2. Explica la arquitectura detalladamente.
-3. Pide al usuario: "Guarda este contenido en un archivo `openapi.yaml`".
+1. Generate the complete YAML/JSON content of the API contract.
+2. Explain the architecture in detail.
+3. Ask the user: "Please save this content into an `openapi.yaml` file".
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Crear archivo de spec | write_to_file() | Proporcionar el bloque de código para que el usuario lo guarde |
-| Validar YAML/JSON | Ej. correr validador en terminal | Pedir al usuario que corra el validador y pegue el output |
+| Create spec file | `write_to_file()` | Provide code block for user to save |
+| Validate YAML/JSON | Run validator in terminal | Ask user to run validator and paste output |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- La spec pasa las reglas de OpenAPI 3.1 sin advertencias.
-- Se implementan paginación y límites en todos los endpoints de listas.
-- Se previenen leaks de stacktrace en el esquema de error estándar.
+- The spec passes OpenAPI 3.1 validation rules without warnings.
+- Pagination and limit parameters are implemented on all list endpoints.
+- Stacktrace leaks are prevented in standard error schemas.
 
 ---
 

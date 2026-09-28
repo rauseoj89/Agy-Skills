@@ -11,78 +11,78 @@ powered_by: AntigravityAI
 
 # Skill: MSP Client Onboarding Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Execute a complete, repeatable MSP client onboarding workflow — from initial intake through network discovery, credential vaulting, monitoring enrollment, PSA record creation, and handoff documentation.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al dar de alta a un nuevo cliente en los sistemas de monitoreo y soporte (PSA/RMM).
-- Al realizar el setup inicial de credenciales en la bóveda de seguridad.
-- Al documentar la red de un cliente y configurar backups.
+- When registering a new client in monitoring and support systems (PSA/RMM).
+- When performing initial credential setup in the security vault.
+- When documenting a client network topology and configuring backup routines.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Credentials Vaulting**: Receive credentials only via secure channel. Vault immediately; never store in plaintext files or notes.
+1. **Credentials Vaulting**: Receive credentials only via secure channels. Vault immediately; never store in plaintext files or notes.
 2. **Secrets Gate**: Confirmed zero credentials exist in ticket notes, documentation files, or session logs.
 3. **Least Privilege**: Configure monitoring agents and administration accounts with minimal required privileges.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Integrar con psa-mcp para buscar compañías y crear tickets
-# Registrar información en el workspace
+# Integrate with psa-mcp to search companies and create tickets
+# Record information into the workspace
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar terminal o herramientas de ticketing de Hermes si están configuradas
-# De lo contrario, usar fallback manual
+# Use terminal or Hermes ticketing tools if configured
+# Otherwise, use manual fallback
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar herramientas del MCP psa-mcp si está instalado en tu cliente
-const company = await psa.searchCompanies({ name: "Cliente" });
+// Use tools from psa-mcp if installed in your client
+const company = await psa.searchCompanies({ name: "Client" });
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al operador humano en los pasos de la UI:
-# Pide: "Crea la compañía en el PSA y escribe el ID resultante."
+# Guide the human operator through UI steps:
+# Ask: "Create the company in PSA and provide the resulting ID."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Solicita al usuario los datos del cliente.
-2. Genera los checklists y plantillas de documentación.
-3. Pide al usuario que cree los registros en el PSA de forma manual.
-4. Genera las guías detalladas para que el usuario instale los agentes RMM y configure los respaldos en Veeam o Axcient.
+1. Ask user for client details.
+2. Generate checklists and documentation templates.
+3. Instruct user to create records in PSA manually.
+4. Generate detailed guides for user to install RMM agents and configure backups in Veeam or Axcient.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Buscar Compañía PSA | psa.searchCompanies() | Pedir al usuario confirmación en el portal PSA |
-| Crear Ticket | psa.createTicket() | Solicitar al usuario crear ticket de onboarding manualmente |
-| Guardar Runbook | write_to_file() | Mostrar markdown del Runbook al usuario para guardar |
+| Search PSA Company | `psa.searchCompanies()` | Ask user for confirmation in PSA portal |
+| Create Ticket | `psa.createTicket()` | Instruct user to create onboarding ticket manually |
+| Save Runbook | `write_to_file()` | Display Runbook markdown for user to save |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- Las credenciales están en la bóveda.
-- El ticket de onboarding está creado en el PSA.
-- Se verificó que el RMM y los backups (Veeam/Axcient) estén reportando de forma correcta.
+- Credentials stored safely in vault.
+- Onboarding ticket created in PSA.
+- RMM agents and backups (Veeam/Axcient) verified reporting successfully.
 
 ---
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validador de Skills Universales para Agy-Skills"""
+"""Universal Skills Validator for Agy-Skills"""
 import re
 import sys
 from pathlib import Path
@@ -14,29 +14,29 @@ def validate_skill(file_path: Path) -> bool:
     content = file_path.read_text(encoding="utf-8")
     issues = []
     
-    # 1. Verificar frontmatter
+    # 1. Verify frontmatter
     if not content.startswith('---\nname:'):
-        issues.append("❌ Faltando YAML frontmatter o nombre")
+        issues.append("❌ Missing YAML frontmatter or name")
         
-    # 2. Verificar sección "Ejecución Multi-Agente" o "Multi-Agent Execution"
-    if "Ejecución Multi-Agente" not in content and "Multi-Agent Execution" not in content:
-        issues.append("❌ Faltando sección de ejecución multi-agente")
+    # 2. Verify "Multi-Agent Execution" section
+    if "Multi-Agent Execution" not in content:
+        issues.append("❌ Missing multi-agent execution section")
         
-    # 3. Verificar secciones de fallback
-    if "Si NO tienes herramientas" not in content and "Fallback" not in content:
-        issues.append("❌ Faltando fallbacks para sin herramientas")
+    # 3. Verify fallback sections
+    if "If you do NOT have tools" not in content and "Fallback" not in content:
+        issues.append("❌ Missing fallbacks for tool-less environments")
         
-    # 4. Verificar que no haya paths específicos de un agente
-    patterns_especificos = [
+    # 4. Verify no agent-specific hardcoded paths
+    specific_patterns = [
         r'~\/\.hermes/', r'~\/\.antigravity/', r'~\/\.cline/'
     ]
-    for pattern in patterns_especificos:
+    for pattern in specific_patterns:
         if re.search(pattern, content):
-            issues.append(f"⚠️  Path específico encontrado: {pattern}")
+            issues.append(f"⚠️  Specific agent path found: {pattern}")
             
-    # 5. Verificar principios universales
-    if "Principios Universales" not in content and "Universal Principles" not in content:
-        issues.append("⚠️  Recomendable agregar sección de principios universales")
+    # 5. Verify universal principles
+    if "Universal Principles" not in content:
+        issues.append("⚠️  Recommended to add universal principles section")
         
     if issues:
         print(f"\n📄 {file_path}:")
@@ -44,7 +44,7 @@ def validate_skill(file_path: Path) -> bool:
             print(f"   {issue}")
         return False
     else:
-        print(f"✅ {file_path}: Válido")
+        print(f"✅ {file_path}: Valid")
         return True
 
 if __name__ == "__main__":
@@ -67,6 +67,6 @@ if __name__ == "__main__":
             if validate_skill(skill_file):
                 valid_count += 1
                 
-    print(f"\n📊 Resumen: {valid_count}/{total_count} skills válidos")
+    print(f"\n📊 Summary: {valid_count}/{total_count} valid skills")
     if valid_count < total_count:
         sys.exit(1)

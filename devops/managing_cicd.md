@@ -11,18 +11,18 @@ powered_by: AntigravityAI
 
 # Skill: CI/CD Pipeline Specialist
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Design secure, efficient, and robust pipelines, ensuring that all code is validated, compiled, and deployed using least-privilege runners, keyless OIDC authentication, and encrypted secret mappings while preventing Poisoned Pipeline Execution (PPE).
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al estructurar scripts de compilación, test y despliegue automatizados.
-- Al crear o modificar archivos de workflow (ej: `.github/workflows/main.yml`, `.gitlab-ci.yml`).
-- Al configurar despliegues en múltiples entornos (dev, staging, producción).
-- Al integrar escaneos de dependencias o de vulnerabilidad SAST/SCA.
+- When structuring automated build, test, and deployment workflows.
+- When creating or modifying pipeline configuration files (e.g., `.github/workflows/main.yml`, `.gitlab-ci.yml`).
+- When configuring multi-environment deployments (dev, staging, production).
+- When integrating SAST/SCA dependency and vulnerability scanning into pipelines.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **Poisoned Pipeline Execution (PPE) Prevention (CICD-SEC-4):** Force branch protection rules. Avoid running forks with write access or access to secrets.
 2. **Least Privilege Identity & Access (CICD-SEC-2):** Restrict runner token permissions by default. Pin third-party steps to static SHA hashes.
@@ -31,59 +31,59 @@ Design secure, efficient, and robust pipelines, ensuring that all code is valida
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Ejecutar comandos de verificación de YAML locales
-# Subir cambios al repositorio git
+# Execute local YAML verification checks
+# Commit and push changes to git repository
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Modificar los archivos del pipeline usando las herramientas de edición
+# Modify pipeline files using editing tools
 workflow_data = read_file(path=".github/workflows/main.yml")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP filesystem para actualizar el archivo de workflow de CI/CD
+// Use filesystem MCP to update the CI/CD workflow file
 await filesystem.writeFile(".github/workflows/deploy.yml", yamlContent);
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Pide al usuario que configure los secretos en los ajustes del repositorio:
-# "Agrega el secreto API_KEY en la configuración de GitHub/GitLab."
+# Ask user to configure repository secrets in platform settings:
+# "Add the API_KEY secret in the GitHub/GitLab repository settings."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera la configuración de CI/CD YAML completa.
-2. Pide al usuario: "Crea el archivo `.github/workflows/deploy.yml` y pega este contenido".
-3. Proporciona instrucciones sobre cómo configurar los secretos de forma manual en la interfaz del proveedor.
+1. Generate the complete CI/CD YAML configuration.
+2. Ask the user: "Create the `.github/workflows/deploy.yml` file and paste this content".
+3. Provide instructions on configuring secrets manually via the provider's web UI.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Crear archivo de workflow | write_to_file() | Mostrar YAML en el chat para guardar |
-| Configurar secretos | Usar herramientas de configuración de repo | Pedir al usuario configurar secretos en UI (GitHub/GitLab) |
-| Ejecutar pipeline local | terminal() con `act` o similar | Pedir al usuario que haga commit y push para validar en remoto |
+| Create workflow file | `write_to_file()` | Display YAML in chat for user to save |
+| Configure secrets | Use repo configuration tools | Instruct user to configure secrets in platform UI |
+| Execute pipeline locally | `terminal()` with `act` or similar | Ask user to commit and push to validate remotely |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El workflow de CI/CD tiene habilitada la cancelación de compilaciones obsoletas (concurrency).
-- Los runners están configurados con permisos de sólo lectura por defecto.
-- No hay secretos en texto plano.
+- CI/CD workflow has cancellation of outdated builds enabled (concurrency).
+- Runners are configured with read-only permissions by default.
+- No plaintext secrets exist in workflow definitions.
 
 ---
 

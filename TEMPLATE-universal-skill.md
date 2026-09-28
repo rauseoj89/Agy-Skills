@@ -1,6 +1,6 @@
 ---
-name: <nombre-kebab-case>
-description: <Una línea clara>
+name: <kebab-case-name>
+description: <One clear line>
 version: 1.0.0
 tags: [universal, <tag1>, <tag2>]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
@@ -8,65 +8,65 @@ last_updated: <YYYY-MM-DD>
 author: <your-name>
 powered_by: AntigravityAI
 ---
-# Skill: <Nombre Legible>
+# Skill: <Readable Name>
 
-## 🎯 Objetivo
+## 🎯 Objective
 
-[Descripción agnóstica de lo que hace]
+[Agnostic description of what this skill does]
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Uso 1
-- Uso 2
-- Uso 3
+- Use Case 1
+- Use Case 2
+- Use Case 3
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Regla 1**: Explicación (siempre aplica)
-2. **Regla 2**: Explicación (siempre aplica)
-3. **Regla 3**: Explicación (siempre aplica)
+1. **Rule 1**: Explanation (always applies)
+2. **Rule 2**: Explanation (always applies)
+3. **Rule 3**: Explanation (always applies)
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en [Agente A]:
-
-```bash
-# Ejemplo con comandos específicos de Agente A
-agente-a-command --flag
-```
-
-### ▶️ Si estás en [Agente B]:
+### ▶️ If you are on [Agent A]:
 
 ```bash
-# Ejemplo con comandos específicos de Agente B
-agente-b-command --flag
+# Example with specific commands for Agent A
+agent-a-command --flag
 ```
 
-### ⚠️ Si NO tienes herramientas:
+### ▶️ If you are on [Agent B]:
 
-1. Paso 1 manual
-2. Paso 2 manual
-3. Paso 3 manual
+```bash
+# Example with specific commands for Agent B
+agent-b-command --flag
+```
+
+### ⚠️ If you do NOT have tools:
+
+1. Step 1 manual
+2. Step 2 manual
+3. Step 3 manual
 
 ────────────────────────────────────
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Leer archivo | read_file() | Pedir usuario que pegue |
-| Ejecutar comando | terminal() | Generar comando para usuario |
-| Buscar contexto | session_search() | Pedir usuario contexto |
+| Read file | read_file() | Ask user to paste |
+| Execute command | terminal() | Generate command for user |
+| Search context | session_search() | Ask user for context |
 
 ────────────────────────────────────
 
-## ✅ Verificación
+## ✅ Verification
 
-• Señal de éxito 1
-• Señal de éxito 2
-• Señal de éxito 3
+• Success signal 1
+• Success signal 2
+• Success signal 3
 
 ────────────────────────────────────
 

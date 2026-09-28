@@ -11,84 +11,89 @@ powered_by: AntigravityAI
 
 # Skill: Docker Compose Patterns
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Design, configure, and maintain production-grade multi-container environments using modern Compose v2 standards (`compose.yaml`), strict readiness dependency chaining (`condition: service_healthy`), isolated bridge networks, and distroless healthcheck sidecars.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al crear o refactorizar arquitecturas multi-contenedor en Docker Compose.
-- Al resolver condiciones de carrera durante el arranque entre aplicaciones y bases de datos.
-- Al configurar comprobaciones de salud nativas (`healthcheck`) para PostgreSQL, Redis, MySQL o microservicios.
-- Al implementar patrones de sobreescritura para desarrollo (`compose.override.yaml`) frente a producción.
-- Al estructurar redes internas privadas versus redes públicas expuestas.
+- When creating or refactoring multi-container architectures in Docker Compose.
+- When resolving startup race conditions between applications and databases.
+- When configuring native healthchecks for PostgreSQL, Redis, MySQL, or microservices.
+- When implementing environment override patterns for development (`compose.override.yaml`) vs production.
+- When structuring private internal networks versus publicly exposed ingress networks.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Canonical Compose v2:** El archivo principal siempre debe nombrarse `compose.yaml` (no el legado `docker-compose.yml`). No incluir `version:` en la raíz.
-2. **Readiness Dependency Chaining:** Nunca usar `depends_on: [db]` plano (solo espera que el contenedor inicie, no que acepte conexiones). Usar siempre `condition: service_healthy`.
-3. **Native Healthchecks:** Cada servicio dependiente debe tener un healthcheck explícito:
+1. **Canonical Compose v2:** The primary compose file must always be named `compose.yaml` (not legacy `docker-compose.yml`). Do not include a root `version:` tag.
+2. **Readiness Dependency Chaining:** Never use plain `depends_on: [db]` (which only waits for the container to start, not accept connections). Always specify `condition: service_healthy`.
+3. **Native Healthchecks:** Every dependent service must define an explicit healthcheck:
    - PostgreSQL: `test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]`
    - Redis: `test: ["CMD", "redis-cli", "ping"]`
    - MySQL: `test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]`
-4. **Sidecar Pattern para Distroless:** En contenedores sin curl ni shell, acoplar un contenedor sidecar con `network_mode: "service:<target>"` para ejecutar el probe de salud HTTP sobre localhost.
-5. **Network Isolation:** Separar redes frontend (accesibles externamente) de backend/data (privadas, sin puertos expuestos al host en producción).
-6. **Zero Plaintext Secrets:** Utilizar interpolación de entorno o la directiva `secrets:` de Compose en lugar de hardcodear contraseñas.
+4. **Sidecar Pattern for Distroless:** For containers without curl or a shell, attach a sidecar container with `network_mode: "service:<target>"` to perform HTTP health probes against localhost.
+5. **Network Isolation:** Separate frontend networks (externally accessible) from backend/data networks (private, no host port bindings in production).
+6. **Zero Plaintext Secrets:** Use environment variable interpolation or Compose `secrets:` directive instead of hardcoding passwords.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
+
 ```bash
-# Validar sintaxis y configuración renderizada
+# Validate syntax and rendered configuration
 docker compose config
-# Levantar stack en segundo plano y esperar estado healthy
+# Launch stack in background and await healthy state
 docker compose up -d --wait
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
+
 ```python
-# Inspeccionar estado de los servicios orquestados
+# Inspect status of orchestrated services
 result = terminal(command="docker compose ps --format json", timeout=60)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
+
 ```javascript
-// Ejecutar validación de orquestación
+// Execute orchestration validation
 const result = await shell.exec("docker compose config --quiet");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
+
 ```python
-# Solicitar al usuario la verificación de salud del stack:
-# "Ejecuta 'docker compose ps' y verifica que todos los servicios tengan el estado '(healthy)'."
+# Ask the user to verify stack health:
+# "Run 'docker compose ps' and verify that all services display '(healthy)' status."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
-1. Diseña la plantilla `compose.yaml` con las dependencias `condition: service_healthy`.
-2. Provee un archivo `.env.example` con los nombres de variables requeridas.
-3. Genera el comando `docker compose up -d` y pide al usuario confirmar que los servicios alcancen el estado saludable.
+### ⚠️ If you do NOT have tools (Manual Fallback):
+
+1. Design the `compose.yaml` template with `condition: service_healthy` dependencies.
+2. Provide a `.env.example` file with required variable definitions.
+3. Generate the command `docker compose up -d` and ask the user to confirm services reach healthy status.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Validar sintaxis | `docker compose config` | Revisión estática de indentación y claves YAML |
-| Monitorear arranque | `docker compose ps` | Pedir salida de `docker compose ps` |
-| Ver logs agregados | `docker compose logs -f` | Pedir al usuario filtrar logs por servicio |
+| Validate syntax | `docker compose config` | Static linting of YAML indentation and keys |
+| Monitor startup | `docker compose ps` | Ask user for `docker compose ps` output |
+| View aggregated logs | `docker compose logs -f` | Ask user to filter logs per service |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El archivo se llama `compose.yaml`.
-- Todos los servicios de base de datos definen un `healthcheck` funcional.
-- Las aplicaciones web declaran `depends_on` con `condition: service_healthy`.
-- Los puertos de bases de datos internas no están mapeados al host en entornos de producción.
-- No hay credenciales en texto plano en el manifiesto.
+- File is named `compose.yaml`.
+- All database and backend services define a functional `healthcheck`.
+- Dependent web applications declare `depends_on` with `condition: service_healthy`.
+- Internal database ports are not mapped to host interfaces in production environments.
+- No plaintext credentials exist in the compose manifest.
 
 ---
 

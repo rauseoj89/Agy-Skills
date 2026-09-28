@@ -11,80 +11,80 @@ powered_by: AntigravityAI
 
 # Skill: Secrets & Credentials Manager
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Enforce bulletproof security for application credentials, ensuring zero secrets are leaked to disk, logs, or repositories, while utilizing advanced vaulting and rotation workflows.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al actualizar contraseñas, claves de API, cadenas de conexión o certificados.
-- Al configurar o modificar archivos de variables de entorno (`.env`, `.env.local`).
-- Al inventariar o rotar secretos usando bovedas externas.
-- Para auditar y prevenir fugas de secretos en el historial de Git.
+- When updating passwords, API keys, connection strings, or certificates.
+- When configuring or modifying environment variable files (`.env`, `.env.local`).
+- When inventorying or rotating secrets using external vaults.
+- To audit and prevent secret leaks in Git history.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **The Redaction Protocol**: Strip or replace plaintext passwords/keys with `[REDACTED]` or `********` in all logs, screenshots, and terminal outputs.
-2. **Git-Leak Defense**: Force the target config files (like `.env`) to be explicitly in `.gitignore` before writing secrets to them.
+2. **Git-Leak Defense**: Force target config files (like `.env`) to be explicitly in `.gitignore` before writing secrets to them.
 3. **Atomic Secret File Writes**: Never edit environment files directly. Write updates to `.env.tmp` first, then replace.
 4. **Least Privilege**: Query specific paths rather than reading all credentials in bulk.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Interactuar con vault-bridge-mcp para leer o rotar secretos
-# Utilizar variables del sistema local de forma segura
+# Interact with vault-bridge-mcp to read or rotate secrets
+# Use local system variables securely
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Cargar secretos de forma dinámica usando hermes_secrets o variables de entorno
+# Load secrets dynamically using hermes_secrets or environment variables
 import os
 db_pass = os.getenv("DB_PASSWORD") or hermes_secrets.get("db_password")
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Llamar al MCP de bóveda o vault-bridge-mcp para consultar secretos
+// Call vault MCP or vault-bridge-mcp to retrieve secrets
 const secret = await vault.getSecret({ path: "production/db", key: "password" });
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al usuario para que guarde las claves en sus variables de entorno locales:
-# Pide: "Configura la variable de entorno 'DB_PASSWORD' en tu equipo local."
+# Guide user to store keys in local environment variables:
+# Ask: "Configure the 'DB_PASSWORD' environment variable on your local machine."
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Solicita al usuario que defina las variables de entorno de forma manual en su sistema operativo.
-2. Genera plantillas `.env.example` vacías con placeholders claros (ej: `DB_PASSWORD=YOUR_PASSWORD_HERE`).
-3. Advierte al usuario sobre no subir nunca estos archivos a Git y verificar que estén en `.gitignore`.
+1. Ask user to set environment variables manually in their operating system.
+2. Generate empty `.env.example` templates with clear placeholders (e.g., `DB_PASSWORD=YOUR_PASSWORD_HERE`).
+3. Warn user never to commit these files to Git and verify they are listed in `.gitignore`.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Obtener secreto | `get_secret()` / vault.getSecret() | Pedir al usuario configurar variable localmente |
-| Escribir archivo .env | Escribir via `.env.tmp` y renombrar | Dar la plantilla de variables de entorno al usuario |
-| Rotar credencial | `rotate_secret()` | Proporcionar guía de rotación en consola al usuario |
+| Retrieve secret | `get_secret()` / `vault.getSecret()` | Ask user to configure variable locally |
+| Write .env file | Write via `.env.tmp` and atomic rename | Provide environment variable template to user |
+| Rotate credential | `rotate_secret()` | Provide step-by-step rotation guide to user |
 
 ---
 
-## 5. ✅ Verificación
+## ✅ Verification
 
-- El archivo `.env` está en `.gitignore`.
-- No hay secretos en texto plano en la consola o los logs del agente.
-- Los archivos temporales `.tmp` de secretos fueron eliminados tras la escritura.
+- The `.env` file is declared in `.gitignore`.
+- Zero plaintext secrets exist in console or agent logs.
+- Temporary `.tmp` secret buffers were cleaned up after writing.
 
 ---
 

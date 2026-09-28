@@ -11,18 +11,18 @@ powered_by: AntigravityAI
 
 # Skill: Data Analyst
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Convert raw data records and documents into structured, high-value metrics, exposing patterns and anomalies while ensuring data classification compliance, secret redaction, and PII protection.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Cuando se solicita analizar registros de datos raw en CSV, JSON, Excel, PDF o texto plano.
-- Al limpiar registros o tablas desordenadas (inconsistencias de formato, valores en blanco, espacios).
-- Al calcular métricas de negocio clave (totales, promedios, medianas, porcentajes, tendencias).
-- Al formatear datos numéricos en tablas Markdown altamente estructuradas o exportar a hojas de cálculo (.xlsx).
+- When asked to analyze raw data records in CSV, JSON, Excel, PDF, or plain text formats.
+- When cleaning messy records or tables (formatting inconsistencies, blank values, whitespace padding).
+- When calculating key business metrics (totals, averages, medians, percentages, trends).
+- When formatting numerical data into highly structured Markdown tables or exporting to spreadsheets (`.xlsx`).
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
 1. **PII and PHI Detection**: Scan all records for sensitive data (SSNs, emails, phone numbers). Mask or redact sensitive information.
 2. **Secrets Scan Pass (Security Gate)**: Ingested data must be scanned for API keys, passwords, and connection strings. Redact with `[REDACTED]`.
@@ -32,74 +32,74 @@ Convert raw data records and documents into structured, high-value metrics, expo
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Ingestión con data-analyst-mcp:
+# Ingestion with data-analyst-mcp:
 # parse_csv(path="dataset.csv", max_rows=50000)
 # parse_excel(path="report.xlsx", sheet_name="Sheet1")
 # extract_pdf_data(path="document.pdf")
 # read_word_document(path="notes.docx")
 
-# Limpieza y métricas:
+# Cleaning and metrics:
 # clean_tabular_data(records=data, null_strategy="drop", trim_strings=true)
 # calculate_metrics(records=cleaned_data, numeric_columns=["revenue", "cost"])
 
-# Generación de Excel con office-mcp:
+# Excel generation with office-mcp:
 # write_excel_sheet(filePath="summary.xlsx", data=excel_payload)
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Usar herramientas nativas de Hermes o scripts Python para cargar y procesar
+# Use native Hermes tools or Python scripts to load and process
 content = read_file(path="dataset.csv", limit=5000)
-# Procesar con pandas / in-memory analytics
+# Process with pandas / in-memory analytics
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar MCP data-analyst o filesystem para leer y transformar datos
+// Use data-analyst MCP or filesystem to read and transform data
 const dataset = await data_analyst.parse_csv({ path: "dataset.csv" });
 const metrics = await data_analyst.calculate_metrics({ records: dataset.rows, numeric_columns: ["amount"] });
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Guiar al usuario si no hay herramientas de terminal o archivo:
-# Pide: "Por favor, copie y pegue las primeras 100 líneas del archivo dataset.csv"
+# Guide the user if terminal or file tools are unavailable:
+# Ask: "Please copy and paste the first 100 lines of the dataset.csv file"
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Solicita al usuario: "Por favor, copia y pega el contenido del dataset o las primeras líneas aquí".
-2. Procesa la información mediante razonamiento en el contexto del chat.
-3. Genera la tabla Markdown resumida para el usuario.
+1. Ask the user: "Please copy and paste the dataset content or the first few lines here."
+2. Process the information using in-context reasoning in the chat.
+3. Generate the summarized Markdown table for the user.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Ingestar CSV / Excel | `parse_csv()` / `parse_excel()` | Pedir al usuario que copie y pegue el contenido |
-| Ingestar PDF / Word | `extract_pdf_data()` / `read_word_document()` | Pedir al usuario texto extraído |
-| Limpiar datos | `clean_tabular_data()` | Limpieza mediante razonamiento en contexto |
-| Calcular métricas | `calculate_metrics()` | Calcular métricas en chat |
-| Escribir reporte Excel | `write_excel_sheet()` / `write_to_file()` | Mostrar tabla Markdown en chat |
-| Consultar base de datos | `postgres.execute_query()` | Generar SQL exacto para que el usuario lo ejecute |
+| Ingest CSV / Excel | `parse_csv()` / `parse_excel()` | Ask user to copy and paste the content |
+| Ingest PDF / Word | `extract_pdf_data()` / `read_word_document()` | Ask user for extracted text |
+| Clean data | `clean_tabular_data()` | Data cleaning via in-context reasoning |
+| Calculate metrics | `calculate_metrics()` | Calculate metrics in chat |
+| Write Excel report | `write_excel_sheet()` / `write_to_file()` | Display Markdown table in chat |
+| Query database | `postgres.execute_query()` | Generate exact SQL for user to execute |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- El archivo de salida contiene la clasificación de datos correcta.
-- No hay floats sin redondear.
-- Toda la información PII y secretos ha sido detectada y redactada.
+- Output file contains correct data classification.
+- No unrounded floating-point artifacts.
+- All PII and secret data has been detected and redacted.
 
 ---
 

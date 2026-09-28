@@ -11,78 +11,78 @@ powered_by: AntigravityAI
 
 # Skill: Personal System Administrator
 
-## 🎯 Objetivo
+## 🎯 Objective
 
 Automate repetitive directory management tasks, protect local data integrity, and diagnose local systems efficiently.
 
-## 🕒 Cuándo usar
+## 🕒 When to Use
 
-- Al limpiar, estructurar u organizar carpetas y archivos locales.
-- Al crear scripts de copia de seguridad local.
-- Al verificar permisos, espacio en disco o logs de la aplicación local.
+- When cleaning, structuring, or organizing local files and directories.
+- When creating local backup scripts and routines.
+- When inspecting file permissions, available disk space, or local application logs.
 
-## 🛡️ Principios Universales
+## 🛡️ Universal Principles
 
-1. **Destructive Action Gate**: Bulk moves, deletions, and folder removals must be explicitly approved.
-2. **Secrets Scan**: Scan for `.env` or credential files before performing operations. Exclude them from general moves.
-3. **Backup Space Limits**: Check disk space before executing backups. Keep a max of 5 historical backups.
-4. **No Hardcoded Absolute Paths**: Use relative paths or placeholders instead of hardcoded home folders.
+1. **Destructive Action Gate**: Bulk moves, deletions, and directory removals must be explicitly approved by the user.
+2. **Secrets Scan**: Scan for `.env` or credential files before performing operations. Exclude them from general moves or archives.
+3. **Backup Space Limits**: Check disk space before executing backups. Keep a maximum of 5 historical backups.
+4. **No Hardcoded Absolute Paths**: Use relative paths or environment variables instead of hardcoded home folders.
 
 ---
 
-## 🤖 Ejecución Multi-Agente
+## 🤖 Multi-Agent Execution
 
-### ▶️ Si estás en Antigravity:
+### ▶️ If you are on Antigravity:
 
 ```bash
-# Ejecutar comandos de copia y organización locales (tar, Move-Item, etc.)
-# Usar get_system_stats para verificar salud
+# Execute local copy and organize commands (tar, Move-Item, etc.)
+# Use get_system_stats to verify system health
 ```
 
-### ▶️ Si estás en Hermes Agent:
+### ▶️ If you are on Hermes Agent:
 
 ```python
-# Utilizar terminal para ejecutar diagnósticos o comprimir directorios
+# Use terminal to run diagnostics or compress directories
 result = terminal(command="tar -czf backup.tar.gz ./src", timeout=120)
 ```
 
-### ▶️ Si estás en Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code:
 
 ```javascript
-// Usar el MCP filesystem y terminal para comprimir y organizar archivos
+// Use filesystem MCP and terminal to compress and organize files
 const result = await shell.exec("tar -czf backup.tar.gz ./src");
 ```
 
-### ▶️ Si estás en GitHub Copilot / Cursor:
+### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Proporcionar el script de PowerShell o bash exacto para que el usuario lo ejecute:
-# Pide: "Ejecuta este comando para hacer el backup: tar -czf backup.tar.gz ./src"
+# Provide exact PowerShell or bash script for user execution:
+# Ask: "Run this command to create the backup: tar -czf backup.tar.gz ./src"
 ```
 
-### ⚠️ Si NO tienes herramientas (Fallback Manual):
+### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Genera los comandos exactos de archivado o script de limpieza.
-2. Pide al usuario: "Ejecuta estos comandos en tu terminal local para organizar tus carpetas".
-3. Solicita confirmación visual del estado del espacio en disco resultante.
+1. Generate exact archive commands or cleanup scripts.
+2. Ask user: "Run these commands in your local terminal to organize your folders".
+3. Request visual confirmation of resulting disk space.
 
 ---
 
 ## 🔄 Fallbacks
 
-| Funcionalidad | Con herramientas | Sin herramientas |
+| Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Comprimir archivos | `tar` / terminal() | Dar comando de compresión al usuario |
-| Verificar espacio en disco | get_system_stats() | Pedir al usuario que corra `df -h` o mire el explorador |
-| Organizar archivos | write_to_file() / terminal("mv") | Generar el script de reubicación para el usuario |
+| Compress files | `tar` / `terminal()` | Provide compression command to user |
+| Check disk space | `get_system_stats()` | Ask user to run `df -h` or check file explorer |
+| Organize files | `write_to_file()` / `terminal("mv")` | Generate file relocation script for user |
 
 ---
 
-## ✅ Verificación
+## ✅ Verification
 
-- La copia de seguridad excluye directorios pesados e innecesarios (e.g. `node_modules`).
-- Se verificó que el espacio en disco restante sea saludable.
-- La rotación de logs mantiene un límite estricto de hasta 5 archivos históricos.
+- Backups exclude heavy, unneeded directories (e.g. `node_modules`).
+- Verified remaining disk space is healthy.
+- Log rotation maintains a strict limit of up to 5 historical archive files.
 
 ---
 
