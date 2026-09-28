@@ -1,10 +1,10 @@
 ---
 name: managing-containers
 description: Audits, deploys, and maintains Docker containers, Compose architectures, and image environments. Use when asked to configure Dockerfiles, compose services, parse container logs, verify port configurations, or manage local development virtualization.
-version: 1.1.0
+version: 1.2.0
 tags: [universal, devops, docker, kubernetes, containers, buildkit, compose-v2]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-09-26
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -39,8 +39,9 @@ Design, deploy, and maintain robust, high-performance containerized and orchestr
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Inspect processes and logs with nas-tools or native shell
-# docker compose -f compose.yaml up -d
+# Inspect processes and logs with native docker CLI:
+docker compose -f compose.yaml ps
+docker logs --tail 100 <container-name>
 ```
 
 ### ▶️ If you are on Hermes Agent:
@@ -50,10 +51,10 @@ Design, deploy, and maintain robust, high-performance containerized and orchestr
 result = terminal(command="docker compose ps", timeout=60)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use shell/terminal or docker MCP
+// Use terminal to run docker commands
 const result = await shell.exec("docker compose ps");
 ```
 
@@ -76,10 +77,10 @@ const result = await shell.exec("docker compose ps");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| View container status | `docker_ps()` / `terminal("docker compose ps")` | Ask user to run `docker compose ps` |
-| View container logs | `docker_logs()` / `terminal("docker logs")` | Ask user to run and paste `docker logs` |
-| Container control | `docker_control()` / `terminal("docker start/stop")` | Generate appropriate command for user |
-| Delete resources (Tier 3) | Request confirmation + `terminal("docker rm")` | Warn about data loss and generate exact command |
+| View container status | Terminal: `docker compose ps` | Ask user to run `docker compose ps` |
+| View container logs | Terminal: `docker logs <container>` | Ask user to run and paste `docker logs` |
+| Container control | Terminal: `docker compose start/stop` | Generate appropriate command for user |
+| Delete resources (Tier 3) | Request confirmation + `docker rm` | Warn about data loss and generate exact command |
 
 ---
 
@@ -94,5 +95,5 @@ const result = await shell.exec("docker compose ps");
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-26  
-Version: 1.1.0
+Last Updated: 2026-09-28  
+Version: 1.2.0

@@ -1,10 +1,10 @@
 ---
 name: patch-management
 description: Governs the full patch lifecycle: inventory, risk assessment, change window scheduling, staged deployment, verification, and rollback using RMM, Veeam, and Axcient.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, operations, patch, sysadmin]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-18
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -13,7 +13,7 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Execute a controlled, risk-aware patch lifecycle for Windows and Linux systems — from vulnerability inventory through staged deployment, post-patch validation, and rollback readiness.
+Execute a controlled, risk-aware patch lifecycle for Windows and Linux systems — from vulnerability inventory through staged deployment, post-patch validation, and rollback readiness, referencing `connectwise-mcp` and `backup-mcp`.
 
 ## 🕒 When to Use
 
@@ -23,7 +23,7 @@ Execute a controlled, risk-aware patch lifecycle for Windows and Linux systems �
 
 ## 🛡️ Universal Principles
 
-1. **Pre-Patch Baseline**: Never patch a production system without a verified restore point (Veeam, Axcient, snapshot) created within the last 24 hours.
+1. **Pre-Patch Baseline**: Never patch a production system without a verified restore point (`backup-mcp` / Veeam / Axcient / snapshot) created within the last 24 hours.
 2. **Staged Deployment**: Apply patches in order: Test/Dev -> Pilot Group -> Production -> Critical Infrastructure.
 3. **Change Window Gate**: No production updates are allowed outside of approved change windows.
 4. **No Hardcoded Credentials**: Inject RMM, backup, or domain admin credentials dynamically using environment variables or vaults.
@@ -35,8 +35,10 @@ Execute a controlled, risk-aware patch lifecycle for Windows and Linux systems �
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Integrate with local rmm-mcp or backup-mcp to verify backups
-# Execute local PowerShell scripts on test systems
+# Verify backup status via backup-mcp:
+# get_backup_status(target_name="prod-app-server")
+# Execute local PowerShell verification scripts:
+# Get-HotFix | Select-Object -First 10
 ```
 
 ### ▶️ If you are on Hermes Agent:
@@ -46,11 +48,12 @@ Execute a controlled, risk-aware patch lifecycle for Windows and Linux systems �
 result = terminal(command="powershell -Command \"Get-HotFix -Id KB5034441\"", timeout=60)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use terminal/shell to run local PowerShell or bash validation commands
-const status = await shell.exec("powershell -Command \"Get-HotFix\"");
+// Query backup status and inspect managed endpoints
+const backup = await backup_tools.get_backup_status({ target_name: "db01" });
+const endpoints = await connectwise.cw_list_endpoints({ company_id: "CORP" });
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
@@ -72,9 +75,10 @@ const status = await shell.exec("powershell -Command \"Get-HotFix\"");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Verify backup | `backup.getBackupStatus()` | Ask user to check in Veeam/Axcient portal |
-| Schedule patches | `rmm.approvePatches()` | Instruct user to schedule within RMM console |
-| Uninstall patch | `terminal("wusa /uninstall")` | Generate exact command for manual uninstallation |
+| Verify backup freshness | `backup_mcp.get_backup_status()` | Ask user to check in Veeam/Axcient portal |
+| Inspect endpoints | `connectwise.cw_list_endpoints()` | Instruct user to review RMM dashboard |
+| Verify installed patches | PowerShell: `Get-HotFix` | Ask user to run Windows Update History check |
+| Rollback patch | `terminal("wusa /uninstall")` | Generate exact uninstall script for human execution |
 
 ---
 
@@ -88,5 +92,5 @@ const status = await shell.exec("powershell -Command \"Get-HotFix\"");
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-18  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

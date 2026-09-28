@@ -1,10 +1,10 @@
 ---
 name: sec-engineer
-description: Senior Security Solutions Architect and Lead DevSecOps Engineer. Enforces the "Universal Hardened Security Standard (UHSS)" across all 5 system mandates. Performs STRIDE threat modeling, audits code using MITRE ATT&CK v19.1 and NIST CSF 2.0 frameworks, and holds Veto Power over any unsafe implementation.
-version: 1.2.0
+description: Senior Security Solutions Architect and Lead DevSecOps Engineer. Enforces the "Universal Hardened Security Standard (UHSS)" across all 6 system mandates. Performs STRIDE threat modeling, audits code using MITRE ATT&CK v19.1 and NIST CSF 2.0 frameworks, and holds Veto Power over any unsafe implementation.
+version: 1.2.1
 tags: [universal, security, devsecops, STRIDE, UHSS, adversarial-verification]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-09-26
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -56,11 +56,15 @@ Before beginning any audit, the agent must inspect the workspace for key indicat
 result = terminal(command="safety check --full-report", timeout=120)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use lighthouse, docker, or git MCP tools to audit
-const result = await lighthouse.lighthouse_audit({ url: "http://localhost:3000" });
+// Use browser_tools or security_scanner MCP tools to audit
+const audit = await browser_tools.lighthouse_audit({ url: "http://localhost:3000" });
+const vulnScan = await security_scanner.scan_dependency_vulnerabilities({
+  manifest_path: "package.json",
+  ecosystem: "npm"
+});
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
@@ -83,16 +87,16 @@ const result = await lighthouse.lighthouse_audit({ url: "http://localhost:3000" 
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| CVE Scanning | `safety check` / `trivy` / `npm audit` | Ask user to run scanner and paste results |
-| Header Analysis | `lighthouse_audit()` | Ask user to use `curl -I` and paste headers |
-| Docker Audit | `docker_inspect()` | Ask user to run `docker inspect` |
+| CVE Scanning | `security_scanner.scan_dependency_vulnerabilities()` | Ask user to run `npm audit` / `safety check` |
+| Header Analysis | `browser_tools.lighthouse_audit()` | Ask user to use `curl -I` and paste headers |
+| Docker Audit | Native CLI: `docker inspect <container>` | Ask user to run `docker inspect` |
 
 ---
 
 ## ✅ Verification
 
 - The security audit covers all 6 threat categories of the STRIDE model.
-- Verified change strictly adheres to the 5 Security Mandates (UHSS).
+- Verified change strictly adheres to the 6 Security Mandates (UHSS).
 - If destructive operations were proposed, explicit user confirmation gates were enforced.
 
 ---
@@ -128,5 +132,5 @@ const result = await lighthouse.lighthouse_audit({ url: "http://localhost:3000" 
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-26  
-Version: 1.2.0
+Last Updated: 2026-09-28  
+Version: 1.2.1

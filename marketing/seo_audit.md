@@ -1,10 +1,10 @@
 ---
 name: seo-audit
 description: Comprehensive technical and on-page SEO evaluation of websites with PDF/Markdown report generation.
-version: 1.1.0
+version: 1.2.0
 tags: [universal, seo, audit, marketing, technical-seo, on-page-seo, pdf-report]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-19
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -12,7 +12,7 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Inspect webpage SEO structures, HTTP connectivity, index crawlability files, and semantic content layout, generating structured bilingual (English/Spanish) reports in PDF or Markdown format.
+Inspect webpage SEO structures, HTTP connectivity, index crawlability files, and semantic content layout, generating structured bilingual (English/Spanish) reports in PDF or Markdown format using `browser-tools-mcp`, `markitdown-mcp`, and `web-search-mcp`.
 
 ## 🕒 When to Use
 
@@ -31,8 +31,9 @@ Inspect webpage SEO structures, HTTP connectivity, index crawlability files, and
 ## 🤖 Multi-Agent Execution
 
 ### ▶️ If you are on [Antigravity] or [Hermes]:
-Locate and run the python helper script inside the skill references:
+Use browser tools and markitdown to inspect DOM and layout, then run report generator:
 ```bash
+# Capture DOM snapshot and SEO Lighthouse audit
 # For PDF report:
 python generate_seo_pdf.py data.json logo.png reports/output-report.pdf en
 
@@ -40,8 +41,13 @@ python generate_seo_pdf.py data.json logo.png reports/output-report.pdf en
 python generate_seo_markdown.py data.json reports/output-report.md en
 ```
 
-### ▶️ If you are on [Cline] or [Roo-Code]:
-Use `filesystem-mcp` to write report data or execute commands via terminal.
+### ▶️ If you are on [Cline] or [Roo-Code] or [OpenCode]:
+```javascript
+// Navigate and capture snapshot with browser-tools
+await browser_tools.navigate_page({ url: targetUrl });
+const snapshot = await browser_tools.take_snapshot();
+const seoAudit = await browser_tools.lighthouse_audit({ url: targetUrl });
+```
 
 ### ⚠️ If you do NOT have tools (Manual Fallback):
 1. Ask the user to provide HTTP headers, the contents of `robots.txt` and `sitemap.xml`, and the HTML structure of the site.
@@ -55,7 +61,9 @@ Use `filesystem-mcp` to write report data or execute commands via terminal.
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
 | Header Inspection | `curl -I <url>` | Request raw HTTP response from user |
-| Heading Structure | DOM Selectors | Request HTML tag list from user |
+| Page Content Conversion | `markitdown.convert_to_markdown({ uri: url })` | Request HTML source from user |
+| DOM & SPA Inspection | `browser_tools.take_snapshot()` | Request rendered DOM inspection from user |
+| Lighthouse SEO Audit | `browser_tools.lighthouse_audit({ url, category: "seo" })` | Ask user to run Lighthouse in DevTools |
 | Report Generation | Execute local Python scripts | Generate Markdown directly in conversation |
 
 ────────────────────────────────────
@@ -95,7 +103,7 @@ Use `filesystem-mcp` to write report data or execute commands via terminal.
 
 ## ⚠️ Pitfalls & Lessons Learned
 
-- **SPA Content Blindness:** `browser_console` or `web_extract` may return empty results if the page renders content dynamically. Use `browser_snapshot` or `browser_vision` to verify content exists.
+- **SPA Content Blindness:** Standard HTTP requests may return empty shells if the page renders dynamically via JavaScript. Use `browser_tools.take_snapshot()` or `markitdown-mcp` to ensure hydrated content is parsed.
 - **Missing Metadata:** A `null` result for meta descriptions is a critical finding—report as high-priority "Quick Win".
 - **PDF Library:** Ensure `reportlab` and `pillow` are installed in a venv before generating PDFs.
 - **Bilingual Data:** Always provide both `*_es` and `*_en` strings in `seo_data` to avoid KeyError when switching languages.
@@ -104,8 +112,8 @@ Use `filesystem-mcp` to write report data or execute commands via terminal.
   - "Contenido **Actual**" (NOT "Actuel")
   - "Fecha de análisis" (NOT "Fecha de Análisis" with improper capitalization)
   - "Servidor" (NOT "Server" in ES version)
-- **Bilingual Table Headers in Markdown (CRITICAL FIX):** All table headers in `generate_seo_markdown.py` MUST use bilingual constants (e.g., `TABLE_TECH_HEADER[lang]`) instead of hardcoded strings. Hardcoded Spanish headers will appear in English reports. Pattern: define `TABLE_* = {'es': "...", 'en': "..."}` and always access with `[lang]`.
-- **CRITICAL: No Hard-Coded Text in PDF Scripts:** ALL text elements (section titles, table headers, labels, footer messages, pagination) must use bilingual dictionaries (`SECTIONS[lang]`, `LABELS_HEADER[lang]`). Hard-coded strings like `"1. Resumen Ejecutivo"` or `"Sitio Web:"` will appear in reports even when English is requested. This is a common bug that requires careful review of the entire script.
+- **Bilingual Table Headers in Markdown (CRITICAL FIX):** All table headers in `generate_seo_markdown.py` MUST use bilingual constants (e.g., `TABLE_TECH_HEADER[lang]`) instead of hardcoded strings. Pattern: define `TABLE_* = {'es': "...", 'en': "..."}` and always access with `[lang]`.
+- **CRITICAL: No Hard-Coded Text in PDF Scripts:** ALL text elements (section titles, table headers, labels, footer messages, pagination) must use bilingual dictionaries (`SECTIONS[lang]`, `LABELS_HEADER[lang]`).
 
 ### 🎨 PDF Design & Layout (DEFINITIVE — LaTeX Style)
 
@@ -150,7 +158,7 @@ All tables (Technical, On-Page) use **identical column widths** to ensure visual
 - **Heading Table**: Column 1 `15%`, Column 2 `85%`
 
 #### 5. Text Wrap (Required for Column 3)
-**ReportLab does NOT auto-wrap**. Implement manual wrap function that inserts `<br/>` every **55 characters**:
+Implement manual wrap function that inserts `<br/>` every **55 characters**:
 
 ```python
 def wrap_text(text, max_len=55):
@@ -166,44 +174,26 @@ def wrap_text(text, max_len=55):
     return wrapped + line if line else wrapped
 ```
 
-Apply wrap **BEFORE** creating the Table, then use `Paragraph(wrap_text(...), cell_style)`.
-
 #### 6. Table Styles (Corporate Branding)
-**Header row background**: `COLOR_BRAND_BLUE` (#1A365D)
-**Header text**: `colors.whitesmoke`, `Helvetica-Bold`, size 9
-**Body rows**: Alternating backgrounds `[white, #f7fafc]`
-**Grid**: `0.5pt`, color `#cbd5e0`
-**Padding**: 4pt all sides
-**Font size**: 9pt (header), 8.5pt (body)
+**Header row background**: `COLOR_BRAND_BLUE` (#1A365D)  
+**Header text**: `colors.whitesmoke`, `Helvetica-Bold`, size 9  
+**Body rows**: Alternating backgrounds `[white, #f7fafc]`  
+**Grid**: `0.5pt`, color `#cbd5e0`  
+**Padding**: 4pt all sides  
+**Font size**: 9pt (header), 8.5pt (body)  
 
-#### 7. Footer & Pagination (fancyhdr equivalent)
+#### 7. Footer & Pagination
 Implement using `onFirstPage` and `onLaterPages` callbacks:
-- **Footer text** (centered, size 8, gray #718096): Use bilingual dictionaries:
-  - ES: `"Informe generado por Hermes Agent | {site_url}"`
-  - EN: `"Report generated by Hermes Agent | {site_url}"`
+- **Footer text** (centered, size 8, gray #718096): Use bilingual dictionaries with dynamic agent name:
+  - ES: `"Informe generado por {{agent_name}} | {site_url}"`
+  - EN: `"Report generated by {{agent_name}} | {site_url}"`
 - **Page number** (centered, below footer): 
   - ES: `"Página {page_num}"`
   - EN: `"Page {page_num}"`
-- **Implementation**: Define `footer_text_es`, `footer_text_en`, `page_label_es`, `page_label_en`, then select based on `lang`
-- Positions: Footer at **25pt** from bottom, Page number at **15pt** from bottom
-
-#### Section Headings (MUST use bilingual dictionaries)
-- **English examples**: `SECTIONS[lang]['summary']` → "1. Executive Summary", `SECTIONS[lang]['technical']` → "2. Technical Audit"
-- **Spanish examples**: `SECTIONS[lang]['summary']` → "1. Resumen Ejecutivo", `SECTIONS[lang]['technical']` → "2. Auditoría Técnica"
-- Color: `COLOR_BRAND_BLUE`
-- Font: `Helvetica-Bold`, size 13, leading 15
-- Spacing: `spaceBefore=12`, `spaceAfter=8`
-
-DO NOT hard-code section titles like `"1. Resumen Ejecutivo"` or `"2. Auditoría Técnica"`. Always use `SECTIONS[lang]['summary']`, `SECTIONS[lang]['technical']`, etc.
-
-#### Body Text
-- Font: `Helvetica`, size 10, leading 13
-- Alignment: `TA_JUSTIFY` (justified)
-- Color: Black, optional use of `<b>` and `<code>` inline tags
 
 ---
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-19  
-Version: 1.1.0
+Last Updated: 2026-09-28  
+Version: 1.2.0

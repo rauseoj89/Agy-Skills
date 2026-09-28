@@ -1,10 +1,10 @@
 ---
 name: managing-system-operations
 description: Automates local backup routines, organizes project directories, checks system settings, and diagnoses logs. Use when asked to manage folders, run cleanups, set up local backups, diagnose diagnostic issues, or automate scripts.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, operations, system, backup]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-18
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -13,7 +13,7 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Automate repetitive directory management tasks, protect local data integrity, and diagnose local systems efficiently.
+Automate repetitive directory management tasks, protect local data integrity, and diagnose local systems efficiently without depending on external NAS orchestration tools.
 
 ## 🕒 When to Use
 
@@ -35,8 +35,10 @@ Automate repetitive directory management tasks, protect local data integrity, an
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Execute local copy and organize commands (tar, Move-Item, etc.)
-# Use get_system_stats to verify system health
+# Verify disk space using native PowerShell or df:
+# Windows PowerShell: Get-PSDrive -PSProvider FileSystem
+# Linux: df -h
+# Use filesystem-mcp tools: move_file, get_file_info, list_directory
 ```
 
 ### ▶️ If you are on Hermes Agent:
@@ -46,18 +48,19 @@ Automate repetitive directory management tasks, protect local data integrity, an
 result = terminal(command="tar -czf backup.tar.gz ./src", timeout=120)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use filesystem MCP and terminal to compress and organize files
-const result = await shell.exec("tar -czf backup.tar.gz ./src");
+// Use filesystem MCP to check file info and move files safely
+const fileInfo = await filesystem.get_file_info({ path: "large_log.log" });
+await filesystem.move_file({ source: "old_path.txt", destination: "archive/old_path.txt" });
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
 # Provide exact PowerShell or bash script for user execution:
-# Ask: "Run this command to create the backup: tar -czf backup.tar.gz ./src"
+# Windows: Compress-Archive -Path ./src -DestinationPath backup.zip
 ```
 
 ### ⚠️ If you do NOT have tools (Manual Fallback):
@@ -72,9 +75,9 @@ const result = await shell.exec("tar -czf backup.tar.gz ./src");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Compress files | `tar` / `terminal()` | Provide compression command to user |
-| Check disk space | `get_system_stats()` | Ask user to run `df -h` or check file explorer |
-| Organize files | `write_to_file()` / `terminal("mv")` | Generate file relocation script for user |
+| Compress files | `tar` / `Compress-Archive` | Provide compression command to user |
+| Check disk space | PowerShell: `Get-PSDrive` / POSIX: `df -h` | Ask user to check file explorer or run `df -h` |
+| Organize files | `filesystem.move_file()`, `filesystem.get_file_info()` | Generate file relocation script for user |
 
 ---
 
@@ -88,5 +91,5 @@ const result = await shell.exec("tar -czf backup.tar.gz ./src");
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-18  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

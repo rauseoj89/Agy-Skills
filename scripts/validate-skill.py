@@ -11,7 +11,9 @@ if sys.platform.startswith('win'):
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 def validate_skill(file_path: Path) -> bool:
-    content = file_path.read_text(encoding="utf-8")
+    raw_content = file_path.read_text(encoding="utf-8")
+    # Normalize CRLF to LF for consistent validation across operating systems
+    content = raw_content.replace("\r\n", "\n")
     issues = []
     
     # 1. Verify frontmatter
@@ -47,6 +49,21 @@ def validate_skill(file_path: Path) -> bool:
         print(f"✅ {file_path}: Valid")
         return True
 
+def should_skip(file_path: Path) -> bool:
+    name_lower = file_path.name.lower()
+    path_lower = str(file_path).lower()
+    
+    # Skip documentation, instructions, reviews, and templates by explicit filenames or directory components
+    if any(k in name_lower for k in ["template", "readme", "migration", "instruction", "website_post"]):
+        return True
+    if name_lower.endswith(".bak"):
+        return True
+    # Skip dedicated review / resource directories
+    parts_lower = [p.lower() for p in file_path.parts]
+    if "chg-review" in parts_lower or "resources" in parts_lower:
+        return True
+    return False
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         skill_file = Path(sys.argv[1])
@@ -59,9 +76,8 @@ if __name__ == "__main__":
     total_count = 0
     
     for ext in ["md", "md.universal"]:
-        for skill_file in Path(".").rglob(f"*.{ext}"):
-            # Skip templates, readmes, guides, posts, chg-reviews, and security directives resources
-            if any(p in str(skill_file).lower() for p in ["template", "readme", "migration", "instruction", ".bak", "post", "chg-review", "resources/", "resources\\", "resources"]):
+        for skill_file in sorted(Path(".").rglob(f"*.{ext}")):
+            if should_skip(skill_file):
                 continue
             total_count += 1
             if validate_skill(skill_file):

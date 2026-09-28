@@ -1,10 +1,10 @@
 ---
 name: managing-secrets-and-vaults
 description: Secures system credentials, manages API keys, rotates environment variables, and orchestrates integration with secure vaults. Use when requested to configure environment keys, edit secrets, retrieve items from Vault, or secure sensitive configurations.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, security, vault, secrets]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-18
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -27,7 +27,7 @@ Enforce bulletproof security for application credentials, ensuring zero secrets 
 1. **The Redaction Protocol**: Strip or replace plaintext passwords/keys with `[REDACTED]` or `********` in all logs, screenshots, and terminal outputs.
 2. **Git-Leak Defense**: Force target config files (like `.env`) to be explicitly in `.gitignore` before writing secrets to them.
 3. **Atomic Secret File Writes**: Never edit environment files directly. Write updates to `.env.tmp` first, then replace.
-4. **Least Privilege**: Query specific paths rather than reading all credentials in bulk.
+4. **Least Privilege & Namespacing**: Query specific namespaces and keys rather than reading all credentials in bulk.
 
 ---
 
@@ -36,23 +36,28 @@ Enforce bulletproof security for application credentials, ensuring zero secrets 
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Interact with vault-bridge-mcp to read or rotate secrets
-# Use local system variables securely
+# Interact with vault-bridge-mcp tools:
+# get_secret, put_secret, list_secrets, rotate_secret, audit_secret_access
 ```
 
 ### ▶️ If you are on Hermes Agent:
 
 ```python
-# Load secrets dynamically using hermes_secrets or environment variables
+# Load secrets dynamically using environment variables or vault bridge
 import os
-db_pass = os.getenv("DB_PASSWORD") or hermes_secrets.get("db_password")
+db_pass = os.getenv("DB_PASSWORD")
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Call vault MCP or vault-bridge-mcp to retrieve secrets
-const secret = await vault.getSecret({ path: "production/db", key: "password" });
+// Call vault_bridge tools with mandatory namespace parameter
+const secret = await vault_bridge.get_secret({
+  namespace: "production",
+  path: "db",
+  key: "password"
+});
+const catalog = await vault_bridge.list_secrets({ namespace: "production" });
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
@@ -74,9 +79,11 @@ const secret = await vault.getSecret({ path: "production/db", key: "password" })
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Retrieve secret | `get_secret()` / `vault.getSecret()` | Ask user to configure variable locally |
+| Retrieve secret | `vault_bridge.get_secret({namespace, path, key})` | Ask user to configure variable locally |
+| List secret keys | `vault_bridge.list_secrets({namespace})` | Ask user to check vault inventory |
 | Write .env file | Write via `.env.tmp` and atomic rename | Provide environment variable template to user |
-| Rotate credential | `rotate_secret()` | Provide step-by-step rotation guide to user |
+| Rotate credential | `vault_bridge.rotate_secret({namespace, path, key})` | Provide step-by-step rotation guide to user |
+| Audit access | `vault_bridge.audit_secret_access({namespace})` | Review audit logs in Vault console |
 
 ---
 
@@ -85,10 +92,11 @@ const secret = await vault.getSecret({ path: "production/db", key: "password" })
 - The `.env` file is declared in `.gitignore`.
 - Zero plaintext secrets exist in console or agent logs.
 - Temporary `.tmp` secret buffers were cleaned up after writing.
+- Secret calls explicitly include the target namespace parameter.
 
 ---
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-18  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

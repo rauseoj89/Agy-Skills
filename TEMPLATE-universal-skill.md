@@ -3,7 +3,7 @@ name: <kebab-case-name>
 description: <One clear line>
 version: 1.0.0
 tags: [universal, <tag1>, <tag2>]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode, Claude-Code]
 last_updated: <YYYY-MM-DD>
 author: <your-name>
 powered_by: AntigravityAI
@@ -30,18 +30,25 @@ powered_by: AntigravityAI
 
 ## 🤖 Multi-Agent Execution
 
-### ▶️ If you are on [Agent A]:
+### ▶️ If you are on Antigravity / OpenCode:
 
 ```bash
-# Example with specific commands for Agent A
-agent-a-command --flag
+# Example with native tools or MCP calls
+agent-command --flag
 ```
 
-### ▶️ If you are on [Agent B]:
+### ▶️ If you are on Claude Code:
 
 ```bash
-# Example with specific commands for Agent B
-agent-b-command --flag
+# Use Claude Code tools (Bash, ReadFile, EditFile)
+claude-code-command --flag
+```
+
+### ▶️ If you are on Cline / Roo-Code:
+
+```javascript
+// Example using MCP tools in Cline/Roo-Code
+await tool.execute({ param: "value" });
 ```
 
 ### ⚠️ If you do NOT have tools:
@@ -58,17 +65,17 @@ agent-b-command --flag
 | :--- | :--- | :--- |
 | Read file | read_file() | Ask user to paste |
 | Execute command | terminal() | Generate command for user |
-| Search context | session_search() | Ask user for context |
 
 ────────────────────────────────────
 
 ## ✅ Verification
 
-• Success signal 1
-• Success signal 2
-• Success signal 3
+- [ ] Check 1
+- [ ] Check 2
+- [ ] Check 3
+- [ ] Check 4 (Zero plaintext secrets or private IPs)
 
-────────────────────────────────────
+---
 
 **Author:** <your-name>  
 **Powered by:** AntigravityAI  

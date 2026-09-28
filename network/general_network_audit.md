@@ -1,10 +1,10 @@
 ---
 name: general-network-audit
-description: Performs network configuration audits, scanning for plain-text secrets, default credentials, inadequate VLAN segmentation, and outdated management protocols.
-version: 1.0.0
+description: Performs network configuration audits, scanning for plain-text secrets, default credentials, inadequate VLAN segmentation, open listening sockets, and outdated management protocols.
+version: 1.1.0
 tags: [universal, network, security, audit]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-18
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -13,12 +13,13 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Perform a comprehensive network configuration audit to identify vulnerabilities, credential leaks, segmentation weaknesses, and unsecure protocol usage. Outputs a timestamped audit report with an executive summary.
+Perform a comprehensive network configuration and listening port audit to identify vulnerabilities, credential leaks, segmentation weaknesses, open listening sockets, and unsecure protocol usage. Outputs a timestamped audit report with an executive summary.
 
 ## 🕒 When to Use
 
 - When conducting network configuration audits to identify vulnerabilities.
 - When reviewing VLAN segmentation policies or firewall rules.
+- When correlating open listening network sockets with active firewall policies.
 - When scanning for default passwords or insecure management protocols (Telnet, HTTP, SNMPv1/v2).
 
 ## 🛡️ Universal Principles
@@ -36,7 +37,8 @@ Perform a comprehensive network configuration audit to identify vulnerabilities,
 
 ```bash
 # Read router, switch, or firewall configuration files
-# Use read_file to scan configuration directives
+# Audit listening network sockets via security-scanner-mcp:
+# audit_listening_ports(protocol="all")
 ```
 
 ### ▶️ If you are on Hermes Agent:
@@ -46,10 +48,11 @@ Perform a comprehensive network configuration audit to identify vulnerabilities,
 config = read_file(path="switch_config.cfg")
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use filesystem MCP to analyze network configuration files
+// Scan listening ports and analyze network configurations
+const ports = await security_scanner.audit_listening_ports({ target_host: "localhost", protocol: "all" });
 const config = await filesystem.readFile("firewall.conf");
 ```
 
@@ -72,9 +75,10 @@ const config = await filesystem.readFile("firewall.conf");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Read configuration files | `read_file()` | Ask user to paste configuration |
+| Inspect listening sockets | `security_scanner.audit_listening_ports()` | Terminal: `netstat -ano` (Windows) / `ss -tulpn` (Linux) |
+| Read configuration files | `filesystem-mcp.read_file()` | Ask user to paste configuration |
 | Validate IPs and subnets | Automated verification scripts | Manual visual review by AI |
-| Export audit report | `write_to_file()` | Output Markdown report for user to save |
+| Export audit report | `filesystem-mcp.write_file()` | Output Markdown report for user to save |
 
 ---
 
@@ -83,10 +87,11 @@ const config = await filesystem.readFile("firewall.conf");
 - No actual passwords are listed in outputs.
 - Vulnerabilities are categorized by severity levels (Critical, High, Medium, Low).
 - Encrypted alternatives are proposed for every unsecure protocol detected.
+- Active listening ports have corresponding verified firewall rules.
 
 ---
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-18  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

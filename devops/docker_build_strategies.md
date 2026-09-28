@@ -1,10 +1,10 @@
 ---
 name: docker-build-strategies
 description: Strategies for efficient, secure, and optimized Docker image builds. Use when writing, reviewing, or optimizing Dockerfiles, handling multi-stage builds, BuildKit cache mounts, secret mounts, .dockerignore hygiene, and distroless runtimes.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, devops, docker, buildkit, multi-stage, caching, security]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-09-26
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -49,7 +49,7 @@ DOCKER_BUILDKIT=1 docker build --secret id=npmrc,src=.npmrc -t myapp:latest .
 result = terminal(command="DOCKER_BUILDKIT=1 docker buildx build --tag myapp:latest .", timeout=300)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
 // Use terminal or integrated shell command
@@ -59,15 +59,15 @@ const result = await shell.exec("docker buildx build -t app:latest .");
 ### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
-# Ask the user to run the build with BuildKit:
-# "Execute 'DOCKER_BUILDKIT=1 docker build -t my-app .' to validate syntax and caching."
+# Provide optimized Dockerfile with BuildKit directives:
+# "Review Dockerfile layer ordering and enforce package cache mounts."
 ```
 
 ### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Design the optimized `Dockerfile` following multi-stage patterns and cache mounts.
-2. Design an exhaustive `.dockerignore` file blocking `.git`, `.env*`, `node_modules`, `tests/`.
-3. Provide the exact build instructions to the user with BuildKit flags.
+1. Generate optimized, multi-stage `Dockerfile` and `.dockerignore`.
+2. Instruct the user: "Build image using `DOCKER_BUILDKIT=1 docker build -t myapp .`".
+3. Request build output logs to verify cache utilization.
 
 ---
 
@@ -75,23 +75,22 @@ const result = await shell.exec("docker buildx build -t app:latest .");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Image build | `docker buildx build` via terminal/MCP | Generate command with flags and ask user to run |
-| Inspect layers | `docker history` / `docker_inspect()` | Ask for `docker history <image>` output |
-| Size diagnostics | `docker images --format` | Request image size report from user |
+| Build container image | Terminal: `docker buildx build` | Provide command line for manual build |
+| Inspect image history | Terminal: `docker history <image>` | Ask user to run `docker history` |
+| Inspect image size | Terminal: `docker image ls` | Ask user to check image size |
 
 ---
 
 ## ✅ Verification
 
-- The first line is `# syntax=docker/dockerfile:1`.
-- A `.dockerignore` file exists and prevents leakage of secrets and development files.
-- The final user in the production image is explicitly non-root.
-- No secrets or tokens are stored in `ARG` or `ENV` variables.
-- Subsequent builds successfully leverage cache mounts.
+- First line contains `# syntax=docker/dockerfile:1`.
+- Multi-stage architecture isolates build tools from runtime.
+- No plaintext credentials exist in `ENV` or `ARG` declarations.
+- Container executes as non-root user.
 
 ---
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-26  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

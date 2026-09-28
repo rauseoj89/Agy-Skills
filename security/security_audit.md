@@ -1,10 +1,10 @@
 ---
 name: security-audit
 description: Autonomous coverage-led vulnerability hunting harness. Use for comprehensive security audits, code reviews, penetration tests, or vulnerability research across APIs, microservices, daemons, and client applications.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, security, audit, penetration-testing, vulnerability-hunting, adversarial-verification]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-09-26
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -13,7 +13,7 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Conduct systematic, coverage-led vulnerability discovery and penetration auditing across codebases, APIs, and microservices using Cloudflare's 6-phase audit harness: reconnaissance, coverage ledger mapping, isolated hunting, adversarial disproof verification, schema validation, and multi-document reporting.
+Conduct systematic, coverage-led vulnerability discovery and penetration auditing across codebases, APIs, and microservices using Cloudflare's 6-phase audit harness: reconnaissance, coverage ledger mapping, isolated hunting, adversarial disproof verification, schema validation with `security-scanner-mcp`, and multi-document reporting.
 
 ## 🕒 When to Use
 
@@ -37,7 +37,7 @@ Conduct systematic, coverage-led vulnerability discovery and penetration auditin
 1. **Phase 1 — Reconnaissance & Mapping:** Identify trust boundaries, sensitive data flows, and compile `coverage-ledger.json`.
 2. **Phase 2 — Coverage-Led Hunting:** Evaluate each unit against OWASP vectors, injections (SQL/Command/SSRF), business logic flaws, and AI risks.
 3. **Phase 3 — Adversarial Disproof:** Attempt to refute the exploitability of the candidate finding. Trace untrusted taint flow to sink.
-4. **Phase 4 — Structured Schema Output:** Generate `findings.json` with severity, CWE, and attack vector metadata.
+4. **Phase 4 — Structured Schema Output:** Generate `findings.json` with severity, CWE, and attack vector metadata. Validate using `security_scanner.validate_audit_findings`.
 5. **Phase 5 — Citation Verification:** Re-check that all cited lines and files exist and match current codebase state.
 6. **Phase 6 — Multi-Document Reporting:** Publish executive summary `REPORT.md` with prioritized mitigation roadmap.
 
@@ -48,8 +48,9 @@ Conduct systematic, coverage-led vulnerability discovery and penetration auditin
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Execute findings schema validation
-node -e 'const f = require("./findings.json"); console.log(`Total Findings: ${f.findings?.length || 0}`);'
+# Execute findings schema validation via security-scanner-mcp:
+# validate_audit_findings(findings_path="findings.json", ledger_path="coverage-ledger.json")
+# scan_dependency_vulnerabilities(manifest_path="package.json", ecosystem="npm")
 ```
 
 ### ▶️ If you are on Hermes Agent:
@@ -61,11 +62,18 @@ routes = [f for f in os.listdir(".") if f.endswith(".go") or f.endswith(".ts")]
 print(f"Coverage candidates: {len(routes)}")
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Read route and controller structure to build coverage-ledger.json
-const files = await listFiles("src/controllers");
+// Validate findings schema and check dependency vulnerabilities
+await security_scanner.validate_audit_findings({
+  findings_path: "findings.json",
+  ledger_path: "coverage-ledger.json"
+});
+await security_scanner.scan_dependency_vulnerabilities({
+  manifest_path: "package.json",
+  ecosystem: "npm"
+});
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
@@ -88,7 +96,8 @@ const files = await listFiles("src/controllers");
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
 | Map attack surface | `find` / `grep` / directory listing | Ask user for file tree and primary route files |
-| Schema validation | JSON validation script / linter | Manual inspection of keys in `findings.json` |
+| Schema validation | `security_scanner.validate_audit_findings()` | Manual inspection of keys in `findings.json` |
+| CVE scanning | `security_scanner.scan_dependency_vulnerabilities()` | Ask user to run `npm audit` / `pip-audit` |
 | Code verification | `view_file` / offset-based reading | Ask user for exact code snippet around sink |
 
 ---
@@ -104,5 +113,5 @@ const files = await listFiles("src/controllers");
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-26  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

@@ -1,10 +1,10 @@
 ---
 name: browser-testing
-description: Automates browser-based E2E testing, visual regression, Lighthouse audits, and interactive UI validation using chrome-devtools. Use when asked to test web pages, run accessibility audits, capture screenshots, validate UI flows, or perform visual regression testing.
-version: 1.1.0
+description: Automates browser-based E2E testing, visual regression, Lighthouse audits, and interactive UI validation using browser-tools-mcp. Use when asked to test web pages, run accessibility audits, capture screenshots, validate UI flows, or perform visual regression testing.
+version: 1.2.0
 tags: [universal, devops, browser, testing]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-18
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -13,7 +13,7 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Run automated browser scripts, capture frontend performance metrics, audit accessibility (WCAG), and verify frontend integrity using browser control tools.
+Run automated browser scripts, capture frontend performance metrics, audit accessibility (WCAG), and verify frontend integrity using `browser-tools-mcp` tools.
 
 ## 🕒 When to Use
 
@@ -26,7 +26,7 @@ Run automated browser scripts, capture frontend performance metrics, audit acces
 
 1. **Security & Redaction**: Never leak plaintext passwords/keys in screenshots, logs, or inputs. Use environment variables.
 2. **No Hardcoded Absolute Paths**: Save screenshots in relative project folders (e.g. `./screenshots/`).
-3. **HTTPS Enforcement**: All communications must enforce HTTPS.
+3. **HTTPS Enforcement**: All external communications must enforce HTTPS.
 4. **Navigation Stabilisation**: Always wait for elements to load to prevent race conditions.
 
 ---
@@ -36,43 +36,40 @@ Run automated browser scripts, capture frontend performance metrics, audit acces
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Use native chrome-devtools plugin / integrated tools
-# Capture screenshots, inspect DOM, and perform audits
+# Use browser-tools-mcp tools / native browser integration:
+# new_page, navigate_page, take_snapshot, lighthouse_audit
 ```
 
 ### ▶️ If you are on Hermes Agent:
 
 ```python
-# Use Python scripts with playwright or selenium, or integrated Hermes tools
-# If available, call the corresponding chrome-devtools tools
+# Use Python scripts with playwright or browser-tools-mcp
+# Call new_page and take_snapshot for visual verification
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use the chrome-devtools-mcp MCP to navigate and test
-const page = await chrome_devtools.navigate_page({ url: "http://localhost:3000" });
+// Use browser-tools-mcp to navigate, snapshot, and inspect
+await browser_tools.new_page();
+await browser_tools.navigate_page({ url: "http://localhost:3000" });
+const snapshot = await browser_tools.take_snapshot();
+const audit = await browser_tools.lighthouse_audit({ url: "http://localhost:3000" });
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```bash
-# Launch Chrome with remote debugging for MCP connection or Playwright:
-# macOS:
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_profile"
-
-# Linux:
-google-chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_profile"
-
+# Launch Chrome with remote debugging for MCP connection:
 # Windows PowerShell:
 & "$env:ProgramFiles\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="$env:TEMP\chrome_dev_profile"
 ```
 
 ### ⚠️ If you do NOT have tools (Manual Fallback):
 
-1. Generate a local test script (Playwright, Cypress, Selenium).
-2. Ask the user: "Please save this test script and execute it locally".
-3. Request that the user paste the test results and any captured screenshots.
+1. Generate a local test script (Playwright, Cypress, Puppeteer).
+2. Ask user: "Please save this test script and execute it locally".
+3. Request that user paste the test results and captured screenshots.
 
 ---
 
@@ -80,9 +77,10 @@ google-chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_prof
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Open page / Navigate | `navigate_page()` or MCP tools | Ask user to visit the URL in their local browser |
-| Capture screenshot | `take_screenshot()` | Ask user to provide a screenshot |
-| Run Lighthouse | `lighthouse_audit()` | Ask user to run Lighthouse in Chrome DevTools and report |
+| Open page / Navigate | `new_page()`, `navigate_page()` | Ask user to visit URL in browser |
+| Inspect DOM / Layout | `take_snapshot()`, `take_screenshot()` | Ask user to inspect elements |
+| Run Lighthouse | `lighthouse_audit()` | Ask user to run Lighthouse in DevTools |
+| Console / Network log | `list_console_messages()`, `list_network_requests()` | Ask user to check Console/Network tab |
 
 ---
 
@@ -96,5 +94,5 @@ google-chrome --remote-debugging-port=9222 --user-data-dir="/tmp/chrome_dev_prof
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-18  
-Version: 1.1.0
+Last Updated: 2026-09-28  
+Version: 1.2.0

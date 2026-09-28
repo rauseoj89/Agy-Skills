@@ -1,10 +1,10 @@
 ---
 name: client-onboarding
 description: Structured MSP client onboarding checklist: network discovery, vault credential setup, monitoring enrollment, PSA company setup, and documentation.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, operations, onboarding]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-18
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -13,7 +13,7 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Execute a complete, repeatable MSP client onboarding workflow — from initial intake through network discovery, credential vaulting, monitoring enrollment, PSA record creation, and handoff documentation.
+Execute a complete, repeatable MSP client onboarding workflow — from initial intake through network discovery, credential vaulting with `vault-bridge-mcp`, monitoring enrollment, PSA record creation (via `connectwise-mcp` or vendor portal), and handoff documentation.
 
 ## 🕒 When to Use
 
@@ -23,7 +23,7 @@ Execute a complete, repeatable MSP client onboarding workflow — from initial i
 
 ## 🛡️ Universal Principles
 
-1. **Credentials Vaulting**: Receive credentials only via secure channels. Vault immediately; never store in plaintext files or notes.
+1. **Credentials Vaulting**: Receive credentials only via secure channels. Store immediately using `vault_bridge.put_secret`; never store in plaintext files or notes.
 2. **Secrets Gate**: Confirmed zero credentials exist in ticket notes, documentation files, or session logs.
 3. **Least Privilege**: Configure monitoring agents and administration accounts with minimal required privileges.
 
@@ -34,29 +34,36 @@ Execute a complete, repeatable MSP client onboarding workflow — from initial i
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Integrate with psa-mcp to search companies and create tickets
-# Record information into the workspace
+# Vault credentials securely via vault-bridge-mcp:
+# vault_bridge.put_secret({ namespace: "clients", path: "client-name/domain-admin", key: "password", value: "..." })
+# Record client configuration into workspace
 ```
 
 ### ▶️ If you are on Hermes Agent:
 
 ```python
-# Use terminal or Hermes ticketing tools if configured
-# Otherwise, use manual fallback
+# Vault secret via secure API or environment variable
+# If ticketing MCP is configured, register onboarding ticket
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use tools from psa-mcp if installed in your client
-const company = await psa.searchCompanies({ name: "Client" });
+// Store credentials in Vault and query client configuration via ConnectWise MCP reference
+await vault_bridge.put_secret({
+  namespace: "clients",
+  path: "acme-corp/admin",
+  key: "credential",
+  value: "SecureSecretToken"
+});
+const config = await connectwise.cw_get_company_configuration({ company_id: "ACME" });
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
 
 ```python
 # Guide the human operator through UI steps:
-# Ask: "Create the company in PSA and provide the resulting ID."
+# Ask: "Create the company in ConnectWise PSA and provide the resulting ID."
 ```
 
 ### ⚠️ If you do NOT have tools (Manual Fallback):
@@ -72,15 +79,16 @@ const company = await psa.searchCompanies({ name: "Client" });
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Search PSA Company | `psa.searchCompanies()` | Ask user for confirmation in PSA portal |
-| Create Ticket | `psa.createTicket()` | Instruct user to create onboarding ticket manually |
-| Save Runbook | `write_to_file()` | Display Runbook markdown for user to save |
+| Store client secrets | `vault_bridge.put_secret()` | Instruct user to store in password manager/vault |
+| Query PSA Company | `connectwise.cw_get_company_configuration()` | Ask user for confirmation in PSA portal |
+| Update/List Tickets | `connectwise.cw_list_tickets()`, `cw_update_ticket()` | Instruct user to update onboarding ticket manually |
+| Save Runbook | `filesystem.write_file()` | Display Runbook markdown for user to save |
 
 ---
 
 ## ✅ Verification
 
-- Credentials stored safely in vault.
+- Credentials stored safely in vault (`vault_bridge.put_secret`).
 - Onboarding ticket created in PSA.
 - RMM agents and backups (Veeam/Axcient) verified reporting successfully.
 
@@ -88,5 +96,5 @@ const company = await psa.searchCompanies({ name: "Client" });
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-18  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

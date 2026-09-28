@@ -1,10 +1,10 @@
 ---
 name: systematic-debugging
 description: Root-cause-first software debugging and bug fixing harness. Enforces reproduction before modification, surgical minimal patching, and regression verification (Assess -> Fix -> Test).
-version: 1.0.0
+version: 1.1.0
 tags: [universal, engineering, operations, debugging, troubleshooting, root-cause, testing]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-09-26
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -52,7 +52,7 @@ pytest
 result = terminal(command="npm test", timeout=120)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
 // Run the specific reproduction test
@@ -79,8 +79,8 @@ const result = await shell.exec("npx jest -t 'handles null user token'");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Run tests | `terminal("npm test")` / MCP | Ask user to run command and paste log |
-| Analyze logs | `docker_logs` / `parse_log_file` | Request last 50 lines of error log |
+| Run tests | `terminal("npm test")` / CLI | Ask user to run command and paste log |
+| Analyze logs | `data_analyst.parse_log_file()` / `docker logs` | Request last 50 lines of error log |
 | Apply patches | File editing tools | Provide unified diff blocks (`diff -u`) |
 
 ---
@@ -97,5 +97,5 @@ const result = await shell.exec("npx jest -t 'handles null user token'");
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-26  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

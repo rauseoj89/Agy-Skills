@@ -1,10 +1,10 @@
 ---
 name: host-security-audit
 description: Audits Linux VPS, servers, and host OS security configurations. Inspects SSH hardening, firewall status (UFW/nftables/iptables), Fail2ban/CrowdSec alignment, SUID binaries, sudo logging, open ports, and resource consumption.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, security, linux, vps, hardening, ssh, firewall, fail2ban]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-09-26
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -13,7 +13,7 @@ powered_by: AntigravityAI
 
 ## 🎯 Objective
 
-Audit, diagnose, and harden Linux Virtual Private Servers (VPS) and host operating systems, ensuring minimal attack surfaces, strict SSH policies, synchronized intrusion detection systems (Fail2ban/CrowdSec), and least-privilege configurations.
+Audit, diagnose, and harden Linux Virtual Private Servers (VPS) and host operating systems, ensuring minimal attack surfaces, strict SSH policies, synchronized intrusion detection systems (Fail2ban/CrowdSec), and least-privilege configurations using `security-scanner-mcp`.
 
 ## 🕒 When to Use
 
@@ -38,9 +38,9 @@ Audit, diagnose, and harden Linux Virtual Private Servers (VPS) and host operati
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Non-destructive port and firewall inspection
-ss -tulpn
-sudo ufw status verbose
+# Execute host security audit and listening port scans via security-scanner-mcp:
+# audit_host_security(checks=["ssh", "firewall", "fail2ban"])
+# audit_listening_ports(protocol="all")
 ```
 
 ### ▶️ If you are on Hermes Agent:
@@ -50,11 +50,18 @@ sudo ufw status verbose
 result = terminal(command="grep -E '^(PermitRootLogin|PasswordAuthentication|Port)' /etc/ssh/sshd_config", timeout=30)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Diagnose listening sockets and ports
-const sockets = await shell.exec("ss -tulpn | grep LISTEN");
+// Run security-scanner MCP tools to audit host and ports
+const hostAudit = await security_scanner.audit_host_security({
+  target_host: "localhost",
+  checks: ["ssh", "firewall", "fail2ban"]
+});
+const portAudit = await security_scanner.audit_listening_ports({
+  target_host: "localhost",
+  protocol: "all"
+});
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
@@ -76,10 +83,10 @@ const sockets = await shell.exec("ss -tulpn | grep LISTEN");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Inspect sockets | `ss -tulpn` via terminal | Ask user for `ss -tulpn` output |
-| Firewall status | `ufw status` / `iptables -L -n -v` | Ask user for active firewall rules output |
-| SSH configuration | Read `/etc/ssh/sshd_config` | Ask user for grep-filtered sshd_config lines |
-| SUID binaries | `find / -perm -4000 2>/dev/null` | Provide command and ask user to review unusual binaries |
+| Host security check | `security_scanner.audit_host_security()` | Grep `/etc/ssh/sshd_config` and check ufw status |
+| Inspect sockets | `security_scanner.audit_listening_ports()` | Terminal: `ss -tulpn` or `netstat -ano` |
+| Validate audit report | `security_scanner.validate_audit_findings()` | Visual check of findings schema |
+| SUID binaries | `find / -perm -4000 2>/dev/null` | Ask user to run find command and report |
 
 ---
 
@@ -95,5 +102,5 @@ const sockets = await shell.exec("ss -tulpn | grep LISTEN");
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-26  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0

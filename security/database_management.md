@@ -1,10 +1,10 @@
 ---
 name: db-manager
 description: Maintains database schema integrity, security, and performance. Serves as the sole authority for DDL operations, access control, and index optimization. Use when requested to perform migrations, modify tables, tune queries, or adjust database privileges.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, security, database, sql]
-compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-07-18
+compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
+last_updated: 2026-09-28
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -20,7 +20,7 @@ Maintain database schema integrity, security, and performance across PostgreSQL,
 - When performing structural schema changes (DDL) on databases (tables, schemas, indexes).
 - When authoring, reviewing, and applying database migration scripts.
 - When configuring roles, permissions, and grants according to least-privilege principles.
-- When optimizing indexes or troubleshooting query latency (`EXPLAIN`).
+- When optimizing indexes or troubleshooting query latency (`explain_query`).
 
 ## 🛡️ Universal Principles
 
@@ -36,8 +36,8 @@ Maintain database schema integrity, security, and performance across PostgreSQL,
 ### ▶️ If you are on Antigravity:
 
 ```bash
-# Use postgres-mcp to list databases or describe tables
-# Execute secure SQL queries in the workspace
+# Use postgres-mcp tools to inspect schemas and execute queries:
+# list_schemas, list_tables, describe_table, execute_query
 ```
 
 ### ▶️ If you are on Hermes Agent:
@@ -47,11 +47,12 @@ Maintain database schema integrity, security, and performance across PostgreSQL,
 result = terminal(command="psql -d production_db -f migration.sql", timeout=120)
 ```
 
-### ▶️ If you are on Cline / Roo Code:
+### ▶️ If you are on Cline / Roo Code / OpenCode:
 
 ```javascript
-// Use postgres-mcp tools to inspect schemas
-const result = await postgres.executeQuery("SELECT * FROM users LIMIT 1;");
+// Use postgres-mcp tools to inspect schemas and run queries
+const tables = await postgres.list_tables({ schema: "public" });
+const result = await postgres.execute_query({ sql: "SELECT * FROM users LIMIT 10;", max_rows: 10 });
 ```
 
 ### ▶️ If you are on GitHub Copilot / Cursor:
@@ -73,9 +74,9 @@ const result = await postgres.executeQuery("SELECT * FROM users LIMIT 1;");
 
 | Feature / Capability | With Tools | Without Tools |
 | :--- | :--- | :--- |
-| Inspect tables | `list_tables()` or `describe_table()` | Ask user to query system catalog |
-| Execute SQL | `execute_query()` / `query()` | Generate SQL file and provide local execution instructions |
-| Query diagnostics | `explain` / `query_plan` | Ask user to run `EXPLAIN ANALYZE` and paste output |
+| Discover schemas & tables | `list_schemas()`, `list_tables()`, `describe_table()` | Query system catalogs (`information_schema.tables`) |
+| Execute SQL | `execute_query(sql, max_rows)` | Generate SQL file and provide local CLI execution steps |
+| Query diagnostics | `explain_query(sql)` | Ask user to run `EXPLAIN ANALYZE` and paste output |
 
 ---
 
@@ -89,5 +90,5 @@ const result = await postgres.executeQuery("SELECT * FROM users LIMIT 1;");
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-07-18  
-Version: 1.0.0
+Last Updated: 2026-09-28  
+Version: 1.1.0
