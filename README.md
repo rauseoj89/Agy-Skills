@@ -48,7 +48,8 @@ agy-skills/
 │   ├── docker_destructive_guardrails.md  # 3-tier risk classification & confirmation gates for Docker
 │   ├── docker_project_foundations.md     # Scaffolding the foundational triad (.dockerignore, Dockerfile, compose)
 │   ├── managing_cicd.md                  # GitHub Actions, secrets mapping & pinned runners
-│   └── managing_containers.md            # Multi-stage, non-root Docker builds & diagnostics
+│   ├── managing_containers.md            # Multi-stage, non-root Docker builds & diagnostics
+│   └── managing_git_workflows.md         # Interactive semantic commits, logical splitting & PR workflows
 ├── marketing/
 │   └── seo_audit.md                      # Technical SEO audits, meta validation & bilingual reports
 ├── network/
@@ -104,6 +105,7 @@ agy-skills/
 *   **[Browser Testing Specialist](devops/browser_testing.md):** Automates browser E2E workflows, visual regressions, and Lighthouse audits.
 *   **[Database Security Administrator](security/database_management.md):** Governs database schemas, indexes, role separation, and DDL migrations.
 *   **[CI/CD Pipeline Specialist](devops/managing_cicd.md):** Configures automated pipelines, dependency audits, and secrets mapping.
+*   **[Git Workflow Specialist](devops/managing_git_workflows.md):** Enforces interactive semantic commits, logical commit group splitting, scoped staging, branching strategies, and PR reviews.
 *   **[API Architect & Designer](data/designing_apis.md):** Designs RESTful and GraphQL API contracts, schemas, and OpenAPI 3.1 YAML specifications.
 *   **[General Network Auditor](network/general_network_audit.md):** Audits and hardens network configurations, management protocols, and ports.
 *   **[Client Onboarding Specialist](operations/client_onboarding.md):** Coordinates tenant, network discovery, credential vaulting, and monitoring baseline setups during client onboarding.
