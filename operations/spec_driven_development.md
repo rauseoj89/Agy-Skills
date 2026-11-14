@@ -1,10 +1,10 @@
 ---
 name: spec-driven-development
 description: Enforces Specification-Driven Development (SDD). Use when building new features, modules, or services. Guides the agent through formal spec authoring (spec.md), technical planning (plan.md), task matrix generation (tasks.md), and incremental code convergence.
-version: 1.0.0
+version: 1.1.0
 tags: [universal, engineering, operations, sdd, spec-kit, planning, architecture]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor]
-last_updated: 2026-09-26
+last_updated: 2026-11-14
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -27,7 +27,7 @@ Eliminate agent drift, hallucinated assumptions, and unverified code generation 
 1. **Contracts Before Code:** Define data schemas, TypeScript interfaces, or OpenAPI 3.1 specifications before authoring business logic.
 2. **Deterministic Triad Progression:** All structured development follows:
    - `spec.md`: Defines the **WHAT** (User stories, Acceptance Criteria with Gherkin, Out of Scope).
-   - `plan.md`: Defines the **HOW** (Architecture, flowcharts, data models, contracts).
+   - `plan.md`: Defines the **HOW** (Architecture, flowcharts, data models, contracts). When planning web interfaces, search Google Chrome's `modern-web-guidance` (`npx -y modern-web-guidance@latest search "<query>"`) to baseline UI patterns against native platform capabilities (`<dialog>`, `popover`, container queries, modern forms) rather than third-party dependencies.
    - `tasks.md`: Defines the **STEPS** (Ordered matrix of atomic phases with dependent checkboxes).
 3. **No Code Drift:** Do not jump directly into modifying code without aligned and approved plan and contracts.
 4. **Incremental Convergence:** Implement and verify phase-by-phase, checking off tasks in `tasks.md` only after verifying working functionality.
@@ -95,5 +95,5 @@ await writeFile("specs/spec.md", specContent);
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-26  
-Version: 1.0.0
+Last Updated: 2026-11-14  
+Version: 1.1.0

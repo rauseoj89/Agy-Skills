@@ -1,10 +1,10 @@
 ---
 name: browser-testing
 description: Automates browser-based E2E testing, visual regression, Lighthouse audits, and interactive UI validation using browser-tools-mcp. Use when asked to test web pages, run accessibility audits, capture screenshots, validate UI flows, or perform visual regression testing.
-version: 1.2.0
+version: 1.3.0
 tags: [universal, devops, browser, testing]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
-last_updated: 2026-09-28
+last_updated: 2026-11-14
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -28,6 +28,7 @@ Run automated browser scripts, capture frontend performance metrics, audit acces
 2. **No Hardcoded Absolute Paths**: Save screenshots in relative project folders (e.g. `./screenshots/`).
 3. **HTTPS Enforcement**: All external communications must enforce HTTPS.
 4. **Navigation Stabilisation**: Always wait for elements to load to prevent race conditions.
+5. **Modern Web Standards Alignment**: Align accessibility, interactive flow, and UI audits with Google Chrome's `modern-web-guidance` standards (testing native `<dialog>`, `popover`, top-layer backdrops, and modern keyboard navigation). For legacy codebases, execute `npx -y modern-web-guidance@latest legacy-scan <path>` to flag obsolete web patterns.
 
 ---
 
@@ -94,5 +95,5 @@ const audit = await browser_tools.lighthouse_audit({ url: "http://localhost:3000
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-28  
-Version: 1.2.0
+Last Updated: 2026-11-14  
+Version: 1.3.0
