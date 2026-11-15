@@ -1,10 +1,10 @@
 ---
 name: security-audit
 description: Autonomous coverage-led vulnerability hunting harness. Use for comprehensive security audits, code reviews, penetration tests, or vulnerability research across APIs, microservices, daemons, and client applications.
-version: 1.1.0
-tags: [universal, security, audit, penetration-testing, vulnerability-hunting, adversarial-verification]
+version: 1.2.0
+tags: [universal, security, audit, penetration-testing, vulnerability-hunting, adversarial-verification, idor, bola]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]
-last_updated: 2026-09-28
+last_updated: 2026-11-15
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -35,7 +35,7 @@ Conduct systematic, coverage-led vulnerability discovery and penetration auditin
 ## 🔄 The 6-Phase Audit Lifecycle
 
 1. **Phase 1 — Reconnaissance & Mapping:** Identify trust boundaries, sensitive data flows, and compile `coverage-ledger.json`.
-2. **Phase 2 — Coverage-Led Hunting:** Evaluate each unit against OWASP vectors, injections (SQL/Command/SSRF), business logic flaws, and AI risks.
+2. **Phase 2 — Coverage-Led Hunting:** Evaluate each unit against OWASP vectors, **API Object-Level Authorization (OWASP API1 - IDOR / BOLA)** (inspecting every route, download endpoint, and mutation for server-derived `owner_id`/`tenant_id` query scoping and `403`/`404` enumeration rate-limiting), injections (SQL/Command/SSRF), business logic flaws, and AI risks.
 3. **Phase 3 — Adversarial Disproof:** Attempt to refute the exploitability of the candidate finding. Trace untrusted taint flow to sink.
 4. **Phase 4 — Structured Schema Output:** Generate `findings.json` with severity, CWE, and attack vector metadata. Validate using `security_scanner.validate_audit_findings`.
 5. **Phase 5 — Citation Verification:** Re-check that all cited lines and files exist and match current codebase state.
@@ -113,5 +113,5 @@ await security_scanner.scan_dependency_vulnerabilities({
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-09-28  
-Version: 1.1.0
+Last Updated: 2026-11-15  
+Version: 1.2.0
