@@ -35,3 +35,12 @@ Leaving introspection enabled in production exposes the entire database schema s
 ### 3. Field-Level Authorization (No trusting of Root Resolvers)
 GraphQL endpoints have a single HTTP entry point. Checking permissions only on root queries is unsafe.
 - **Rule:** Enforce authorization rules inside specific field resolvers, or use directive-based middlewares to verify token permissions before returning nested objects.
+### Object-Level Authorization (IDOR/BOLA)
+Derive `owner_id`/`tenant_id` exclusively from the verified server `context.currentUser` (JWT/session)—never trust `userId` or `ownerId` from GraphQL arguments or input types:
+```graphql
+# Resolver enforces ownership in query predicate
+const invoice = await db.invoices.findFirst({
+  where: { id: args.id, owner_id: context.currentUser.id }
+});
+if (!invoice) throw new ForbiddenError("Access denied");
+```

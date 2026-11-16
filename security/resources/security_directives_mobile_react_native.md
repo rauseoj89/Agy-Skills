@@ -10,3 +10,6 @@ Standard storage mechanisms (e.g., AsyncStorage) write values to device disks in
 ### 2. Certificate Pinning
 Mobile applications are vulnerable to Man-in-the-Middle (MITM) attacks via user-installed root certificates.
 - **Rule:** Enforce SSL Pinning for backend APIs using libraries (e.g., `react-native-ssl-pinning` or native network trust managers) to validate exact certificate hashes.
+
+### Object-Level Authorization (IDOR/BOLA)
+Never pass `user_id` or `owner_id` from AsyncStorage/SecureStore as an authorization claim in API bodies or query strings; rely on the backend deriving `owner_id` from the verified Bearer JWT and handle `403`/`404` responses without exposing other tenants' metadata.

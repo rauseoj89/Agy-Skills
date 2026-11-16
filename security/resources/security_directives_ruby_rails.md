@@ -19,3 +19,10 @@ Using dynamic user params inside `redirect_to` can result in Open Redirect vulne
   # CORRECT:
   redirect_to safe_path_or_url(params[:next])
   ```
+
+### Object-Level Authorization (IDOR/BOLA)
+Scope ActiveRecord lookups through `current_user` (verified session/JWT) instead of global `Model.find(params[:id])`—never trust `params[:user_id]`:
+```ruby
+@invoice = current_user.invoices.find_by(id: params[:id])
+render json: { error: "Forbidden" }, status: :forbidden and return unless @invoice
+```

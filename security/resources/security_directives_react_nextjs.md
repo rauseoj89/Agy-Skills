@@ -61,3 +61,13 @@ Redirects driven by dynamic URL parameters are prone to Open Redirect vulnerabil
       }
   }
   ```
+### Object-Level Authorization (IDOR/BOLA)
+In Next.js Route Handlers and Server Actions, derive `owner_id`/`tenant_id` exclusively from the verified server session—never from request body/query `userId`:
+```typescript
+const session = await getServerSession(authOptions);
+if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+const record = await db.invoice.findFirst({
+  where: { id: params.id, owner_id: session.user.id }
+});
+if (!record) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+```

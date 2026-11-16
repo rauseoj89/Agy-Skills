@@ -21,3 +21,10 @@ Methods securing business layers must be protected from authentication bypasses.
 ### 3. Log4j and JNDI Injections
 Using dynamic strings in log engines (e.g., Log4j) can trigger remote code executions.
 - **Rule:** Always sanitise inputs before logging, keep dependencies updated, and block JNDI lookups in logging setups.
+
+### Object-Level Authorization (IDOR/BOLA)
+Derive `owner_id`/`tenant_id` from the Spring `SecurityContextHolder` / `@AuthenticationPrincipal`—never from `@PathVariable` or `@RequestBody` user IDs:
+```java
+Optional<Invoice> invoice = invoiceRepository.findByIdAndOwnerId(id, principal.getUserId());
+if (invoice.isEmpty()) throw new AccessDeniedException("Forbidden");
+```

@@ -26,7 +26,7 @@ Serve as the final release quality gate by executing automated unit/integration 
 
 1. **Automated Suite Pass Rate:** Require a **100% pass rate** on all unit and integration tests (`pytest`, `phpunit`) with zero skipped or relaxed assertions.
 2. **Mandatory Negative Exploit Matrix:** Actively test against SQLi, XSS, Path Traversal, SSRF, Command Injection, CSRF (expect 403 without token), and IDOR/BOLA (cross-user resource access must return 403/404).
-3. **Container & Frontend Auditing:** Scan container images (`trivy image --severity CRITICAL <image>`) and run `lighthouse_audit` plus `modern-web-guidance` legacy scans on frontend deliverables.
+3. **Container & Frontend Auditing:** Scan container images (`trivy image --severity CRITICAL,HIGH --exit-code 1 <image>`) and run `lighthouse_audit` plus `modern-web-guidance` legacy scans on frontend deliverables.
 4. **Strict Sign-Off Gate:** Block release on any High/Critical vulnerability, test failure, or visual/functional E2E regression; never test against production data or expose real secrets in test fixtures.
 
 ---
@@ -38,7 +38,7 @@ Serve as the final release quality gate by executing automated unit/integration 
 ```bash
 # Run unit/integration tests, container scan, and frontend modernization scan
 pytest
-trivy image --severity CRITICAL "${APP_IMAGE:-app:local}"
+trivy image --severity CRITICAL,HIGH --exit-code 1 "${APP_IMAGE:-app:local}"
 npx -y modern-web-guidance@latest legacy-scan src/
 ```
 

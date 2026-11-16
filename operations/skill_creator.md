@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Standardizes and generates new agent skills with proper YAML frontmatter and folder hierarchy within the skills library. Use when asked to design, update, or create a new operational skill for the agent environment.
+description: "Authors and standardizes new local agent skills (SKILL.md directories, YAML frontmatter, scripts, and resources) in Central-Brain or local agent skill folders. Use when asked to design or create a new skill (use creating-agy-skills for Agy-Skills repo deployment)."
 version: 1.0.0
 tags: [universal, operations, meta, skill-authoring, standards]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode, Claude-Code]

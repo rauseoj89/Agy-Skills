@@ -47,3 +47,10 @@ When generating or reviewing code for this project, the following rules are non-
 - **Errors:** `display_errors = 0` in production. Log to private files.
 - **Redaction:** Redact PII (emails, passwords, session IDs) from audit logs.
 - **Traceability:** Include a unique Request-ID in every log entry for end-to-end tracing.
+
+### Object-Level Authorization (IDOR/BOLA)
+Derive `owner_id`/`tenant_id` exclusively from `$_SESSION["user_id"]` or the verified JWT—never from `$_GET`/`$_POST`—and enforce it in every PDO prepared statement:
+```php
+$stmt = $pdo->prepare("SELECT id, total FROM invoices WHERE id = :id AND owner_id = :owner_id");
+$stmt->execute([":id" => $invoiceId, ":owner_id" => $authenticatedUserId]);
+```

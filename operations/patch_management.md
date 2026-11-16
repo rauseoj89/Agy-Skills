@@ -1,6 +1,6 @@
 ---
 name: patch-management
-description: Governs the full patch lifecycle: inventory, risk assessment, change window scheduling, staged deployment, verification, and rollback using RMM, Veeam, and Axcient.
+description: "Governs the full patch lifecycle: inventory, risk assessment, change window scheduling, staged deployment, verification, and rollback using RMM, Veeam, and Axcient."
 version: 1.1.0
 tags: [universal, operations, patch, sysadmin]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]

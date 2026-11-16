@@ -114,3 +114,12 @@ else:
     sys.exit(0)
 ```
 *Rule:* Automated scripts (e.g., cron jobs or CI pipelines) that perform destructive operations must require a `--force-destructive` flag passed explicitly at runtime — never execute silently by default.
+
+### Object-Level Authorization (IDOR/BOLA)
+Always derive `owner_id`/`tenant_id` from the verified server session or JWT principal and include it in every parameterized query predicate—never trust client-supplied `user_id`:
+```python
+cursor.execute(
+    "SELECT id, total FROM invoices WHERE id = %s AND owner_id = %s",
+    (invoice_id, current_user.id),
+)
+```

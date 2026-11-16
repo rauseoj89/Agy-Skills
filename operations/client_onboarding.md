@@ -1,6 +1,6 @@
 ---
 name: client-onboarding
-description: Structured MSP client onboarding checklist: network discovery, vault credential setup, monitoring enrollment, PSA company setup, and documentation.
+description: "Structured MSP client onboarding checklist: network discovery, vault credential setup, monitoring enrollment, PSA company setup, and documentation."
 version: 1.1.0
 tags: [universal, operations, onboarding]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]

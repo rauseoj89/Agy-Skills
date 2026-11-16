@@ -1,6 +1,6 @@
 ---
 name: creating-agy-skills
-description: Automates the blueprinting, creation, and Git deployment workflow for new or modified Skills inside the Agy-Skills repository. Use when the user requests to create, design, or update a Skill.
+description: "Automates indexing, universal blueprinting, validation, and Git deployment of skill blueprints inside the Agy-Skills repository. Use only when deploying or updating blueprints in Agy-Skills (use skill-creator for authoring local SKILL.md directories)."
 version: 1.2.0
 tags: [universal, operations, skills, creation]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode]

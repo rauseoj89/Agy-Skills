@@ -14,3 +14,12 @@ String formatting inside raw SQL methods invites SQL injection.
 Stateless APIs and Controller endpoints are vulnerable to Cross-Site Request Forgery (CSRF).
 - **Rule:** Enforce `[ValidateAntiForgeryToken]` globally or on state-modifying actions (`POST`, `PUT`, `DELETE`).
 - **Razor / Tag Helpers:** Ensure forms are generated with framework helpers which automatically insert tokens.
+
+### Object-Level Authorization (IDOR/BOLA)
+Derive `owner_id`/`tenant_id` from `User.FindFirstValue(ClaimTypes.NameIdentifier)`—never from request DTOs—and scope every EF Core / Dapper query:
+```csharp
+var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+var invoice = await _db.Invoices
+    .FirstOrDefaultAsync(i => i.Id == id && i.OwnerId == ownerId);
+if (invoice is null) return Forbid();
+```

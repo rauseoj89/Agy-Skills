@@ -17,3 +17,13 @@ WebSockets do not automatically validate CORS policies, allowing hostile website
 ### 2. Connection Handshake Authentication
 WebSockets are persistent TCP connections. Authenticators must run before handshaking.
 - **Rule:** Validate user authentication tokens (e.g., JWT) in the initial HTTP Upgrade request before initiating the socket session.
+
+### Object-Level Authorization (IDOR/BOLA) & Per-Message Auth
+Authenticate the WebSocket handshake and enforce per-message `owner_id`/`tenant_id` authorization on every incoming channel subscription or action—never trust a `userId` field inside message JSON:
+```javascript
+socket.on("message", async (raw) => {
+  const msg = JSON.parse(raw);
+  const allowed = await verifyResourceOwnership(msg.resourceId, socket.data.authenticatedUserId);
+  if (!allowed) return socket.send(JSON.stringify({ error: "Forbidden" }));
+});
+```

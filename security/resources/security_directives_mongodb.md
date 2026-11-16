@@ -22,3 +22,13 @@ NoSQL queries construct syntax trees using objects. Passing raw client inputs (o
 The `$where` operator and `$eval` function execute arbitrary JavaScript strings inside the MongoDB engine, creating severe Server-Side JavaScript Injection vulnerabilities.
 - **Prohibited:** Never use the `$where` operator with user inputs, and disable Javascript execution on the MongoDB server config (`security.javascriptEnabled: false`).
 - **Approved Safe Pattern:** Use standard query operators (`$eq`, `$expr`, `$match`).
+
+### Object-Level Authorization (IDOR/BOLA)
+Include the verified session/JWT `owner_id` (never client-supplied `userId`) in every MongoDB `findOne`, `updateOne`, and `deleteOne` filter:
+```javascript
+const doc = await db.collection("invoices").findOne({
+  _id: new ObjectId(invoiceId),
+  owner_id: authenticatedUser.id
+});
+if (!doc) return res.status(403).json({ error: "Forbidden" });
+```

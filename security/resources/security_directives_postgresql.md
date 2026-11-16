@@ -95,3 +95,12 @@ BEGIN;
   SELECT COUNT(*) FROM public.temp_import_staging; -- Should be 0
 COMMIT; -- Only after explicit user review
 ```
+
+### Object-Level Authorization (IDOR/BOLA) via Row-Level Security
+Enforce tenant/owner isolation in PostgreSQL using Row-Level Security (RLS) bound to the server-set session variable—never a client-supplied parameter:
+```sql
+ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
+CREATE POLICY invoices_owner_isolation ON public.invoices
+  USING (owner_id = current_setting('app.current_owner_id', true)::uuid)
+  WITH CHECK (owner_id = current_setting('app.current_owner_id', true)::uuid);
+```
