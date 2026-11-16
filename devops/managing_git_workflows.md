@@ -1,10 +1,10 @@
 ---
 name: managing-git-workflows
 description: Enforces Git best practices including interactive semantic commits, logical commit splitting, branching strategies, conventional commits, pull request workflows, merge conflict resolution, and code review processes. Use when asked to commit changes, set up git workflows, resolve merge conflicts, create branch strategies, or standardize commit messages.
-version: 1.1.0
+version: 1.2.0
 tags: [universal, devops, git, conventional-commits, branching, code-review]
 compatible_agents: [Hermes, Antigravity, Cline, Roo-Code, Copilot, Cursor, OpenCode, Claude-Code]
-last_updated: 2026-10-17
+last_updated: 2026-11-16
 author: JimmyR
 powered_by: AntigravityAI
 ---
@@ -30,8 +30,8 @@ Ensure repository structure cleanliness, enforce atomic Conventional Commits thr
    - `2. Commit only` — commit on the current branch, no push.
    - `3. Commit on a new branch` — create a branch named after the changes (`git switch -c <type/short-summary>`), commit there, then push it.
 3. **Logical Group Splitting & Scoped Staging:** Split working-tree changes into independent logical groups (one atomic commit per group). Run `git add <file1> <file2>` only for each group's files; never run unbounded `git add .` or `git add -A`.
-4. **Conventional Commits & Zero AI Attribution:** Format as `type(scope): summary` (`feat`, `fix`, `docs`, `refactor`, `style`, `test`, `build`, `chore`) in English, imperative mood, under 72 characters. Never add `Co-Authored-By`, `"Generated with ..."`, or AI session links/trailers.
-5. **Clean Merges & Hook Integrity:** Never use `git push --force` on `main` or `release` branches, and never bypass security hooks (`--no-verify`).
+4. **Conventional Commits & Attribution:** Format as `type(scope): summary` (`feat`, `fix`, `docs`, `refactor`, `style`, `test`, `build`, `chore`) in English, imperative mood, under 72 characters. When the environment supplies attribution lines (`Co-Authored-By`, `"Generated with ..."`), append them verbatim—never strip, alter, or invent them. Commit messages, trailers, and PR bodies must never contain secrets, tokens, private IPs, internal hostnames, customer data, or session links.
+5. **Clean Merges, Signing & Hook Integrity:** Never bypass commit signing or security hooks (`--no-verify`, `--no-gpg-sign`); if signing fails, stop and report. Never rewrite already-pushed commits or use `git push --force` without explicit user confirmation.
 
 ---
 
@@ -45,7 +45,7 @@ git branch --show-current
 git status --short
 git diff HEAD
 
-# 2. Stage explicitly per logical group and create a Conventional Commit with zero AI attribution
+# 2. Stage explicitly per logical group and create a Conventional Commit (preserving any environment-supplied attribution verbatim)
 git add src/module.ts tests/module.test.ts
 git commit -m "feat(module): add input validation boundary"
 ```
@@ -89,12 +89,13 @@ await shell.exec('git add src/module.ts && git commit -m "feat(module): add vali
 
 - [ ] **No Hardcoded Secrets:** Confirmed zero credentials, `.env*` files, private keys, or `CHG-Review/` directories are staged.
 - [ ] Each commit stages only related files via explicit `git add <files>` (never `git add .` or `git add -A`).
-- [ ] All commit messages follow Conventional Commits (`<72` chars, imperative mood, English) with zero AI attribution or trailers.
-- [ ] **Destructive Gate:** Confirmed no `git push --force`, `git reset --hard`, or `--no-verify` flags are used.
+- [ ] All commit messages follow Conventional Commits (`<72` chars, imperative mood, English).
+- [ ] **Attribution & Signing:** Environment-supplied attribution lines appended verbatim (never stripped, altered, or invented); commit messages, trailers, and PR bodies contain zero secrets, tokens, private IPs, internal hostnames, customer data, or session links; commit signing and hooks were not bypassed.
+- [ ] **Destructive Gate:** Confirmed no `git push --force`, `git reset --hard`, `--no-verify`, or unconfirmed history rewrites of pushed commits are used.
 
 ---
 
 **Author:** JimmyR  
 **Powered by:** AntigravityAI  
-Last Updated: 2026-10-17  
-Version: 1.1.0
+Last Updated: 2026-11-16  
+Version: 1.2.0

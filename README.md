@@ -49,13 +49,18 @@ agy-skills/
 │   ├── docker_project_foundations.md     # Scaffolding the foundational triad (.dockerignore, Dockerfile, compose)
 │   ├── managing_cicd.md                  # GitHub Actions, secrets mapping & pinned runners
 │   ├── managing_containers.md            # Multi-stage, non-root Docker builds & diagnostics
-│   └── managing_git_workflows.md         # Interactive semantic commits, logical splitting & PR workflows
+│   ├── managing_dependencies.md          # Dependency CVE audits, exact pinning & SRI hashes
+│   ├── managing_git_workflows.md         # Interactive semantic commits, logical splitting & PR workflows
+│   ├── profiling_performance.md          # Query EXPLAIN tuning, browser traces & Core Web Vitals
+│   └── qa.md                             # Unit/E2E testing, negative exploit matrix & Trivy scans
 ├── marketing/
 │   └── seo_audit.md                      # Technical SEO audits, meta validation & bilingual reports
 ├── network/
 │   └── general_network_audit.md          # Hardening management protocols & vetting unused ports
 ├── operations/
+│   ├── architech.md                      # Modular software/UI blueprints, OpenAPI 3.1 & data flows
 │   ├── client_onboarding.md              # Structured client onboarding lifecycle
+│   ├── coder.md                          # Hardened Python/PHP/JS implementation & modern web standards
 │   ├── creating_agy_mcps.md              # Automate blueprinting & git deployment of custom MCP servers
 │   ├── creating_agy_skills.md            # Automate blueprinting & git deployment of custom Agy-skills
 │   ├── documenting_sessions.md           # Private daily reviews & .gitignore automation
@@ -64,10 +69,15 @@ agy-skills/
 │   ├── legal_compliance_drafting.md      # Attorney-grade contracts, DPAs, BAAs & CC0 legal templates
 │   ├── managing_m365.md                  # Administer M365 users, licenses, and security
 │   ├── managing_system_operations.md     # Sorting folder assets & executing tar backups
+│   ├── managing_tasks.md                 # Eisenhower prioritization, risk scoring & sprint Gantt plans
+│   ├── monitoring_and_alerting.md        # System health checks, DB pool metrics & alert thresholds
 │   ├── patch_management.md               # Govern patch windows and rollback policies
 │   ├── powershell_automation.md          # Write, test, and deploy PowerShell automation
+│   ├── researching_topics.md             # Tier-1 technical research & comparative evaluation matrices
+│   ├── skill_creator.md                  # Standardize & generate local agent SKILL.md directories
 │   ├── spec_driven_development.md        # Spec-Kit workflow (spec.md -> plan.md -> tasks.md)
-│   └── systematic_debugging.md           # Root-cause-first debugging (Assess -> Fix -> Test)
+│   ├── systematic_debugging.md           # Root-cause-first debugging (Assess -> Fix -> Test)
+│   └── writing_documentation.md          # Versioned manuals, release notes, FAQs & sanitized guides
 └── security/
     ├── database_management.md            # PostgreSQL schemas, indices, permissions & migrations
     ├── git_secret_audit.md               # Audit Git history, sanitize tracked credentials & .gitignore rules
@@ -113,6 +123,16 @@ agy-skills/
 *   **[Patch Management Specialist](operations/patch_management.md):** Controls patch inventory, risk gating, pre-patch backups, staged deployment, and rollback configurations.
 *   **[PowerShell Automation Specialist](operations/powershell_automation.md):** Scripting authority enforcing strict parameter validation, SecureString management, and Pester tests.
 *   **[Incident Response Specialist](security/incident_response.md):** Governs triage, containment, log preservation, and recovery workflows during security incidents.
+*   **[Senior Architect](operations/architech.md):** Designs modular software interfaces, native HTML/CSS blueprints, OpenAPI 3.1 contracts, and security-first data flows.
+*   **[Lead Engineer](operations/coder.md):** Executes hardened Python, PHP, HTML, and JavaScript implementation with parameterized queries, redacted errors, and non-root containers.
+*   **[Dependency & Supply Chain Manager](devops/managing_dependencies.md):** Audits npm, pip, and Composer dependencies for CVEs, enforces exact version pinning, and generates SRI hashes.
+*   **[Project Manager & Task Coordinator](operations/managing_tasks.md):** Prioritizes backlogs via the Eisenhower Matrix, scores risks, and builds sprint plans with Mermaid Gantt timelines.
+*   **[Systems Observer & Alert Configurator](operations/monitoring_and_alerting.md):** Configures read-only health checks, DB connection pool monitors, and CPU/memory/disk alert thresholds.
+*   **[Performance & Profiling Specialist](devops/profiling_performance.md):** Profiles SQL queries with `EXPLAIN (ANALYZE, BUFFERS)`, captures browser traces, and optimizes Core Web Vitals.
+*   **[Quality Assurance Engineer](devops/qa.md):** Runs Pytest/PHPUnit suites, Chrome DevTools E2E/Lighthouse audits, Trivy container scans, and negative exploit testing.
+*   **[Research & Competitive Analyst](operations/researching_topics.md):** Gathers Tier-1 technical documentation, vets sources, and compiles objective comparison matrices.
+*   **[Skill Creator](operations/skill_creator.md):** Standardizes and generates modular `SKILL.md` directories with compliant YAML frontmatter and security guardrails.
+*   **[Technical Documenter & Writer](operations/writing_documentation.md):** Authors version-controlled manuals, release notes, and FAQs with zero leaked secrets, IPs, or local paths.
 
 ---
 _Feel free to open Pull Requests to contribute new blueprints, refine checklists, or add vendor-specific system configurations!_
