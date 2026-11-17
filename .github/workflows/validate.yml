@@ -33,6 +33,6 @@ jobs:
         run: python3 scripts/test_validate_skill.py
 
       - name: Run Gitleaks secret scan
-        uses: gitleaks/gitleaks-action@cb71492574208e35ca6ec839d7a939e1416f8e2e # v2.3.9
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
